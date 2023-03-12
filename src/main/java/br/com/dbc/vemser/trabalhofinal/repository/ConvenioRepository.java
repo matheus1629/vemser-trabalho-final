@@ -100,34 +100,6 @@ public class ConvenioRepository implements Repositorio<Integer, Convenio> {
         }
     }
 
-    public void remover2(Integer id) throws BancoDeDadosException {
-        Connection con = null;
-        try {
-            con = conexaoBancoDeDados.getConnection();
-
-            String sql = "DELETE FROM CONVENIO WHERE ID_CONVENIO = ?";
-
-            PreparedStatement stmt = con.prepareStatement(sql);
-
-            stmt.setInt(1, id);
-
-            // Executa-se a consulta
-            stmt.executeUpdate();
-
-        } catch (SQLException e) {
-            log.error(e.getMessage());
-            throw new BancoDeDadosException(e.getCause());
-        } finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException e) {
-                log.error(e.getMessage());
-            }
-        }
-    }
-
     @Override
     public Convenio editar(Integer id, Convenio convenio) throws BancoDeDadosException {
         Connection con = null;

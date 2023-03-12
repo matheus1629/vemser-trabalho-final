@@ -30,8 +30,6 @@ public class EspecialidadeService {
             return objectMapper.convertValue(especialidadeAdicionada, EspecialidadeDTO.class);
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Especialidade não adicionada por problema no banco de dados.");
-        } catch (Exception e) {
-            throw new RegraDeNegocioException("Especialidade não adicionada.");
         }
     }
 
@@ -55,8 +53,6 @@ public class EspecialidadeService {
             return getById(id);
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Especialidade não editada por problema no banco de dados.");
-        } catch (RegraDeNegocioException e) {
-            throw new RegraDeNegocioException("Especialidade não editada.");
         }
     }
 

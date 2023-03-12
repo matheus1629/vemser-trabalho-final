@@ -34,7 +34,7 @@ public class ConvenioService {
     public void remover(Integer id) throws RegraDeNegocioException {
         try {
             getConvenio(id);
-            convenioRepository.remover2(id);
+            convenioRepository.remover(id);
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Erro no Banco!");
         }
@@ -43,8 +43,8 @@ public class ConvenioService {
 
     public ConvenioDTO editar(Integer id, ConvenioCreateDTO convenio) throws RegraDeNegocioException {
         try {
-            Convenio convenioEntity = objectMapper.convertValue(convenio, Convenio.class);
             getConvenio(id);
+            Convenio convenioEntity = objectMapper.convertValue(convenio, Convenio.class);
             convenioRepository.editar(id, convenioEntity);
             return objectMapper.convertValue(convenioEntity, ConvenioDTO.class);
         } catch (BancoDeDadosException e) {

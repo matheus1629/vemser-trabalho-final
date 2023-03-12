@@ -3,7 +3,6 @@ package br.com.dbc.vemser.trabalhofinal.controller;
 
 import br.com.dbc.vemser.trabalhofinal.dto.ConvenioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ConvenioDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.EspecialidadeDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.ConvenioService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Validated
@@ -29,7 +27,7 @@ public class ConvenioController implements InterfaceDocumentacao<ConvenioDTO, Co
     }
 
     @Override
-    public ResponseEntity<ConvenioDTO> getById(@PathVariable("id") Integer id) throws RegraDeNegocioException {
+    public ResponseEntity<ConvenioDTO> getById(Integer id) throws RegraDeNegocioException {
         return new ResponseEntity<>(convenioService.getById(id), HttpStatus.OK);
     }
 
@@ -39,13 +37,13 @@ public class ConvenioController implements InterfaceDocumentacao<ConvenioDTO, Co
     }
 
     @Override
-    public ResponseEntity<ConvenioDTO> update(Integer idConvenio, ConvenioCreateDTO convenio) throws RegraDeNegocioException {
-        return new ResponseEntity<>(convenioService.editar(idConvenio, convenio), HttpStatus.OK);
+    public ResponseEntity<ConvenioDTO> update(Integer id, ConvenioCreateDTO convenio) throws RegraDeNegocioException {
+        return new ResponseEntity<>(convenioService.editar(id, convenio), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Void> delete(Integer idConvenio) throws RegraDeNegocioException {
-        convenioService.remover(idConvenio);
+    public ResponseEntity<Void> delete(Integer id) throws RegraDeNegocioException {
+        convenioService.remover(id);
         return ResponseEntity.ok().build();
     }
 }

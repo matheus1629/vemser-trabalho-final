@@ -54,8 +54,6 @@ public class UsuarioService {
     public UsuarioDTO editar(Integer id, UsuarioCreateDTO usuario) throws RegraDeNegocioException {
         try {
             Usuario usarioEditar = objectMapper.convertValue(usuario, Usuario.class);
-            usarioEditar.setIdUsuario(id);
-
             UsuarioDTO usuarioEditado = objectMapper.convertValue(usuarioRepository.editar(id, validarUsuario(usarioEditar)), UsuarioDTO.class);
             return usuarioEditado;
         } catch (BancoDeDadosException e) {

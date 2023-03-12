@@ -243,7 +243,7 @@ MedicoRepository implements Repositorio<Integer, Medico> {
     }
 
     public MedicoCompletoDTO getMedicoCompletoDTO(Integer id) throws BancoDeDadosException {
-        MedicoCompletoDTO medicoCompletoDTO = new MedicoCompletoDTO();
+        MedicoCompletoDTO medicoCompletoDTO = null;
         Connection con = null;
         try {
             con = conexaoBancoDeDados.getConnection();
