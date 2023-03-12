@@ -33,7 +33,7 @@ public class ConvenioService {
 
     public void remover(Integer id) throws RegraDeNegocioException {
         try {
-            verificarSeIdConvenioExiste(id);
+            getConvenio(id);
             convenioRepository.remover2(id);
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Erro no Banco!");
@@ -44,7 +44,7 @@ public class ConvenioService {
     public ConvenioDTO editar(Integer id, ConvenioCreateDTO convenio) throws RegraDeNegocioException {
         try {
             Convenio convenioEntity = objectMapper.convertValue(convenio, Convenio.class);
-            verificarSeIdConvenioExiste(id);
+            getConvenio(id);
             convenioRepository.editar(id, convenioEntity);
             return objectMapper.convertValue(convenioEntity, ConvenioDTO.class);
         } catch (BancoDeDadosException e) {
@@ -64,31 +64,19 @@ public class ConvenioService {
         }
     }
 
-    public Convenio verificarSeExiste(Integer id) throws RegraDeNegocioException {
+    public Convenio getConvenio(Integer id) throws RegraDeNegocioException {
         try {
-            return convenioRepository.getUmId(id);
-        } catch (BancoDeDadosException e) {
-            throw new RegraDeNegocioException("Erro no Banco!");
-        }
-    }
-
-
-    public Convenio verificarSeIdConvenioExiste(Integer id) throws RegraDeNegocioException {
-        try {
-            return convenioRepository.listar().stream()
-                    .filter(convenio -> convenio.getIdConvenio().equals(id))
-                    .findFirst()
-                    .orElseThrow(() -> new RegraDeNegocioException("Convenio não encontrado!"));
+            Convenio convenioEncontrado = convenioRepository.getConvenio(id);
+            if (convenioEncontrado == null) {
+                throw new RegraDeNegocioException("Convênio não encontrado!");
+            }
+            return convenioEncontrado;
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Erro no Banco!");
         }
     }
 
     public ConvenioDTO getById(Integer id) throws RegraDeNegocioException {
-        try {
-            return objectMapper.convertValue(convenioRepository.getUmId(id), ConvenioDTO.class);
-        } catch (BancoDeDadosException e) {
-            throw new RegraDeNegocioException(("Erro no banco"));
-        }
+        return objectMapper.convertValue(getConvenio(id), ConvenioDTO.class);
     }
 }

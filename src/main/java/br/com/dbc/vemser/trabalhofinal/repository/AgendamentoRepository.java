@@ -4,7 +4,6 @@ import br.com.dbc.vemser.trabalhofinal.dto.AgendamentoDadosDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.Agendamento;
 import br.com.dbc.vemser.trabalhofinal.entity.TipoUsuario;
 import br.com.dbc.vemser.trabalhofinal.exceptions.BancoDeDadosException;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -213,7 +212,7 @@ public class AgendamentoRepository implements Repositorio<Integer, Agendamento> 
         return agendamento;
     }
 
-    public List<AgendamentoDadosDTO> mostrarAgendamentosUsuario(Integer id, TipoUsuario tipoUsuario) throws BancoDeDadosException {
+    public List<AgendamentoDadosDTO> listarAgendamentosUsuario(Integer id, TipoUsuario tipoUsuario) throws BancoDeDadosException {
 
         List<AgendamentoDadosDTO> agendamentosDoUsuario = new ArrayList<>();
         Connection con = null;
@@ -240,43 +239,6 @@ public class AgendamentoRepository implements Repositorio<Integer, Agendamento> 
                 agendamentosDoUsuario.add(getAgendamentoDTOFromResultSet(res));
             }
             return agendamentosDoUsuario;
-        } catch (SQLException e) {
-            log.error(e.getMessage());
-            throw new BancoDeDadosException(e.getCause());
-        } finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException e) {
-                log.error(e.getMessage());
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public AgendamentoDadosDTO getAgendamentoDados(Integer id) throws BancoDeDadosException {
-
-        AgendamentoDadosDTO dadosAgendamento = null;
-        Connection con = null;
-        try {
-            con = conexaoBancoDeDados.getConnection();
-
-            String sql = "SELECT a.data_horario, uc.nome AS nome_cliente, um.nome AS nome_medico, a.tratamento, a.exame " +
-                    "FROM AGENDAMENTO a " +
-                    "INNER JOIN MEDICO m ON (m.id_medico = a.id_medico) " +
-                    "INNER JOIN CLIENTE c ON (c.id_cliente = a.id_cliente) " +
-                    "WHERE a.id_agendamento = ?";
-
-            // Executa-se a consulta
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, id);
-            ResultSet res = stmt.executeQuery(sql);
-
-            if (res.next()) {
-                dadosAgendamento = getAgendamentoDTOFromResultSet(res);
-            }
-            return dadosAgendamento;
         } catch (SQLException e) {
             log.error(e.getMessage());
             throw new BancoDeDadosException(e.getCause());

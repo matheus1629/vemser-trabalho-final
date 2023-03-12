@@ -23,7 +23,7 @@ public interface InterfaceDocumentacao<saida, entrada, id> {
     @GetMapping
     ResponseEntity<List<saida>> listAll() throws RegraDeNegocioException;
 
-    @Operation(summary = "Lista um registro", description = "Lista um registro passando seu ID")
+    @Operation(summary = "Recuperar um registro", description = "Lista um registro passando seu ID")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "O registro foi lsitado com sucesso"),
@@ -67,6 +67,4 @@ public interface InterfaceDocumentacao<saida, entrada, id> {
     )
     @DeleteMapping("/{id}")
     ResponseEntity<Void> delete(@PathVariable id id) throws RegraDeNegocioException;
-
-    //getOne <TODO>
 }

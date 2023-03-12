@@ -52,7 +52,7 @@ public class EspecialidadeService {
             getEspecialidade(id);
             Especialidade especialidadeEditar = objectMapper.convertValue(especialidade, Especialidade.class);
             especialidadeRepository.editar(id, especialidadeEditar);
-            return getEspecialidadeDTO(id);
+            return getById(id);
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Especialidade não editada por problema no banco de dados.");
         } catch (RegraDeNegocioException e) {
@@ -69,7 +69,7 @@ public class EspecialidadeService {
         }
     }
 
-    public EspecialidadeDTO getEspecialidadeDTO(Integer id) throws RegraDeNegocioException {
+    public EspecialidadeDTO getById(Integer id) throws RegraDeNegocioException {
         return objectMapper.convertValue(getEspecialidade(id), EspecialidadeDTO.class);
     }
 

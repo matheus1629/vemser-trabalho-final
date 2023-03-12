@@ -44,7 +44,7 @@ public class MedicoController implements InterfaceDocumentacao<MedicoCompletoDTO
 
     @Override
     public ResponseEntity<MedicoCompletoDTO> getById(Integer id) throws RegraDeNegocioException {
-        return new ResponseEntity<>(medicoService.getMedicoDTOById(id), HttpStatus.OK);
+        return new ResponseEntity<>(medicoService.getById(id), HttpStatus.OK);
     }
 
     @Override
@@ -64,7 +64,5 @@ public class MedicoController implements InterfaceDocumentacao<MedicoCompletoDTO
         medicoService.remover(id);
         return ResponseEntity.ok().build();
     }
-
-    // <TODO> endpoint listMinimazed
 
 }

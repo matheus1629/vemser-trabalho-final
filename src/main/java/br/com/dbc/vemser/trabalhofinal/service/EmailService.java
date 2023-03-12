@@ -37,9 +37,9 @@ public class EmailService {
 
     // USUÁRIO
 
-    public void sendEmailUsuario(UsuarioDTO usuarioDTO, TipoEmail tipoEmail) throws MessagingException, TemplateException, IOException {
-        MimeMessageHelper mimeMessageHelper = buildEmailUsuario(usuarioDTO.getEmail(), tipoEmail);
-        mimeMessageHelper.setText(getUsuarioTemplate(usuarioDTO, tipoEmail), true);
+    public void sendEmailUsuario(Usuario usuario, TipoEmail tipoEmail) throws MessagingException, TemplateException, IOException {
+        MimeMessageHelper mimeMessageHelper = buildEmailUsuario(usuario.getEmail(), tipoEmail);
+        mimeMessageHelper.setText(getUsuarioTemplate(usuario, tipoEmail), true);
 
         emailSender.send(mimeMessageHelper.getMimeMessage());
     }
@@ -54,10 +54,10 @@ public class EmailService {
         return mimeMessageHelper;
     }
 
-    public String getUsuarioTemplate(UsuarioDTO usuarioDTO, TipoEmail tipo) throws IOException, TemplateException {
+    public String getUsuarioTemplate(Usuario usuario, TipoEmail tipo) throws IOException, TemplateException {
         Map<String, Object> dados = new HashMap<>();
         dados.put("email", from);
-        dados.put("usuario", usuarioDTO);
+        dados.put("usuario", usuario);
         Template template = fmConfiguration.getTemplate("usuario-cadastro.ftl");
 
         return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);

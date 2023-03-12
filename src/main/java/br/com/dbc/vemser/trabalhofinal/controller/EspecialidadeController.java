@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -30,7 +29,7 @@ public class EspecialidadeController implements InterfaceDocumentacao<Especialid
 
     @Override
     public ResponseEntity<EspecialidadeDTO> getById(Integer id) throws RegraDeNegocioException {
-        return new ResponseEntity<>(especialidadeService.getEspecialidadeDTO(id), HttpStatus.OK);
+        return new ResponseEntity<>(especialidadeService.getById(id), HttpStatus.OK);
     }
 
     @Override

@@ -26,6 +26,4 @@ public class UsuarioDTO {
     private String[] contatos;
     @Schema(description = "Indentificar se o usuário é um médico ou um cliente", example = "MEDICO")
     private TipoUsuario tipoUsuario;
-    @Schema(description = "Endereço completo")
-    private EnderecoDTO endereco;
 }

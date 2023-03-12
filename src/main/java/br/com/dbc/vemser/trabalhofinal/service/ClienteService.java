@@ -1,6 +1,5 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
-import br.com.dbc.vemser.trabalhofinal.client.EnderecoClient;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteDTO;
@@ -23,7 +22,6 @@ public class ClienteService {
     private final ClienteRepository clienteRepository;
     private final ObjectMapper objectMapper;
     private final UsuarioService usuarioService;
-    private final EnderecoClient enderecoClient;
 
     public ClienteCompletoDTO adicionar(ClienteCreateDTO cliente) throws RegraDeNegocioException {
         try {
@@ -73,14 +71,7 @@ public class ClienteService {
 
     public List<ClienteCompletoDTO> listarFull() throws RegraDeNegocioException {
         try {
-            return clienteRepository.listarClienteDTOs().stream().map(clienteCompletoDTO -> {
-                clienteCompletoDTO.getUsuario().setEndereco(
-                        enderecoClient.getEndereco(
-                                clienteCompletoDTO.getUsuario().getCep()
-                        )
-                );
-                return clienteCompletoDTO;
-            }).toList();
+            return clienteRepository.listarClienteDTOs();
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Erro no Banco!");
         }
@@ -89,12 +80,10 @@ public class ClienteService {
     public ClienteCompletoDTO getById(Integer idCliente) throws RegraDeNegocioException {
         try {
             ClienteCompletoDTO clienteCompletoDTO = clienteRepository.getClienteCompletoDTO(idCliente);
-            if (clienteCompletoDTO != null) {
-                clienteCompletoDTO.setUsuario(usuarioService.getById(clienteCompletoDTO.getUsuario().getIdUsuario()));
-                return clienteCompletoDTO;
-            } else {
+            if (clienteCompletoDTO == null) {
                 throw new RegraDeNegocioException("Cliente não existe!");
             }
+            return clienteCompletoDTO;
         } catch (BancoDeDadosException e) {
             throw new RuntimeException(e);
         }

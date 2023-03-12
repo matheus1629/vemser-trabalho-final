@@ -1,11 +1,9 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
-import br.com.dbc.vemser.trabalhofinal.client.EnderecoClient;
-import br.com.dbc.vemser.trabalhofinal.dto.MedicoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.MedicoCompletoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.MedicoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.MedicoDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.Medico;
-
 import br.com.dbc.vemser.trabalhofinal.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.MedicoRepository;
@@ -22,7 +20,6 @@ public class MedicoService {
     private final MedicoRepository medicoRepository;
     private final ObjectMapper objectMapper;
     private final UsuarioService usuarioService;
-    private final EnderecoClient enderecoClient;
 
 
     public MedicoCompletoDTO adicionar(MedicoCreateDTO medico) throws RegraDeNegocioException {
@@ -31,7 +28,7 @@ public class MedicoService {
             Medico medicioAdicionar = objectMapper.convertValue(medico, Medico.class);
             Medico medicoAdicionado = medicoRepository.adicionar(medicioAdicionar);
 
-            return getMedicoDTOById(medicoAdicionado.getIdMedico());
+            return getById(medicoAdicionado.getIdMedico());
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Médico não adicionado por problema no banco de dados.");
         }
@@ -48,12 +45,13 @@ public class MedicoService {
 
     public MedicoCompletoDTO editar(Integer id, MedicoCreateDTO medico) throws RegraDeNegocioException {
         try {
+            getMedico(id);
             if (!Objects.equals(getMedico(id).getIdUsuario(), medico.getIdUsuario())) {
                 usuarioService.verificarIdUsuario(medico.getIdUsuario());
             }
             Medico medicoEditar = objectMapper.convertValue(medico, Medico.class);
             medicoRepository.editar(id, medicoEditar);
-            return getMedicoDTOById(id);
+            return getById(id);
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Médico não editado por problema no banco de dados.");
         }
@@ -69,11 +67,13 @@ public class MedicoService {
         }
     }
 
-    public MedicoCompletoDTO getMedicoDTOById(Integer idMedico) throws RegraDeNegocioException {
+    public MedicoCompletoDTO getById(Integer idMedico) throws RegraDeNegocioException {
         try {
-            MedicoCompletoDTO medicoCompletoDTO = medicoRepository.getMedicoDTO(idMedico);
-            medicoCompletoDTO.setUsuario(usuarioService.getById(medicoCompletoDTO.getIdUsuario()));
-            return medicoCompletoDTO;
+             MedicoCompletoDTO medicoEncontrado = medicoRepository.getMedicoCompletoDTO(idMedico);
+            if (medicoEncontrado == null) {
+                throw new RegraDeNegocioException("Médico não existe!");
+            }
+            return medicoEncontrado;
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Informações do médico não mostradas por problema no banco de dados.");
         }
@@ -81,14 +81,7 @@ public class MedicoService {
 
     public List<MedicoCompletoDTO> listarFull() throws RegraDeNegocioException {
         try {
-            return medicoRepository.listarMedicosUsuariosDTOs().stream().map(medicoCompletoDTO -> {
-                medicoCompletoDTO.getUsuario().setEndereco(
-                        enderecoClient.getEndereco(
-                                medicoCompletoDTO.getUsuario().getCep()
-                        )
-                );
-                return medicoCompletoDTO;
-            }).toList();
+            return medicoRepository.listarMedicoCompletoDTOs();
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Informações do médico não mostradas por problema no banco de dados.");
         }
@@ -104,10 +97,6 @@ public class MedicoService {
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Médico não encontrado por problema no banco de dados.");
         }
-    }
-
-    public MedicoCompletoDTO getMedicoDTO(Integer id) throws RegraDeNegocioException {
-        return objectMapper.convertValue(getMedico(id), MedicoCompletoDTO.class);
     }
 
 }

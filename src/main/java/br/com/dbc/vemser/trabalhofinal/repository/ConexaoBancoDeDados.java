@@ -10,14 +10,6 @@ import java.sql.SQLException;
 
 @Component
 public class ConexaoBancoDeDados {
-//    private static final String SERVER = "vemser-dbc.dbccompany.com.br";
-//    private static final String PORT = "25000"; // Porta TCP padrão do Oracle
-//    private static final String DATABASE = "xe";
-//
-//    // Configuração dos parâmetros de autenticação
-//    private static final String USER = "SAUDE";
-//    private static final String PASS = "{db.oracle.password}";
-//    private static final String SCHEMA = "SAUDE";
 
     @Value("${db.oracle.server}")
     private String server;

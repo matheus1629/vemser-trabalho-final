@@ -1,7 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.repository;
 
 import br.com.dbc.vemser.trabalhofinal.entity.Convenio;
-import br.com.dbc.vemser.trabalhofinal.entity.Usuario;
 import br.com.dbc.vemser.trabalhofinal.exceptions.BancoDeDadosException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -138,33 +137,11 @@ public class ConvenioRepository implements Repositorio<Integer, Convenio> {
             String sql = "UPDATE CONVENIO SET cadastro_orgao_regulador = ?, taxa_abatimento = ? where id_convenio = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
 
-//            StringBuilder sql = new StringBuilder();
-//            sql.append("UPDATE CONVENIO SET ");
-//
-//            if (convenio.getTaxaAbatimento() != null) {
-//                sql.append(" taxa_abatimento = ?,");
-//            }
-//            if (convenio.getCadastroOragaoRegulador()!= null) {
-//                sql.append(" cadastro_orgao_regulador = ?,");
-//            }
-//
-//            sql.deleteCharAt(sql.length() - 1); //remove o ultimo ','
-//            sql.append(" where id_convenio = ?");
-//            PreparedStatement stmt = con.prepareStatement(sql.toString());
-
             int index = 1;
             stmt.setString(index++, convenio.getCadastroOragaoRegulador());
             stmt.setDouble(index++, convenio.getTaxaAbatimento());
             stmt.setInt(index, id);
 
-//            if (convenio.getCadastroOragaoRegulador() != null) {
-//                stmt.setString(index++, convenio.getCadastroOragaoRegulador());
-//            }
-//            if (convenio.getTaxaAbatimento() != null) {
-//                stmt.setDouble(index++, convenio.getTaxaAbatimento());
-//            }
-
-//            int res = stmt.executeUpdate();
             convenio.setIdConvenio(id);
 
             stmt.executeUpdate();
@@ -225,7 +202,7 @@ public class ConvenioRepository implements Repositorio<Integer, Convenio> {
         return convenio;
     }
 
-    public Convenio getUmId(Integer id) throws BancoDeDadosException {
+    public Convenio getConvenio(Integer id) throws BancoDeDadosException {
         Convenio convenio = null;
         Connection con = null;
         try {

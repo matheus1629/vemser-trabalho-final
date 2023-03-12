@@ -207,7 +207,7 @@ MedicoRepository implements Repositorio<Integer, Medico> {
         return medico;
     }
 
-    public List<MedicoCompletoDTO> listarMedicosUsuariosDTOs() throws BancoDeDadosException {
+    public List<MedicoCompletoDTO> listarMedicoCompletoDTOs() throws BancoDeDadosException {
         List<MedicoCompletoDTO> medicos = new ArrayList<>();
         Connection con = null;
         try {
@@ -242,7 +242,7 @@ MedicoRepository implements Repositorio<Integer, Medico> {
         }
     }
 
-    public MedicoCompletoDTO getMedicoDTO(Integer id) throws BancoDeDadosException {
+    public MedicoCompletoDTO getMedicoCompletoDTO(Integer id) throws BancoDeDadosException {
         MedicoCompletoDTO medicoCompletoDTO = new MedicoCompletoDTO();
         Connection con = null;
         try {

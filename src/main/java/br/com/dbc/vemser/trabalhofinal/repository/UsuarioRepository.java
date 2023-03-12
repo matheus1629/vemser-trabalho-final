@@ -49,13 +49,8 @@ public class UsuarioRepository implements Repositorio<Integer, Usuario> {
             StringBuilder sql = new StringBuilder();
             sql.append("INSERT INTO USUARIO (id_usuario, cpf, email, nome, senha, tipo, cep, numero, contatos) values(?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-//            sql.deleteCharAt(sql.length() - 1); //remove o ultimo ','
-//            sql.append(")");
-//            sql.deleteCharAt(sql.length() - 1); //remove o ultimo ','
-//            sql.append(")");
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
-//            int index = 7;
             stmt.setInt(1, usuario.getIdUsuario());
             stmt.setString(2, usuario.getCpf());
             stmt.setString(3, usuario.getEmail());

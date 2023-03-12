@@ -31,7 +31,7 @@ public class AgendamentoController  implements  InterfaceDocumentacao<Agendament
 
     @Override
     public ResponseEntity<AgendamentoDTO> getById(Integer id) throws RegraDeNegocioException {
-        return new ResponseEntity<>(agendamentoService.getAgendamentoDTO(id), HttpStatus.OK);
+        return new ResponseEntity<>(agendamentoService.getById(id), HttpStatus.OK);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class AgendamentoController  implements  InterfaceDocumentacao<Agendament
     )
     @GetMapping("/{idMedico}/medico")
     public ResponseEntity<List<AgendamentoDadosDTO>> listByMedico(@PathVariable Integer idMedico) throws RegraDeNegocioException {
-        return new ResponseEntity<>(agendamentoService.listarPorMedico(idMedico), HttpStatus.OK);
+        return new ResponseEntity<>(agendamentoService.listByMedico(idMedico), HttpStatus.OK);
     }
 
 
@@ -75,6 +75,6 @@ public class AgendamentoController  implements  InterfaceDocumentacao<Agendament
     )
     @GetMapping("/{idCliente}/cliente")
     public ResponseEntity<List<AgendamentoDadosDTO>> listByCliente(@PathVariable Integer idCliente) throws RegraDeNegocioException {
-        return new ResponseEntity<>(agendamentoService.listarPorCliente(idCliente), HttpStatus.OK);
+        return new ResponseEntity<>(agendamentoService.listByCliente(idCliente), HttpStatus.OK);
     }
 }

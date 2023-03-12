@@ -35,7 +35,7 @@ public class AgendamentoService {
 
             AgendamentoDadosDTO agendamentoARemover = objectMapper.convertValue(novoAgendamento, AgendamentoDadosDTO.class);
             UsuarioDTO usuarioCliente = usuarioService.getById(clienteService.getById(agendamentoARemover.getIdCliente()).getUsuario().getIdUsuario());
-            UsuarioDTO usuarioMedico = usuarioService.getById(medicoService.getMedicoDTOById(agendamentoARemover.getIdMedico()).getUsuario().getIdUsuario());
+            UsuarioDTO usuarioMedico = usuarioService.getById(medicoService.getById(agendamentoARemover.getIdMedico()).getUsuario().getIdUsuario());
 
             AgendamentoDadosDTO agendamentoDadosDTO = objectMapper.convertValue(agendamentoARemover, AgendamentoDadosDTO.class);
             agendamentoDadosDTO.setCliente(usuarioCliente.getNome());
@@ -57,9 +57,10 @@ public class AgendamentoService {
 
     public void remover(Integer id) throws RegraDeNegocioException {
         try {
+            getAgendamento(id);
             AgendamentoDadosDTO agendamentoARemover = objectMapper.convertValue(getAgendamento(id), AgendamentoDadosDTO.class);
             UsuarioDTO usuarioCliente = usuarioService.getById(clienteService.getById(agendamentoARemover.getIdCliente()).getUsuario().getIdUsuario());
-            UsuarioDTO usuarioMedico = usuarioService.getById(medicoService.getMedicoDTOById(agendamentoARemover.getIdMedico()).getUsuario().getIdUsuario());
+            UsuarioDTO usuarioMedico = usuarioService.getById(medicoService.getById(agendamentoARemover.getIdMedico()).getUsuario().getIdUsuario());
 
             agendamentoARemover.setCliente(usuarioCliente.getNome());
             agendamentoARemover.setMedico(usuarioMedico.getNome());
@@ -82,7 +83,7 @@ public class AgendamentoService {
             getAgendamento(id);
             AgendamentoDadosDTO agendamentoEditado = objectMapper.convertValue(agendamentoRepository.editar(id, objectMapper.convertValue(agendamentoCreateDTO, Agendamento.class)), AgendamentoDadosDTO.class);
             UsuarioDTO usuarioCliente = usuarioService.getById(clienteService.getById(agendamentoEditado.getIdCliente()).getUsuario().getIdUsuario());
-            UsuarioDTO usuarioMedico = usuarioService.getById(medicoService.getMedicoDTOById(agendamentoEditado.getIdMedico()).getUsuario().getIdUsuario());
+            UsuarioDTO usuarioMedico = usuarioService.getById(medicoService.getById(agendamentoEditado.getIdMedico()).getUsuario().getIdUsuario());
 
             agendamentoEditado.setCliente(usuarioCliente.getNome());
             agendamentoEditado.setMedico(usuarioMedico.getNome());
@@ -111,17 +112,17 @@ public class AgendamentoService {
         }
     }
 
-    public  List<AgendamentoDadosDTO> listarPorMedico(Integer idMedico) throws RegraDeNegocioException {
+    public  List<AgendamentoDadosDTO> listByMedico(Integer idMedico) throws RegraDeNegocioException {
         try {
-            return agendamentoRepository.mostrarAgendamentosUsuario(idMedico, TipoUsuario.MEDICO);
+            return agendamentoRepository.listarAgendamentosUsuario(idMedico, TipoUsuario.MEDICO);
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Erro no banco!");
         }
     }
 
-    public  List<AgendamentoDadosDTO> listarPorCliente(Integer idCliente) throws RegraDeNegocioException {
+    public  List<AgendamentoDadosDTO> listByCliente(Integer idCliente) throws RegraDeNegocioException {
         try {
-            return agendamentoRepository.mostrarAgendamentosUsuario(idCliente, TipoUsuario.CLIENTE);
+            return agendamentoRepository.listarAgendamentosUsuario(idCliente, TipoUsuario.CLIENTE);
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Erro no banco!");
         }
@@ -138,7 +139,7 @@ public class AgendamentoService {
             throw new RegraDeNegocioException("Erro no banco!");
         }
     }
-    public AgendamentoDTO getAgendamentoDTO(Integer id) throws RegraDeNegocioException {
+    public AgendamentoDTO getById(Integer id) throws RegraDeNegocioException {
         return objectMapper.convertValue(getAgendamento(id), AgendamentoDTO.class);
     }
 }

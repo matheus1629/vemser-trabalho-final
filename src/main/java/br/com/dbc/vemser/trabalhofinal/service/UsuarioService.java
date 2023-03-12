@@ -1,6 +1,5 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
-import br.com.dbc.vemser.trabalhofinal.client.EnderecoClient;
 import br.com.dbc.vemser.trabalhofinal.dto.UsuarioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.UsuarioDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.Usuario;
@@ -25,31 +24,19 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final ObjectMapper objectMapper;
     private final EmailService emailService;
-    private final EnderecoClient enderecoClient;
 
     public UsuarioDTO adicionar(UsuarioCreateDTO usuario) throws RegraDeNegocioException {
         try {
             Usuario usuarioCriado = usuarioRepository.adicionar(
                     validarUsuario(
                             objectMapper.convertValue(usuario, Usuario.class)));
-//            try {
-////                emailService.sendEmailUsuario(usuarioCriado);
-//            } catch (MessagingException | TemplateException | IOException e) {
-//                usuarioRepository.remover(usuarioCriado.getIdUsuario());
-//                throw new RegraDeNegocioException("Erro ao enviar o e-mail!");
-//            }
-
-            UsuarioDTO retorno = objectMapper.convertValue(usuarioCriado, UsuarioDTO.class);
-            retorno.setEndereco(enderecoClient.getEndereco(retorno.getCep()));
-
             try {
-                emailService.sendEmailUsuario(retorno, TipoEmail.USUARIO_CADASTRO);
+                emailService.sendEmailUsuario(usuarioCriado, TipoEmail.USUARIO_CADASTRO);
             } catch (MessagingException | TemplateException | IOException e) {
                 usuarioRepository.remover(usuarioCriado.getIdUsuario());
                 throw new RegraDeNegocioException("Erro ao enviar o e-mail!");
             }
-
-            return retorno;
+            return objectMapper.convertValue(usuarioCriado, UsuarioDTO.class);
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Erro no Banco!");
         }
@@ -70,7 +57,6 @@ public class UsuarioService {
             usarioEditar.setIdUsuario(id);
 
             UsuarioDTO usuarioEditado = objectMapper.convertValue(usuarioRepository.editar(id, validarUsuario(usarioEditar)), UsuarioDTO.class);
-            usuarioEditado.setEndereco(enderecoClient.getEndereco(usuarioEditado.getCep()));
             return usuarioEditado;
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Erro no Banco!");
@@ -80,11 +66,9 @@ public class UsuarioService {
 
     public List<UsuarioDTO> listar() throws RegraDeNegocioException {
         try {
-            return usuarioRepository.listar().stream().map(usuario -> {
-                UsuarioDTO userDTO = objectMapper.convertValue(usuario, UsuarioDTO.class);
-                userDTO.setEndereco(enderecoClient.getEndereco(userDTO.getCep()));
-                return userDTO;
-            }).toList();
+            return usuarioRepository.listar().stream().map(usuario ->
+                    objectMapper.convertValue(usuario, UsuarioDTO.class
+            )).toList();
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Erro no banco!");
         }
@@ -117,16 +101,18 @@ public class UsuarioService {
 
     public Usuario getUsuario(Integer id) throws RegraDeNegocioException {
         try {
-            return usuarioRepository.getUsuario(id);
+            Usuario ususarioEncontrado = usuarioRepository.getUsuario(id);
+            if (ususarioEncontrado == null) {
+                throw new RegraDeNegocioException("Usuário não encontrado!");
+            }
+            return ususarioEncontrado;
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Erro no Banco!");
         }
     }
 
     public UsuarioDTO getById(Integer id) throws RegraDeNegocioException {
-        UsuarioDTO usuarioRetorno = objectMapper.convertValue(getUsuario(id), UsuarioDTO.class);
-        usuarioRetorno.setEndereco(enderecoClient.getEndereco(usuarioRetorno.getCep()));
-        return usuarioRetorno;
+        return objectMapper.convertValue(getUsuario(id), UsuarioDTO.class);
     }
 
     // Verifica a disponilidade do id_usuario
@@ -141,14 +127,4 @@ public class UsuarioService {
         }
     }
 
-
-//    public boolean authUser(String email, String password) throws RegraDeNegocioException {
-//        try {
-//            List<Usuario> tempList = usuarioRepository.listar().stream().filter(usuario -> usuario.getEmail().equals(email)
-//                    && usuario.getSenha().equals(password)).toList();
-//            return tempList.size() > 0;
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Erro no banco!");
-//        }
-//    }
 }
