@@ -124,7 +124,8 @@ public class UsuarioRepository implements Repositorio<Integer, Usuario> {
             stmt.setInt(index++, usuario.getTipoUsuario().getValor());
             stmt.setString(index++, usuario.getCep());
             stmt.setInt(index++, usuario.getNumero());
-            stmt.setString(index++, String.join(String.join("\n", usuario.getContatos())));
+            String joinContatos = String.join("\n", usuario.getContatos());
+            stmt.setString(index++, joinContatos);
 
             stmt.setInt(index, id);
             stmt.executeUpdate();
