@@ -113,7 +113,7 @@ public class UsuarioRepository implements Repositorio<Integer, Usuario> {
         try {
             con = conexaoBancoDeDados.getConnection();
 
-            String sql = "UPDATE USUARIO SET  cpf = ?, email = ?, nome = ?, senha = ?, tipo = ?, cep = ?, numero = ?, contatos = ? where id_usuario = ?";
+            String sql = "UPDATE USUARIO SET cpf = ?, email = ?, nome = ?, senha = ?, tipo = ?, cep = ?, numero = ?, contatos = ? where id_usuario = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
 
             int index = 1;
@@ -127,7 +127,7 @@ public class UsuarioRepository implements Repositorio<Integer, Usuario> {
             stmt.setString(index++, String.join(String.join("\n", usuario.getContatos())));
 
             stmt.setInt(index, id);
-//            int res = stmt.executeUpdate();
+            stmt.executeUpdate();
             usuario.setIdUsuario(id);
             return usuario;
         } catch (SQLException e) {

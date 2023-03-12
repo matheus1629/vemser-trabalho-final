@@ -54,8 +54,6 @@ public class UsuarioService {
     public UsuarioDTO editar(Integer id, UsuarioCreateDTO usuario) throws RegraDeNegocioException {
         try {
             Usuario usarioEditar = objectMapper.convertValue(usuario, Usuario.class);
-            usarioEditar.setIdUsuario(id);
-
             UsuarioDTO usuarioEditado = objectMapper.convertValue(usuarioRepository.editar(id, validarUsuario(usarioEditar)), UsuarioDTO.class);
             return usuarioEditado;
         } catch (BancoDeDadosException e) {
@@ -89,6 +87,12 @@ public class UsuarioService {
                 if (value.getEmail().equals(usuario.getEmail()) &&
                         !Objects.equals(value.getIdUsuario(), usuario.getIdUsuario())) {
                     throw new RegraDeNegocioException("Já existe usuário com esse e-mail!");
+                }
+            }
+
+            for (String contato: usuario.getContatos()) {
+                if (contato.length() > 15) {
+                    throw new RegraDeNegocioException("Tamanho do contato não pode superar 15");
                 }
             }
 
