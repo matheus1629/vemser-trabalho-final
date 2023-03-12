@@ -27,6 +27,7 @@ out/
 !**/src/test/**/out/
 target/
 **/.DS_Store
+replace.txt
 
 ### NetBeans ###
 /nbproject/private/
