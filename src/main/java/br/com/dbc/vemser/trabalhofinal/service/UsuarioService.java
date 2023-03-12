@@ -2,6 +2,7 @@ package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.dto.UsuarioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.UsuarioDTO;
+import br.com.dbc.vemser.trabalhofinal.entity.TipoUsuario;
 import br.com.dbc.vemser.trabalhofinal.entity.Usuario;
 import br.com.dbc.vemser.trabalhofinal.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
@@ -121,10 +122,10 @@ public class UsuarioService {
 
     // Verifica a disponilidade do id_usuario
 
-    public void verificarIdUsuario(Integer id) throws RegraDeNegocioException {
+    public void verificarIdUsuario(Integer id, TipoUsuario tipoUsuario) throws RegraDeNegocioException {
         try {
-            if (!usuarioRepository.verificarSeDisponivel(id)) {
-                throw new RegraDeNegocioException("O id de usuário informado não está disponível para uso!");
+            if (!usuarioRepository.verificarSeValido(id, tipoUsuario)) {
+                throw new RegraDeNegocioException("O id de usuário informado não é adequado para esta operação!");
             }
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Erro no banco!");

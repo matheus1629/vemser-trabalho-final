@@ -4,6 +4,7 @@ import br.com.dbc.vemser.trabalhofinal.dto.MedicoCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.MedicoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.MedicoDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.Medico;
+import br.com.dbc.vemser.trabalhofinal.entity.TipoUsuario;
 import br.com.dbc.vemser.trabalhofinal.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.MedicoRepository;
@@ -24,7 +25,7 @@ public class MedicoService {
 
     public MedicoCompletoDTO adicionar(MedicoCreateDTO medico) throws RegraDeNegocioException {
         try {
-            usuarioService.verificarIdUsuario(medico.getIdUsuario());
+            usuarioService.verificarIdUsuario(medico.getIdUsuario(), TipoUsuario.MEDICO);
             Medico medicioAdicionar = objectMapper.convertValue(medico, Medico.class);
             Medico medicoAdicionado = medicoRepository.adicionar(medicioAdicionar);
 
@@ -47,7 +48,7 @@ public class MedicoService {
         try {
             getMedico(id);
             if (!Objects.equals(getMedico(id).getIdUsuario(), medico.getIdUsuario())) {
-                usuarioService.verificarIdUsuario(medico.getIdUsuario());
+                usuarioService.verificarIdUsuario(medico.getIdUsuario(), TipoUsuario.MEDICO);
             }
             Medico medicoEditar = objectMapper.convertValue(medico, Medico.class);
             medicoRepository.editar(id, medicoEditar);

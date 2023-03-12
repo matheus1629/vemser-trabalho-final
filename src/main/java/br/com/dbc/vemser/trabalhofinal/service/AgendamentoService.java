@@ -81,21 +81,23 @@ public class AgendamentoService {
     public AgendamentoDTO editar(Integer id, AgendamentoCreateDTO agendamentoCreateDTO) throws RegraDeNegocioException {
         try {
             getAgendamento(id);
-            AgendamentoDadosDTO agendamentoEditado = objectMapper.convertValue(agendamentoRepository.editar(id, objectMapper.convertValue(agendamentoCreateDTO, Agendamento.class)), AgendamentoDadosDTO.class);
+            Agendamento agendamentoEditado = objectMapper.convertValue(agendamentoCreateDTO, Agendamento.class);
+
             UsuarioDTO usuarioCliente = usuarioService.getById(clienteService.getById(agendamentoEditado.getIdCliente()).getUsuario().getIdUsuario());
             UsuarioDTO usuarioMedico = usuarioService.getById(medicoService.getById(agendamentoEditado.getIdMedico()).getUsuario().getIdUsuario());
 
-            agendamentoEditado.setCliente(usuarioCliente.getNome());
-            agendamentoEditado.setMedico(usuarioMedico.getNome());
+            AgendamentoDadosDTO agendamentoDados = objectMapper.convertValue(agendamentoRepository.editar(id, agendamentoEditado), AgendamentoDadosDTO.class);
+            agendamentoDados.setCliente(usuarioCliente.getNome());
+            agendamentoDados.setMedico(usuarioMedico.getNome());
 
             try {
-                emailService.sendEmailAgendamento(usuarioCliente, agendamentoEditado, TipoEmail.AGENDAMENTO_EDITADO_CLIENTE);
-                emailService.sendEmailAgendamento(usuarioMedico, agendamentoEditado, TipoEmail.AGENDAMENTO_EDITADO_MEDICO);
+                emailService.sendEmailAgendamento(usuarioCliente, agendamentoDados, TipoEmail.AGENDAMENTO_EDITADO_CLIENTE);
+                emailService.sendEmailAgendamento(usuarioMedico, agendamentoDados, TipoEmail.AGENDAMENTO_EDITADO_MEDICO);
             } catch (MessagingException | TemplateException | IOException e) {
                 throw new RegraDeNegocioException("Erro ao enviar o e-mail!");
             }
 
-            return objectMapper.convertValue(agendamentoEditado, AgendamentoDTO.class);
+            return objectMapper.convertValue(agendamentoDados, AgendamentoDTO.class);
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Erro no banco de dados.");
         }

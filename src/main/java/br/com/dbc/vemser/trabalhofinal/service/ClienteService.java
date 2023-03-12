@@ -4,6 +4,7 @@ import br.com.dbc.vemser.trabalhofinal.dto.ClienteCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.Cliente;
+import br.com.dbc.vemser.trabalhofinal.entity.TipoUsuario;
 import br.com.dbc.vemser.trabalhofinal.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.ClienteRepository;
@@ -25,7 +26,7 @@ public class ClienteService {
 
     public ClienteCompletoDTO adicionar(ClienteCreateDTO cliente) throws RegraDeNegocioException {
         try {
-            usuarioService.verificarIdUsuario(cliente.getIdUsuario());
+            usuarioService.verificarIdUsuario(cliente.getIdUsuario(), TipoUsuario.CLIENTE);
             Cliente clienteEntity = objectMapper.convertValue(cliente, Cliente.class);
             clienteRepository.adicionar(clienteEntity);
 
@@ -50,7 +51,7 @@ public class ClienteService {
         try {
             Cliente clienteEntity = objectMapper.convertValue(cliente, Cliente.class);
             if (!Objects.equals(getCliente(id).getIdUsuario(), clienteEntity.getIdUsuario())){
-                usuarioService.verificarIdUsuario(clienteEntity.getIdUsuario());
+                usuarioService.verificarIdUsuario(clienteEntity.getIdUsuario(), TipoUsuario.CLIENTE);
             }
             clienteRepository.editar(id, clienteEntity);
             return getById(clienteEntity.getIdCliente());

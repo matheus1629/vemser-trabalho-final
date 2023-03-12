@@ -200,7 +200,12 @@ public class UsuarioRepository implements Repositorio<Integer, Usuario> {
             return usuario;
     }
 
-    public boolean verificarSeDisponivel(Integer idUsuario) throws BancoDeDadosException {
+
+    // Esse método verifica se o idUsuario entregue é válido, ou seja:
+    // Verifica se não está sendo usado na tabela cliente
+    // Verifica se não está sendo usado na tabela medico
+    // E Verifica se o tipo do usuário é mesmo do entregue
+    public boolean verificarSeValido(Integer idUsuario, TipoUsuario tipoUsuario) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = conexaoBancoDeDados.getConnection();
@@ -209,13 +214,14 @@ public class UsuarioRepository implements Repositorio<Integer, Usuario> {
                     "(" +
                     "NOT EXISTS (SELECT * FROM CLIENTE c  WHERE c.ID_USUARIO  = ?) AND " +
                     "NOT EXISTS (SELECT * FROM MEDICO m WHERE m.ID_USUARIO  = ?)" +
-                    ") AND u.ID_USUARIO = ?";
+                    ") AND u.ID_USUARIO = ? AND u.tipo = ?";
 
             // Preparar a consulta
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, idUsuario);
             stmt.setInt(2, idUsuario);
             stmt.setInt(3, idUsuario);
+            stmt.setInt(4, tipoUsuario.getValor());
 
             // Executa-se a consulta
             ResultSet res = stmt.executeQuery();

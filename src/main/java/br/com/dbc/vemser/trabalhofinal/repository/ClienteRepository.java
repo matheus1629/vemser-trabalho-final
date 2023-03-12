@@ -232,7 +232,7 @@ public class ClienteRepository implements Repositorio<Integer, Cliente> {
             // Executa-se a consulta
             ResultSet res = stmt.executeQuery();
 
-            while (res.next()) {
+            if (res.next()) {
                 cliente = getClienteDTOFromResultSet(res);
             }
             return cliente;
