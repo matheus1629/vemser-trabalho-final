@@ -90,6 +90,12 @@ public class UsuarioService {
                 }
             }
 
+            for (String contato: usuario.getContatos()) {
+                if (contato.length() > 15) {
+                    throw new RegraDeNegocioException("Tamanho do contato não pode superar 15");
+                }
+            }
+
             return usuario;
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Erro no Banco!");
