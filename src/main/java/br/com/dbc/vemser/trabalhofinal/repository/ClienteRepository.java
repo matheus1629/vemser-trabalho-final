@@ -55,7 +55,12 @@ public class ClienteRepository implements Repositorio<Integer, Cliente> {
 
             stmt.setInt(1, cliente.getIdCliente());
             stmt.setInt(2, cliente.getIdUsuario());
-            stmt.setInt(3, cliente.getIdConvenio());
+
+            if (cliente.getIdConvenio() == null) {
+                stmt.setNull(3, Types.NUMERIC);
+            } else {
+                stmt.setInt(3, cliente.getIdConvenio());
+            }
 
             stmt.executeUpdate();
 

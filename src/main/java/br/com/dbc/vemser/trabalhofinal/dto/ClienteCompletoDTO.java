@@ -5,10 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ClienteCompletoDTO {
+
     @Schema(description = "Id do cliente", example = "1", required = true)
     private Integer idCliente;
     @Schema(description = "Objeto UsuarioDTO", required = true)

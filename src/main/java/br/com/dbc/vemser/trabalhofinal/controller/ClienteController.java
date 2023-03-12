@@ -46,7 +46,7 @@ public class ClienteController implements InterfaceDocumentacao<ClienteCompletoD
 
 
     @Override
-    public ResponseEntity<ClienteCompletoDTO> getById(@PathVariable Integer id) throws RegraDeNegocioException {
+    public ResponseEntity<ClienteCompletoDTO> getById(Integer id) throws RegraDeNegocioException {
         return new ResponseEntity<>(clienteService.getById(id), HttpStatus.OK);
     }
 
@@ -56,13 +56,13 @@ public class ClienteController implements InterfaceDocumentacao<ClienteCompletoD
     }
 
     @Override
-    public ResponseEntity<ClienteCompletoDTO> update(Integer idCliente, ClienteCreateDTO cliente) throws RegraDeNegocioException {
-        return new ResponseEntity<>(clienteService.editar(idCliente, cliente), HttpStatus.OK);
+    public ResponseEntity<ClienteCompletoDTO> update(Integer id, ClienteCreateDTO cliente) throws RegraDeNegocioException {
+        return new ResponseEntity<>(clienteService.editar(id, cliente), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Void> delete(Integer idCliente) throws RegraDeNegocioException {
-        clienteService.remover(idCliente);
+    public ResponseEntity<Void> delete(Integer id) throws RegraDeNegocioException {
+        clienteService.remover(id);
         return ResponseEntity.ok().build();
     }
 
