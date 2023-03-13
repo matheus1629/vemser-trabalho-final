@@ -1,9 +1,9 @@
 # Safety Soft
-<h3> <i> 'Segurança dos dados, e qualidade de vida' </i> </h3>
+<h3> <i> 'Segurança dos dados e qualidade de vida' </i> </h3>
 <h2 style="text-align: center" >Projeto Java para Agendamento e Gestão de Consultas Médicas</h2>
 
 <p>
-    Este projeto tem como ponto principal, o desenvolvimento de uma API RESTful do sistema back-end para a gerência e agendamentos de consultas médicas.
+    Este projeto tem como ponto principal o desenvolvimento de uma API RESTful do sistema back-end para a gerência e agendamentos de consultas médicas.
 </p>
 <hr>
 <p>
@@ -21,7 +21,7 @@
 </p>
 <hr>
 
-### 🛠 Tecnologias e padrão de projeto
+### 🛠 Tecnologias e padrões de projeto
 <ul>
     <li>Java 17</li>
     <li>JDBC 8</li>

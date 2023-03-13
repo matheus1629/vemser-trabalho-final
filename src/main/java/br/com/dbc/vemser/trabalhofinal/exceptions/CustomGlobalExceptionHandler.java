@@ -52,15 +52,6 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-//    @ExceptionHandler(BancoDeDadosException.class)
-//    public ResponseEntity<Object> handleException(BancoDeDadosException exception,
-//                                                  HttpServletRequest request) {
-//        Map<String, Object> body = new LinkedHashMap<>();
-//        body.put("timestamp", new Date());
-//        body.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
-//        body.put("message", exception.getMessage());
-//        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Object> handleException(SQLIntegrityConstraintViolationException exception,
