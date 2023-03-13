@@ -1,31 +1,37 @@
-# SafetySoft
+# Safety Soft
 <h3> <i> 'Segurança dos dados, e qualidade de vida' </i> </h3>
 <h2 style="text-align: center" >Projeto Java para Agendamento e Gestão de Consultas Médicas</h2>
 
 <p>
-    Este projeto tem como ponto principal, o desenvolvimento de uma aplicação self-hosted para a gerência de agendamentos de consultas médicas.
-    Além de contar com funcionalidades como autenticação de usuário, permissões de acesso e manipulação de dados através de uma estrutura integra e atômica garantidos por um banco de dados relacional.
+    Este projeto tem como ponto principal, o desenvolvimento de uma API RESTful do sistema back-end para a gerência e agendamentos de consultas médicas.
 </p>
 
 <p>
-    <strong>O sistema tem como estrutura principal:</strong>
+    <strong> ⛺ Estrutura principal:</strong>
+    <br>Pode-se criar, editar, excluir, consultar e listar:
     <ul>
-        <li>Usuários administradores</li>
-        <li>Usuários médicos</li>
-        <li>Usuários clientes</li>
-        <hr>
-        <li>Um administrador consegue criar, listar, editar, e excluir cada um dos cadastros (de usuários e agendamentos);</li>
-        <li>Um cliente e um médico conseguem somente visualizar os agendamentos que possuem em seus nomes.</li>
+        <li>Usuário - <i>possui informações pessoais básicas e de login. Pode ser médico ou cliente.</i></li>
+        <li>Cliente - <i>é vinculado a algum usuário de seu tipo, esse pode ter algum Convênio.</i></li>
+        <li>Convênio - <i>para o cadastro no Cliente, podendo ter algum abatimento no valor da consulta.</i></li>
+        <li>Médico - <i>também vinculado a algum usuário de seu tipo, possuem necessariamente alguma Especialidade.</i></li>
+        <li>Especialidade - <i>para registrar a atuação e variante do valor de consulta dos médicos.</i></li>
+        <li>Agendamento - <i>é usado para registrar uma consulta de um paciente (Cliente) com um médico.</i></li>
     </ul>
 </p>
 <hr>
 
 ### 🛠 Tecnologias e padrão de projeto
 <ul>
-    <li>Java >= 11 com JDBC</li>
+    <li>Java 17</li>
+    <li>JDBC 8</li>
+    <li>Spring Boot</li>
     <li>Banco de dados Oracle</li>
+    <li>JavaMail com templates FreeMarker</li>
+    <li>Swagger</li>
+    <li>Jenkins</li>
     <li>Abordagem MVC</li>
 </ul>
+<h6><i> Obs.: deploy disponvível somente internamente</i></h6>
 <hr>
 
 ### Diagrama de Entidade e Relacionamento (Banco de Dados)
@@ -35,14 +41,13 @@
 
 ### Diagrama de classes (Estrutura do código)
 
-[//]: # (MUDAR)
 <a href="docs/Diagrama_de_Classes.png">Clique aqui para visualizar.</a>
 
 <hr>
 
-#### Vem Ser Trabalho final de Módulo
+#### Vem Ser - Trabalho final do Módulo 3
 ## Trello da divisão de tarefas:
-<p>https://trello.com/b/vdWggPHw/kanban-trabalho-final-mod-2</p>
+<p>https://trello.com/b/cbQhdkhN/kanban-m%C3%B3dulo-3-trabalho-final</p>
 
 <hr>
 <h2>Autores</h2> 
@@ -55,4 +60,4 @@
 </table>
 
 <hr>
-<p>Este projeto foi baseado no seguinte repositório: https://github.com/DaniloTorquatoUbaldine/vemser-trabalho-final</p>
+<p>Este projeto foi baseado no seguinte repositório: https://github.com/pedro-s-20/vemser-trabalho-final-BD</p>
