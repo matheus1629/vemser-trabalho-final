@@ -1,7 +1,5 @@
 package br.com.dbc.vemser.trabalhofinal.entity;
 
-
-
 public enum TipoUsuario {
 
     ADMINISTRATIVO(1),

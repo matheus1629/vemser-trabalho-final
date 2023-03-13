@@ -55,7 +55,6 @@ public class ClienteService {
             }
             clienteRepository.editar(id, clienteEntity);
             return getById(clienteEntity.getIdCliente());
-         //   return objectMapper.convertValue(clienteEntity, ClienteCompletoDTO.class);
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Erro no Banco!");
         }
