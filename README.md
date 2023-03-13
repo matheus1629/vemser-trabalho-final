@@ -17,7 +17,7 @@
         <li>Especialidade - <i>para registrar a atuação e variante do valor de consulta dos médicos.</i></li>
         <li>Agendamento - <i>é usado para registrar uma consulta de um paciente (Cliente) com um médico.</i></li>
     </ul>
-    O sistema conta também com o envio de e-mails informativos ao cadastrar um usuário (ao e-mail desse) e para ações de cadastro, edição e remoção de agendamento (enviado tanto ao médico, quanto ao cliente).
+    O sistema conta também com o envio de e-mails informativos ao cadastrar um usuário (ao e-mail desse) e para ações de criação, edição e remoção de agendamento (enviado tanto ao médico, quanto ao cliente).
 </p>
 <hr>
 
