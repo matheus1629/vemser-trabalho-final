@@ -7,20 +7,19 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-@Component
 public class ConexaoBancoDeDados {
 
-    @Value("${db.oracle.server}")
+//    @Value("${db.oracle.server}")
     private String server;
-    @Value("${db.oracle.port}")
+//    @Value("${db.oracle.port}")
     private String port;
-    @Value("${db.oracle.database}")
+//    @Value("${db.oracle.database}")
     private String databse;
-    @Value("${db.oracle.user}")
+//    @Value("${db.oracle.user}")
     private String user;
-    @Value("${db.oracle.password}")
+//    @Value("${db.oracle.password}")
     private String password;
-    @Value("${db.oracle.scheme}")
+//    @Value("${db.oracle.scheme}")
     private String scheme;
 
 

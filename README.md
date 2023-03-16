@@ -3,21 +3,21 @@
 <h2 style="text-align: center" >Projeto Java para Agendamento e Gestão de Consultas Médicas</h2>
 
 <p>
-    Este projeto tem como ponto principal o desenvolvimento de uma API RESTful do sistema back-end para a gerência e agendamentos de consultas médicas.
+    Este projeto tem como ponto principal o desenvolvimento de uma API RESTful do sistema back-end para a gerência e agendamentoEntities de consultas médicas.
 </p>
 <hr>
 <p>
     <strong> ⛺ Estrutura principal:</strong>
     <br>Pode-se criar, editar, excluir, consultar e listar:
     <ul>
-        <li>Usuário - <i>possui informações pessoais básicas e de login. Pode ser médico ou cliente.</i></li>
+        <li>Usuário - <i>possui informações pessoais básicas e de login. Pode ser médico ou clienteEntity.</i></li>
         <li>Cliente - <i>é vinculado a algum usuário de seu tipo, esse pode ter algum Convênio.</i></li>
         <li>Convênio - <i>para o cadastro no Cliente, podendo ter algum abatimento no valor da consulta.</i></li>
         <li>Médico - <i>também vinculado a algum usuário de seu tipo, possuem necessariamente alguma Especialidade.</i></li>
         <li>Especialidade - <i>para registrar a atuação e variante do valor de consulta dos médicos.</i></li>
         <li>Agendamento - <i>é usado para registrar uma consulta de um paciente (Cliente) com um médico.</i></li>
     </ul>
-    O sistema conta também com o envio de e-mails informativos ao cadastrar um usuário (ao e-mail desse) e para ações de criação, edição e remoção de agendamento (enviado tanto ao médico, quanto ao cliente).
+    O sistema conta também com o envio de e-mails informativos ao cadastrar um usuário (ao e-mail desse) e para ações de criação, edição e remoção de agendamentoEntity (enviado tanto ao médico, quanto ao clienteEntity).
 </p>
 <hr>
 

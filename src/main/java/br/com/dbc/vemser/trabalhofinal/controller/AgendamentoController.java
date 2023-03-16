@@ -33,7 +33,8 @@ public class AgendamentoController  implements  InterfaceDocumentacao<Agendament
 
     @Override
     public ResponseEntity<AgendamentoDTO> getById(Integer id) throws RegraDeNegocioException {
-        return new ResponseEntity<>(agendamentoService.getById(id), HttpStatus.OK);
+//        return new ResponseEntity<>(agendamentoService.getById(id), HttpStatus.OK);
+        return null;
     }
 
     @Override

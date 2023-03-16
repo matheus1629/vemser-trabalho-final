@@ -2,7 +2,7 @@ package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.dto.EspecialidadeCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.EspecialidadeDTO;
-import br.com.dbc.vemser.trabalhofinal.entity.Especialidade;
+import br.com.dbc.vemser.trabalhofinal.entity.EspecialidadeEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.EspecialidadeRepository;
@@ -24,61 +24,65 @@ public class EspecialidadeService {
 
     // criação de um objeto
     public EspecialidadeDTO adicionar(EspecialidadeCreateDTO especialidade) throws RegraDeNegocioException {
-        try {
-            Especialidade novaEspecialidade = objectMapper.convertValue(especialidade, Especialidade.class);
-            Especialidade especialidadeAdicionada = especialidadeRepository.adicionar(novaEspecialidade);
-            return objectMapper.convertValue(especialidadeAdicionada, EspecialidadeDTO.class);
-        } catch (BancoDeDadosException e) {
-            throw new RegraDeNegocioException("Especialidade não adicionada por problema no banco de dados.");
-        }
+//        try {
+//            EspecialidadeEntity novaEspecialidadeEntity = objectMapper.convertValue(especialidade, EspecialidadeEntity.class);
+//            EspecialidadeEntity especialidadeEntityAdicionada = especialidadeRepository.adicionar(novaEspecialidadeEntity);
+//            return objectMapper.convertValue(especialidadeEntityAdicionada, EspecialidadeDTO.class);
+//        } catch (BancoDeDadosException e) {
+//            throw new RegraDeNegocioException("Especialidade não adicionada por problema no banco de dados.");
+//        }
+        return null;
     }
 
     // remoção
     public void remover(Integer id) throws RegraDeNegocioException {
-        try {
-            getEspecialidade(id);
-            especialidadeRepository.remover(id);
-        } catch (BancoDeDadosException e) {
-            throw new RegraDeNegocioException("Especialidade não removida por problema no banco de dados.");
-        }
+//        try {
+//            getEspecialidade(id);
+//            especialidadeRepository.remover(id);
+//        } catch (BancoDeDadosException e) {
+//            throw new RegraDeNegocioException("Especialidade não removida por problema no banco de dados.");
+//        }
     }
 
 
     // atualização de um objeto
     public EspecialidadeDTO editar(Integer id, EspecialidadeCreateDTO especialidade) throws RegraDeNegocioException {
-        try {
-            getEspecialidade(id);
-            Especialidade especialidadeEditar = objectMapper.convertValue(especialidade, Especialidade.class);
-            especialidadeRepository.editar(id, especialidadeEditar);
-            return getById(id);
-        } catch (BancoDeDadosException e) {
-            throw new RegraDeNegocioException("Especialidade não editada por problema no banco de dados.");
-        }
+//        try {
+//            getEspecialidade(id);
+//            EspecialidadeEntity especialidadeEntityEditar = objectMapper.convertValue(especialidade, EspecialidadeEntity.class);
+//            especialidadeRepository.editar(id, especialidadeEntityEditar);
+//            return getById(id);
+//        } catch (BancoDeDadosException e) {
+//            throw new RegraDeNegocioException("Especialidade não editada por problema no banco de dados.");
+//        }
+        return null;
     }
 
     // leitura
     public List<EspecialidadeDTO> listar() throws RegraDeNegocioException {
-        try {
-            return especialidadeRepository.listar().stream().map(especialidade -> objectMapper.convertValue(especialidade, EspecialidadeDTO.class)).toList();
-        } catch (BancoDeDadosException e) {
-            throw new RegraDeNegocioException("Especialidade não adicionada por problema no banco de dados.");
-        }
+//        try {
+//            return especialidadeRepository.listar().stream().map(especialidadeEntity -> objectMapper.convertValue(especialidadeEntity, EspecialidadeDTO.class)).toList();
+//        } catch (BancoDeDadosException e) {
+//            throw new RegraDeNegocioException("Especialidade não adicionada por problema no banco de dados.");
+//        }
+        return null;
     }
 
     public EspecialidadeDTO getById(Integer id) throws RegraDeNegocioException {
         return objectMapper.convertValue(getEspecialidade(id), EspecialidadeDTO.class);
     }
 
-    public Especialidade getEspecialidade(Integer id) throws RegraDeNegocioException {
-        try{
-            return especialidadeRepository.listar()
-                    .stream()
-                    .filter(especialidade -> especialidade.getIdEspecialidade().equals(id))
-                    .findFirst()
-                    .orElseThrow(() -> new RegraDeNegocioException("Especialidade não encontrada!"));
-        }catch(BancoDeDadosException e){
-            throw new RegraDeNegocioException("Especialidade não encontrado por problema no banco de dados.");
-        }
+    public EspecialidadeEntity getEspecialidade(Integer id) throws RegraDeNegocioException {
+//        try{
+//            return especialidadeRepository.listar()
+//                    .stream()
+//                    .filter(especialidadeEntity -> especialidadeEntity.getIdEspecialidade().equals(id))
+//                    .findFirst()
+//                    .orElseThrow(() -> new RegraDeNegocioException("Especialidade não encontrada!"));
+//        }catch(BancoDeDadosException e){
+//            throw new RegraDeNegocioException("Especialidade não encontrado por problema no banco de dados.");
+//        }
+        return null;
     }
 
 

@@ -2,7 +2,7 @@ package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.dto.AgendamentoDadosDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.UsuarioDTO;
-import br.com.dbc.vemser.trabalhofinal.entity.Usuario;
+import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -34,9 +34,9 @@ public class EmailService {
 
     // USUÁRIO
 
-    public void sendEmailUsuario(Usuario usuario, TipoEmail tipoEmail) throws MessagingException, TemplateException, IOException {
-        MimeMessageHelper mimeMessageHelper = buildEmailUsuario(usuario.getEmail(), tipoEmail);
-        mimeMessageHelper.setText(getUsuarioTemplate(usuario, tipoEmail), true);
+    public void sendEmailUsuario(UsuarioEntity usuarioEntity, TipoEmail tipoEmail) throws MessagingException, TemplateException, IOException {
+        MimeMessageHelper mimeMessageHelper = buildEmailUsuario(usuarioEntity.getEmail(), tipoEmail);
+        mimeMessageHelper.setText(getUsuarioTemplate(usuarioEntity, tipoEmail), true);
 
         emailSender.send(mimeMessageHelper.getMimeMessage());
     }
@@ -51,10 +51,10 @@ public class EmailService {
         return mimeMessageHelper;
     }
 
-    public String getUsuarioTemplate(Usuario usuario, TipoEmail tipo) throws IOException, TemplateException {
+    public String getUsuarioTemplate(UsuarioEntity usuarioEntity, TipoEmail tipo) throws IOException, TemplateException {
         Map<String, Object> dados = new HashMap<>();
         dados.put("email", from);
-        dados.put("usuario", usuario);
+        dados.put("usuario", usuarioEntity);
         Template template = fmConfiguration.getTemplate("usuario-cadastro.ftl");
 
         return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
