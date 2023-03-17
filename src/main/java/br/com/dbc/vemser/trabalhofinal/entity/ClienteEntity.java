@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Null;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,12 +21,17 @@ public class ClienteEntity {
     private Integer idConvenio;
     @Column(name = "id_cliente")
     private Integer idCliente;
-    @Column(name = "id_usuario")
+    @Column(name = "id_usuario", insertable = false, updatable = false)
     private Integer idUsuario;
 
-    @Null
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_convenio", referencedColumnName = "id_convenio")
+    @JoinColumn(name = "id_convenio", referencedColumnName = "id_convenio", insertable = false, updatable = false)
     private ConvenioEntity convenioEntity;
+
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
+    private UsuarioEntity usuarioEntity;
 }

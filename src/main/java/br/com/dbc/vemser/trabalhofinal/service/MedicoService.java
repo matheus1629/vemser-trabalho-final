@@ -18,19 +18,17 @@ public class MedicoService {
     private final MedicoRepository medicoRepository;
     private final ObjectMapper objectMapper;
     private final UsuarioService usuarioService;
+    private final EspecialidadeService especialidadeService;
 
 
     public MedicoCompletoDTO adicionar(MedicoCreateDTO medico) throws RegraDeNegocioException {
-//        try {
-//            usuarioService.verificarIdUsuario(medico.getIdUsuario(), TipoUsuario.MEDICO);
-//            MedicoEntity medicioAdicionar = objectMapper.convertValue(medico, MedicoEntity.class);
-//            MedicoEntity medicoEntityAdicionado = medicoRepository.adicionar(medicioAdicionar);
-//
-//            return getById(medicoEntityAdicionado.getIdMedico());
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Médico não adicionado por problema no banco de dados.");
-//        }
-        return null;
+        MedicoEntity medicoEntity = objectMapper.convertValue(medico, MedicoEntity.class);
+        medicoEntity.setEspecialidadeEntity(especialidadeService.getEspecialidade(medico.getIdEspecialidade()));
+//        medicoEntity.setUsuarioEntity(usuarioService.);
+
+        medicoRepository.save(medicoEntity);
+
+        return objectMapper.convertValue(medicoEntity, MedicoCompletoDTO.class);
     }
 
     public void remover(Integer id) throws RegraDeNegocioException {
@@ -59,25 +57,15 @@ public class MedicoService {
     }
 
     public List<MedicoDTO> listar() throws RegraDeNegocioException {
-//        try {
-//            return medicoRepository.listar().stream().map(medicoEntity ->
-//                    objectMapper.convertValue(medicoEntity, MedicoDTO.class)).toList();
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Médicos não listados por problema no banco de dados.");
-//        }
-        return null;
+        return medicoRepository.findAll().stream()
+                .map(medicoEntity -> objectMapper.convertValue(medicoEntity, MedicoDTO.class))
+                .toList();
     }
 
-    public MedicoCompletoDTO getById(Integer idMedico) throws RegraDeNegocioException {
-//        try {
-//             MedicoCompletoDTO medicoEncontrado = medicoRepository.getMedicoCompletoDTO(idMedico);
-//            if (medicoEncontrado == null) {
-//                throw new RegraDeNegocioException("Médico não existe!");
-//            }
-//            return medicoEncontrado;
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Informações do médico não mostradas por problema no banco de dados.");
-//        }
+    public MedicoCompletoDTO getById(Integer idMedico) throws RegraDeNegocioException { //
+//        getMedico(idMedico);
+//        MedicoDTO medicoComEspecialidadeEUsuario = medicoRepository.findMedicoComEspecialidadeEUsuario(idMedico);
+//        return medicoComEspecialidadeEUsuario;
         return null;
     }
 
@@ -91,17 +79,8 @@ public class MedicoService {
     }
 
     public MedicoEntity getMedico(Integer id) throws RegraDeNegocioException {
-//        try {
-//            return medicoRepository.listar()
-//                    .stream()
-//                    .filter(medicoEntity -> medicoEntity.getIdMedico().equals(id))
-//                    .findFirst()
-//                    .orElseThrow(() -> new RegraDeNegocioException("Médico não encontrado!"));
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Médico não encontrado por problema no banco de dados.");
-//        }
-//    }
-
-        return null;
+        return medicoRepository.findById(id)
+                .orElseThrow(() -> new RegraDeNegocioException("Médico não existe!"));
     }
+
 }

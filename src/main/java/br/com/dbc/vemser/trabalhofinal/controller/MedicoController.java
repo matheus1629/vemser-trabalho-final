@@ -46,7 +46,7 @@ public class MedicoController implements InterfaceDocumentacao<MedicoCompletoDTO
         return new ResponseEntity<>(medicoService.listarFull(), HttpStatus.OK);
     }
 
-    @Override
+    @Override //<todo> fazer a busca personalizada (usuario - medico- especialidade - agendamento)
     public ResponseEntity<MedicoCompletoDTO> getById(Integer id) throws RegraDeNegocioException {
         return new ResponseEntity<>(medicoService.getById(id), HttpStatus.OK);
     }

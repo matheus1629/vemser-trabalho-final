@@ -34,9 +34,8 @@ public class UsuarioCreateDTO {
     @Schema(description = "Número do endereço", example = "12345678", required = true)
     private Integer numero;
     @NotNull
-    @Size(max = 3) // <TODO> validar strings dentro de cada posição do array
-    @Schema(description = "Número de telefone ou celular", example = "[\"849261850\", \"4599765234\"]")
-    private String[] contatos;
+    @Schema(description = "Número de telefone ou celular", example = "849261850, 4599765234")
+    private String contatos;
     @NotNull
     @Schema(description = "Indentificar se o usuário é um médico ou um cliente", example = "MEDICO", required = true)
     private TipoUsuario tipoUsuario;

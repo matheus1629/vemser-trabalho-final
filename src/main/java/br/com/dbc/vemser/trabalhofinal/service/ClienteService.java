@@ -13,8 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -29,19 +27,11 @@ public class ClienteService {
         clienteRepository.save(clienteEntity);
 
         return getById(clienteEntity.getIdCliente());
-
-        //        ConvenioEntity convenioEntity = objectMapper.convertValue(convenio, ConvenioEntity.class);
-        //        convenioRepository.save(convenioEntity);
-        //        return objectMapper.convertValue(convenioEntity, ConvenioDTO.class);
     }
 
     public void remover(Integer id) throws RegraDeNegocioException {
-//        try {
-//            getCliente(id);
-//            clienteRepository.remover(id);
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Erro no Banco!");
-//        }
+        getCliente(id);
+        clienteRepository.deleteById(id);
     }
 
     public ClienteCompletoDTO editar(Integer id, ClienteCreateDTO cliente) throws RegraDeNegocioException {
@@ -59,48 +49,24 @@ public class ClienteService {
     }
 
     public List<ClienteDTO> listar() throws RegraDeNegocioException {
-//        try {
-//            return clienteRepository.listar().stream().map(clienteEntity ->
-//                    objectMapper.convertValue(clienteEntity, ClienteDTO.class)).toList();
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Erro no Banco!");
-//        }
-        return null;
+        return clienteRepository.findAll().stream().map(clienteEntity ->
+        objectMapper.convertValue(clienteEntity, ClienteDTO.class)).toList();
     }
 
     public List<ClienteCompletoDTO> listarFull() throws RegraDeNegocioException {
-//        try {
-//            return clienteRepository.listarClienteDTOs();
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Erro no Banco!");
-//        }
-        return null;
+            return clienteRepository.listarClienteDTOs();
     }
 
     public ClienteCompletoDTO getById(Integer idCliente) throws RegraDeNegocioException {
-//        try {
-//            ClienteCompletoDTO clienteCompletoDTO = clienteRepository.getClienteCompletoDTO(idCliente);
-//            if (clienteCompletoDTO == null) {
-//                throw new RegraDeNegocioException("Cliente não existe!");
-//            }
-//            return clienteCompletoDTO;
-//        } catch (BancoDeDadosException e) {
-//            throw new RuntimeException(e);
-//        }
-        return null;
+        clienteRepository.getById(idCliente);
     }
 
     public ClienteEntity getCliente(Integer id) throws RegraDeNegocioException {
-//        try {
-//            return clienteRepository.listar()
-//                    .stream()
-//                    .filter(clienteEntity -> clienteEntity.getIdCliente().equals(id))
-//                    .findFirst()
-//                    .orElseThrow(() -> new RegraDeNegocioException("Cliente não encontrado!"));
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Erro no Banco!");
-//        }
-        return null;
+            return clienteRepository.findAll()
+                    .stream()
+                    .filter(clienteEntity -> clienteEntity.getIdCliente().equals(id))
+                    .findFirst()
+                    .orElseThrow(() -> new RegraDeNegocioException("Cliente não encontrado!"));
     }
 
 
