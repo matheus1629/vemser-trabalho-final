@@ -18,7 +18,7 @@ public class ConvenioEntity {
     @Column(name = "id_convenio")
     private Integer idConvenio;
     @Column(name = "Cadastro_Orgao_Regulador")
-    private String cadastroOragaoRegulador;
+    private String cadastroOrgaoRegulador;
     @Column(name = "taxa_abatimento")
     private Double taxaAbatimento;
 
