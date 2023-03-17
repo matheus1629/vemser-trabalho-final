@@ -19,7 +19,7 @@ public class UsuarioDTO {
     @Schema(description = "Número do endereço", example = "44545454")
     private Integer numero;
     @Schema(description = "Número de telefone ou celular", example = "84261850")
-    private String[] contatos;
+    private String contatos;
     @Schema(description = "Indentificar se o usuário é um médico ou um cliente", example = "MEDICO")
     private TipoUsuario tipoUsuario;
 }

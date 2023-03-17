@@ -1,7 +1,7 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
-import br.com.dbc.vemser.trabalhofinal.dto.ClienteCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteCompletoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.ClienteCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;

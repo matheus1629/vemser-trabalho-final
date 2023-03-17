@@ -1,6 +1,8 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
-import br.com.dbc.vemser.trabalhofinal.dto.*;
+import br.com.dbc.vemser.trabalhofinal.dto.AgendamentoCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.AgendamentoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.AgendamentoDadosDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.AgendamentoEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.AgendamentoRepository;

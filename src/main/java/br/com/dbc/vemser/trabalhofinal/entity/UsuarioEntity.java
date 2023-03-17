@@ -1,10 +1,12 @@
 package br.com.dbc.vemser.trabalhofinal.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,7 +41,7 @@ public class UsuarioEntity {
     private ClienteEntity clienteEntity;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "cliente", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "usuarioEntity", cascade = CascadeType.ALL)
     private MedicoEntity medicoEntity;
 
 }
