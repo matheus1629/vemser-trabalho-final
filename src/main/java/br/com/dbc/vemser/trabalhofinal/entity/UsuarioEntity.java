@@ -36,17 +36,10 @@ public class UsuarioEntity {
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "cliente", cascade = CascadeType.ALL)
-    private ClienteEntity cliente;
+    private ClienteEntity clienteEntity;
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "cliente", cascade = CascadeType.ALL)
-    private MedicoEntity medico;
+    private MedicoEntity medicoEntity;
 
-    public TipoUsuario getTipoUsuario() {
-        return tipoUsuario;
-    }
-
-    public void setTipoUsuario(TipoUsuario tipoUsuario) {
-        this.tipoUsuario = tipoUsuario;
-    }
 }
