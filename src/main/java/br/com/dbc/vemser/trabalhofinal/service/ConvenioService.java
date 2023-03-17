@@ -2,7 +2,10 @@ package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.dto.ConvenioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ConvenioDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.EspecialidadeDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.ConvenioEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.EspecialidadeEntity;
+import br.com.dbc.vemser.trabalhofinal.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.ConvenioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,16 +37,13 @@ public class ConvenioService {
 
 
     public ConvenioDTO editar(Integer id, ConvenioCreateDTO convenio) throws RegraDeNegocioException {
-//        try {
-//            getConvenio(id);
-//            ConvenioEntity convenioEntity = objectMapper.convertValue(convenio, ConvenioEntity.class);
-//            convenioRepository.editar(id, convenioEntity);
-//            return objectMapper.convertValue(convenioEntity, ConvenioDTO.class);
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Erro no Banco!");
-//        }
+            ConvenioEntity convenioEntityRecuperado = getConvenio(id);
+            convenioEntityRecuperado.setTaxaAbatimento(convenio.getTaxaAbatimento());
+            convenioEntityRecuperado.setCadastroOrgaoRegulador(convenio.getCadastroOragaoRegulador());
 
-        return null;
+            convenioRepository.save(convenioEntityRecuperado);
+
+            return objectMapper.convertValue(convenioEntityRecuperado, ConvenioDTO.class);
     }
 
     public List<ConvenioDTO> listar() throws RegraDeNegocioException {
@@ -53,12 +53,8 @@ public class ConvenioService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<ConvenioEntity> getConvenio(Integer id) throws RegraDeNegocioException {
-            Optional<ConvenioEntity> convenioEntityEncontrado = convenioRepository.findById(id);
-            if (convenioEntityEncontrado == null) {
-                throw new RegraDeNegocioException("Convênio não encontrado!");
-            }
-            return convenioEntityEncontrado;
+    public ConvenioEntity getConvenio(Integer id) throws RegraDeNegocioException {
+            return convenioRepository.findById(id).orElseThrow(()-> new RegraDeNegocioException("Convenio não existe"));
     }
 
     public ConvenioDTO getById(Integer id) throws RegraDeNegocioException {
