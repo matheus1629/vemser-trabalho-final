@@ -1,12 +1,10 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
-import br.com.dbc.vemser.trabalhofinal.dto.ClienteCompletoDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.ClienteCreateDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.ClienteDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.ConvenioDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.*;
 import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.ConvenioEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.TipoUsuario;
+import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.ClienteRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,12 +21,22 @@ public class ClienteService {
     private final ObjectMapper objectMapper;
     private final UsuarioService usuarioService;
 
+    private final ConvenioService convenioService;
+
     public ClienteCompletoDTO adicionar(ClienteCreateDTO cliente) throws RegraDeNegocioException {
-        usuarioService.verificarIdUsuario(cliente.getIdUsuario(), TipoUsuario.CLIENTE);
         ClienteEntity clienteEntity = objectMapper.convertValue(cliente, ClienteEntity.class);
+        UsuarioEntity usuarioEntity = usuarioService.getUsuario(cliente.getIdUsuario());
+        ConvenioEntity convenioEntity = convenioService.getConvenio(cliente.getIdConvenio());
+        clienteEntity.setUsuarioEntity(usuarioEntity);
+        clienteEntity.setConvenioEntity(convenioEntity);
+
         clienteRepository.save(clienteEntity);
 
-        return null;
+        ClienteCompletoDTO clienteCompletoDTO = objectMapper.convertValue(clienteEntity, ClienteCompletoDTO.class);
+        clienteCompletoDTO.setConvenio(objectMapper.convertValue(convenioEntity, ConvenioDTO.class));
+        clienteCompletoDTO.setUsuario(objectMapper.convertValue(usuarioEntity, UsuarioDTO.class));
+
+        return clienteCompletoDTO;
     }
 
     public void remover(Integer id) throws RegraDeNegocioException {
