@@ -3,7 +3,9 @@ package br.com.dbc.vemser.trabalhofinal.service;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.ConvenioDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.ConvenioEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.TipoUsuario;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.ClienteRepository;
@@ -26,7 +28,7 @@ public class ClienteService {
         ClienteEntity clienteEntity = objectMapper.convertValue(cliente, ClienteEntity.class);
         clienteRepository.save(clienteEntity);
 
-        return getById(clienteEntity.getIdCliente());
+        return null;
     }
 
     public void remover(Integer id) throws RegraDeNegocioException {
@@ -35,17 +37,12 @@ public class ClienteService {
     }
 
     public ClienteCompletoDTO editar(Integer id, ClienteCreateDTO cliente) throws RegraDeNegocioException {
-//        try {
-//            ClienteEntity clienteEntity = objectMapper.convertValue(cliente, ClienteEntity.class);
-//            if (!Objects.equals(getCliente(id).getIdUsuario(), clienteEntity.getIdUsuario())){
-//                usuarioService.verificarIdUsuario(clienteEntity.getIdUsuario(), TipoUsuario.CLIENTE);
-//            }
-//            clienteRepository.editar(id, clienteEntity);
-//            return getById(clienteEntity.getIdCliente());
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Erro no Banco!");
-//        }
-        return null;
+        ClienteEntity clienteEntityRecuperado = getCliente(id);
+        clienteEntityRecuperado.setIdConvenio(cliente.getIdConvenio());
+
+        clienteRepository.save(clienteEntityRecuperado);
+
+        return objectMapper.convertValue(clienteEntityRecuperado, ClienteCompletoDTO.class);
     }
 
     public List<ClienteDTO> listar() throws RegraDeNegocioException {
@@ -53,13 +50,13 @@ public class ClienteService {
         objectMapper.convertValue(clienteEntity, ClienteDTO.class)).toList();
     }
 
-    public List<ClienteCompletoDTO> listarFull() throws RegraDeNegocioException {
-            return clienteRepository.listarClienteDTOs();
-    }
+//    public List<ClienteCompletoDTO> listarFull() throws RegraDeNegocioException {
+//            return clienteRepository.listarClienteDTOs();
+//    }
 
-    public ClienteCompletoDTO getById(Integer idCliente) throws RegraDeNegocioException {
-        clienteRepository.getById(idCliente);
-    }
+//    public ClienteCompletoDTO getById(Integer idCliente) throws RegraDeNegocioException {
+//        clienteRepository.getById(idCliente);
+//    }
 
     public ClienteEntity getCliente(Integer id) throws RegraDeNegocioException {
             return clienteRepository.findAll()
