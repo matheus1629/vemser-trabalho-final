@@ -4,18 +4,13 @@ import br.com.dbc.vemser.trabalhofinal.dto.UsuarioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.UsuarioDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.TipoUsuario;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
-import br.com.dbc.vemser.trabalhofinal.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.UsuarioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 
 @RequiredArgsConstructor
@@ -27,61 +22,50 @@ public class UsuarioService {
     private final EmailService emailService;
 
     public UsuarioDTO adicionar(UsuarioCreateDTO usuario) throws RegraDeNegocioException {
-//        try {
-//            UsuarioEntity usuarioEntityCriado = usuarioRepository.adicionar(
-//                    validarUsuario(
-//                            objectMapper.convertValue(usuario, UsuarioEntity.class)));
-//            try {
-//                emailService.sendEmailUsuario(usuarioEntityCriado, TipoEmail.USUARIO_CADASTRO);
-//            } catch (MessagingException | TemplateException | IOException e) {
-//                usuarioRepository.remover(usuarioEntityCriado.getIdUsuario());
-//                throw new RegraDeNegocioException("Erro ao enviar o e-mail!");
-//            }
-//            return objectMapper.convertValue(usuarioEntityCriado, UsuarioDTO.class);
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Erro no Banco!");
-//        }
-        return null;
+
+        UsuarioEntity usuarioAdicionado = usuarioRepository.save(objectMapper.convertValue(usuario, UsuarioEntity.class));
+
+        return objectMapper.convertValue(usuarioAdicionado, UsuarioDTO.class);
     }
 
     public void remover(Integer id) throws RegraDeNegocioException {
-//        try {
-//            getUsuario(id);
-//            usuarioRepository.remover(id);
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Erro no Banco!");
-//        }
+        UsuarioEntity usuario = getUsuario(id);
+        usuarioRepository.deleteById(usuario.getIdUsuario());
     }
 
     public UsuarioDTO editar(Integer id, UsuarioCreateDTO usuario) throws RegraDeNegocioException {
-//        try {
-//            UsuarioEntity usarioEditar = objectMapper.convertValue(usuario, UsuarioEntity.class);
-//            UsuarioDTO usuarioEditado = objectMapper.convertValue(usuarioRepository.editar(id, validarUsuario(usarioEditar)), UsuarioDTO.class);
-//            return usuarioEditado;
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Erro no Banco!");
-//        }
-        return null;
+
+            UsuarioEntity usuarioRecuperado = getUsuario(id);
+
+            usuarioRecuperado.setCpf(usuario.getCpf());
+            usuarioRecuperado.setEmail(usuario.getEmail());
+            usuarioRecuperado.setNome(usuario.getNome());
+            usuarioRecuperado.setSenha(usuario.getSenha());
+            usuarioRecuperado.setCep(usuario.getCep());
+            usuarioRecuperado.setNumero(usuario.getNumero());
+            usuarioRecuperado.setContatos(usuario.getContatos());
+            usuarioRecuperado.setTipoUsuario(usuario.getTipoUsuario());
+
+        return objectMapper.convertValue(usuarioRepository.save(usuarioRecuperado), UsuarioDTO.class);
     }
 
 
     public List<UsuarioDTO> listar() throws RegraDeNegocioException {
-//        try {
-//            return usuarioRepository.listar().stream().map(usuarioEntity ->
-//                    objectMapper.convertValue(usuarioEntity, UsuarioDTO.class
-//            )).toList();
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Erro no banco!");
-//        }
-        return null;
+        return usuarioRepository.findAll().stream().map(usuario -> objectMapper.convertValue(usuario, UsuarioDTO.class)).toList();
     }
 
     // Pensando se passamos essa validação pro Banco, afim de ganhar mais performance
     private UsuarioEntity validarUsuario(UsuarioEntity usuarioEntity) throws RegraDeNegocioException {
+/*
+        List<UsuarioEntity> usuarioEntities = usuarioRepository.findAll();
+        for(UsuarioEntity usuario : usuarioEntities){
+
+        }
+*/
 //        try {
 //
 //            // Estou iterando com 'fori comum' pois não consigo levantar exceções dentro do forEach. Apesar de poder tratálos...
-//            List<UsuarioEntity> usuarioEntities = usuarioRepository.listar();
+//
 //            for (UsuarioEntity value : usuarioEntities) {
 //                //Quando estivermos atualizando, devemos verifiar se email e cpf já existem em outro usuário ALÉM do que está sendo atualizado.
 //                if (value.getCpf().equals(usuarioEntity.getCpf()) &&
@@ -109,16 +93,8 @@ public class UsuarioService {
 
 
     public UsuarioEntity getUsuario(Integer id) throws RegraDeNegocioException {
-//        try {
-//            UsuarioEntity ususarioEncontrado = usuarioRepository.getUsuario(id);
-//            if (ususarioEncontrado == null) {
-//                throw new RegraDeNegocioException("Usuário não encontrado!");
-//            }
-//            return ususarioEncontrado;
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Erro no Banco!");
-//        }
-        return null;
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado!"));
     }
 
     public UsuarioDTO getById(Integer id) throws RegraDeNegocioException {
