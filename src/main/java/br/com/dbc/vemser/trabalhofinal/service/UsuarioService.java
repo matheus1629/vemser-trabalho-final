@@ -11,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
+//<TODO> VER SE VAMOS MANTER A CONTROLLER DO USUARIO OU SE VAMOS MECLAR USUARIO SERVICE NO MEDICO E CLIENTE.
 
 @RequiredArgsConstructor
 @Service
@@ -23,6 +25,7 @@ public class UsuarioService {
 
     public UsuarioDTO adicionar(UsuarioCreateDTO usuario) throws RegraDeNegocioException {
 
+        validarUsuario(objectMapper.convertValue(usuario, UsuarioEntity.class));
         UsuarioEntity usuarioAdicionado = usuarioRepository.save(objectMapper.convertValue(usuario, UsuarioEntity.class));
 
         return objectMapper.convertValue(usuarioAdicionado, UsuarioDTO.class);
@@ -36,6 +39,7 @@ public class UsuarioService {
     public UsuarioDTO editar(Integer id, UsuarioCreateDTO usuario) throws RegraDeNegocioException {
 
             UsuarioEntity usuarioRecuperado = getUsuario(id);
+            validarUsuario(objectMapper.convertValue(usuario, UsuarioEntity.class));
 
             usuarioRecuperado.setCpf(usuario.getCpf());
             usuarioRecuperado.setEmail(usuario.getEmail());
@@ -49,48 +53,28 @@ public class UsuarioService {
         return objectMapper.convertValue(usuarioRepository.save(usuarioRecuperado), UsuarioDTO.class);
     }
 
-
     public List<UsuarioDTO> listar() throws RegraDeNegocioException {
         return usuarioRepository.findAll().stream().map(usuario -> objectMapper.convertValue(usuario, UsuarioDTO.class)).toList();
     }
 
-    // Pensando se passamos essa validação pro Banco, afim de ganhar mais performance
+    //<TODO> ver uma forma de verificar diretamente no banco
     private UsuarioEntity validarUsuario(UsuarioEntity usuarioEntity) throws RegraDeNegocioException {
-/*
-        List<UsuarioEntity> usuarioEntities = usuarioRepository.findAll();
-        for(UsuarioEntity usuario : usuarioEntities){
 
+        List<UsuarioEntity> usuarioEntities = usuarioRepository.findAll();
+
+        for (UsuarioEntity value : usuarioEntities) {
+            //Quando estivermos atualizando, devemos verifiar se email e cpf já existem em outro usuário ALÉM do que está sendo atualizado.
+            if (value.getCpf().equals(usuarioEntity.getCpf()) &&
+                    !Objects.equals(value.getIdUsuario(), usuarioEntity.getIdUsuario())) {
+                throw new RegraDeNegocioException("Já existe usuário com esse CPF!");
+            }
+            if (value.getEmail().equals(usuarioEntity.getEmail()) &&
+                    !Objects.equals(value.getIdUsuario(), usuarioEntity.getIdUsuario())) {
+                throw new RegraDeNegocioException("Já existe usuário com esse e-mail!");
+            }
         }
-*/
-//        try {
-//
-//            // Estou iterando com 'fori comum' pois não consigo levantar exceções dentro do forEach. Apesar de poder tratálos...
-//
-//            for (UsuarioEntity value : usuarioEntities) {
-//                //Quando estivermos atualizando, devemos verifiar se email e cpf já existem em outro usuário ALÉM do que está sendo atualizado.
-//                if (value.getCpf().equals(usuarioEntity.getCpf()) &&
-//                        !Objects.equals(value.getIdUsuario(), usuarioEntity.getIdUsuario())) {
-//                    throw new RegraDeNegocioException("Já existe usuário com esse CPF!");
-//                }
-//                if (value.getEmail().equals(usuarioEntity.getEmail()) &&
-//                        !Objects.equals(value.getIdUsuario(), usuarioEntity.getIdUsuario())) {
-//                    throw new RegraDeNegocioException("Já existe usuário com esse e-mail!");
-//                }
-//            }
-//
-////            for (String contato: usuarioEntity.getContatos()) {
-////                if (contato.length() > 15) {
-////                    throw new RegraDeNegocioException("Tamanho do contato não pode superar 15");
-////                }
-////            }
-//
-//            return usuarioEntity;
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Erro no Banco!");
-//        }
         return usuarioEntity;
     }
-
 
     public UsuarioEntity getUsuario(Integer id) throws RegraDeNegocioException {
         return usuarioRepository.findById(id)
@@ -104,13 +88,8 @@ public class UsuarioService {
     // Verifica a disponilidade do id_usuario
 
     public void verificarIdUsuario(Integer id, TipoUsuario tipoUsuario) throws RegraDeNegocioException {
-//        try {
-//            if (!usuarioRepository.verificarSeValido(id, tipoUsuario)) {
-//                throw new RegraDeNegocioException("O id de usuário informado não é adequado para esta operação!");
-//            }
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Erro no banco!");
-//        }
-//    }
+        if (getUsuario(id).getTipoUsuario() != tipoUsuario) {
+            throw new RegraDeNegocioException("O id de usuário informado não é adequado para esta operação!");
+        }
     }
 }
