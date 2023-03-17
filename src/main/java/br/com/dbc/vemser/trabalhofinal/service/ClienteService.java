@@ -57,7 +57,15 @@ public class ClienteService {
 //    public ClienteCompletoDTO getById(Integer idCliente) throws RegraDeNegocioException {
 //        clienteRepository.getById(idCliente);
 //    }
+    public List<ClienteCompletoDTO> listarFull() throws RegraDeNegocioException {
+//            return clienteRepository.listarClienteDTOs();
+        return null;
+    }
 
+    public ClienteCompletoDTO getById(Integer idCliente) throws RegraDeNegocioException {
+        clienteRepository.getById(idCliente);
+        return null;
+    }
     public ClienteEntity getCliente(Integer id) throws RegraDeNegocioException {
             return clienteRepository.findAll()
                     .stream()

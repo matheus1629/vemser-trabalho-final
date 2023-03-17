@@ -1,9 +1,9 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
-import br.com.dbc.vemser.trabalhofinal.dto.MedicoCompletoDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.MedicoCreateDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.MedicoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.*;
+import br.com.dbc.vemser.trabalhofinal.entity.EspecialidadeEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.MedicoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,12 +23,20 @@ public class MedicoService {
 
     public MedicoCompletoDTO adicionar(MedicoCreateDTO medico) throws RegraDeNegocioException {
         MedicoEntity medicoEntity = objectMapper.convertValue(medico, MedicoEntity.class);
-        medicoEntity.setEspecialidadeEntity(especialidadeService.getEspecialidade(medico.getIdEspecialidade()));
-//        medicoEntity.setUsuarioEntity(usuarioService.);
+        EspecialidadeEntity especialidade = especialidadeService.getEspecialidade(medico.getIdEspecialidade());
+        UsuarioEntity usuario = usuarioService.getUsuario(medico.getIdUsuario());
+
+        medicoEntity.setEspecialidadeEntity(especialidade);
+        medicoEntity.setUsuarioEntity(usuario);
 
         medicoRepository.save(medicoEntity);
 
-        return objectMapper.convertValue(medicoEntity, MedicoCompletoDTO.class);
+        // criação do MedicoCompletoDTO para retorno
+        MedicoCompletoDTO medicoCompletoDTO = objectMapper.convertValue(medicoEntity, MedicoCompletoDTO.class);
+        medicoCompletoDTO.setEspecialidade(objectMapper.convertValue(especialidade, EspecialidadeDTO.class));
+        medicoCompletoDTO.setUsuario(objectMapper.convertValue(usuario, UsuarioDTO.class));
+
+        return medicoCompletoDTO;
     }
 
     public void remover(Integer id) throws RegraDeNegocioException {
@@ -70,11 +78,9 @@ public class MedicoService {
     }
 
     public List<MedicoCompletoDTO> listarFull() throws RegraDeNegocioException {
-//        try {
-//            return medicoRepository.listarMedicoCompletoDTOs();
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Informações do médico não mostradas por problema no banco de dados.");
-//        }
+            List<MedicoDTO> medicoDTOS = listar();
+            List<EspecialidadeDTO> especialidadeDTOS = especialidadeService.listar();
+//            List<UsuarioDTO> usuarioDTOS = usuarioService
         return null;
     }
 
