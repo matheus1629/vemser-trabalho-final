@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-public class AgendamentoDadosDTO extends AgendamentoDTO{
+public class AgendamentoDadosDTO extends AgendamentoDTO{ // <todo> EXCLUIR!!!
 
     @Schema(description = "Nome do cliente")
     private String cliente;

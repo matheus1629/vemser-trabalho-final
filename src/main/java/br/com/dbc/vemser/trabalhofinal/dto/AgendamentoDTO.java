@@ -9,4 +9,9 @@ public class AgendamentoDTO extends AgendamentoCreateDTO {
     @Schema(description = "Id do agendamento")
     private Integer idAgendamento;
 
+    @Schema(description = "Nome do cliente")
+    private String cliente;
+
+    @Schema(description = "Nome do Médico")
+    private String medico;
 }
