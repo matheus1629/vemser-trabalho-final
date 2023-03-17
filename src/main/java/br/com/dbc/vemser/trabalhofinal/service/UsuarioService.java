@@ -4,18 +4,13 @@ import br.com.dbc.vemser.trabalhofinal.dto.UsuarioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.UsuarioDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.TipoUsuario;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
-import br.com.dbc.vemser.trabalhofinal.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.UsuarioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 
 @RequiredArgsConstructor

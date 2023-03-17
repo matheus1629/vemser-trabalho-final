@@ -4,8 +4,6 @@ import br.com.dbc.vemser.trabalhofinal.dto.MedicoCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.MedicoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.MedicoDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
-import br.com.dbc.vemser.trabalhofinal.entity.TipoUsuario;
-import br.com.dbc.vemser.trabalhofinal.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.MedicoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service

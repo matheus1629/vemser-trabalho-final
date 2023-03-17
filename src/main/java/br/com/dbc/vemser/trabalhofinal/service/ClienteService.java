@@ -1,11 +1,10 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
-import br.com.dbc.vemser.trabalhofinal.dto.ClienteCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteCompletoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.ClienteCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.TipoUsuario;
-import br.com.dbc.vemser.trabalhofinal.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.ClienteRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
+
 
 @Service
 @Slf4j
@@ -25,18 +24,15 @@ public class ClienteService {
     private final UsuarioService usuarioService;
 
     public ClienteCompletoDTO adicionar(ClienteCreateDTO cliente) throws RegraDeNegocioException {
-//        try {
-//            usuarioService.verificarIdUsuario(cliente.getIdUsuario(), TipoUsuario.CLIENTE);
-//            ClienteEntity clienteEntity = objectMapper.convertValue(cliente, ClienteEntity.class);
-//            clienteRepository.adicionar(clienteEntity);
-//
-//            // Retornar Cliente com todos os dados
-//            return getById(clienteEntity.getIdCliente());
-//        } catch (BancoDeDadosException e) {
-//            log.error("Erro ao adicionar um cliente");
-//            throw new RegraDeNegocioException("Erro no Banco!");
-//        }
-        return null;
+        usuarioService.verificarIdUsuario(cliente.getIdUsuario(), TipoUsuario.CLIENTE);
+        ClienteEntity clienteEntity = objectMapper.convertValue(cliente, ClienteEntity.class);
+        clienteRepository.save(clienteEntity);
+
+        return getById(clienteEntity.getIdCliente());
+
+        //        ConvenioEntity convenioEntity = objectMapper.convertValue(convenio, ConvenioEntity.class);
+        //        convenioRepository.save(convenioEntity);
+        //        return objectMapper.convertValue(convenioEntity, ConvenioDTO.class);
     }
 
     public void remover(Integer id) throws RegraDeNegocioException {

@@ -1,10 +1,13 @@
 package br.com.dbc.vemser.trabalhofinal.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
+import javax.validation.constraints.Null;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,6 +25,7 @@ public class ClienteEntity {
     @Column(name = "id_usuario")
     private Integer idUsuario;
 
+    @Null
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_convenio", referencedColumnName = "id_convenio")
