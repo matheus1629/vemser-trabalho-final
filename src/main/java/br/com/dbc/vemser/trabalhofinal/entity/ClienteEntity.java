@@ -15,13 +15,13 @@ import javax.persistence.*;
 @Entity(name = "Cliente")
 public class ClienteEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CONVENIO")
-    @SequenceGenerator(name = "SEQ_CONVENIO", sequenceName = "SEQ_CONVENIO", allocationSize = 1)
-    @Column(name = "id_convenio")
-    private Integer idConvenio;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CLIENTE")
+    @SequenceGenerator(name = "SEQ_CLIENTE", sequenceName = "SEQ_CLIENTE", allocationSize = 1)
     @Column(name = "id_cliente")
     private Integer idCliente;
-    @Column(name = "id_usuario", insertable = false, updatable = false)
+    @Column(name = "id_convenio", insertable= false, updatable=false)
+    private Integer idConvenio;
+    @Column(name = "id_usuario", insertable= false, updatable=false)
     private Integer idUsuario;
 
 
@@ -34,4 +34,5 @@ public class ClienteEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     private UsuarioEntity usuarioEntity;
+
 }
