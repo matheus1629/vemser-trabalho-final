@@ -15,7 +15,7 @@ public class UsuarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USUARIO")
     @SequenceGenerator(name = "SEQ_USUARIO", sequenceName = "SEQ_USUARIO", allocationSize = 1)
-    @Column(name = "id_medico")
+    @Column(name = "id_usuario")
     private Integer idUsuario;
     @Column(name = "cpf")
     private String cpf;
@@ -35,12 +35,12 @@ public class UsuarioEntity {
     private TipoUsuario tipoUsuario;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "cliente", cascade = CascadeType.ALL)
-    private ClienteEntity cliente;
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "usuarioEntity", cascade = CascadeType.ALL)
+    private ClienteEntity clienteEntity;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "cliente", cascade = CascadeType.ALL)
-    private MedicoEntity medico;
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "usuarioEntity", cascade = CascadeType.ALL)
+    private MedicoEntity medicoEntity;
 
     public TipoUsuario getTipoUsuario() {
         return tipoUsuario;
