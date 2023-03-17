@@ -13,7 +13,7 @@ public class UsuarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USUARIO")
     @SequenceGenerator(name = "SEQ_USUARIO", sequenceName = "SEQ_USUARIO", allocationSize = 1)
-    @Column(name = "id_medico")
+    @Column(name = "id_usuario")
     private Integer idUsuario;
     @Column(name = "cpf")
     private String cpf;
