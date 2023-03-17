@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,8 +18,19 @@ public class MedicoEntity {
     private Integer idMedico;
     @Column(name = "id_usuario")
     private Integer idUsuario;
-    @Column(name = "id_especialidade")
+    @Column(name = "id_especialidade", insertable = false, updatable = false)
     private Integer idEspecialidade;
     @Column(name = "crm")
     private String crm;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_especialidade", referencedColumnName = "id_especialidade")
+    private EspecialidadeEntity especialidadeEntity;
+
+//    @JsonIgnore
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
+//    private UsuarioEntity usuarioEntity;
+
+
 }

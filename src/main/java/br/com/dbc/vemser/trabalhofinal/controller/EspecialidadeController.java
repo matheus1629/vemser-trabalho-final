@@ -24,7 +24,7 @@ public class EspecialidadeController implements InterfaceDocumentacao<Especialid
     private final EspecialidadeService especialidadeService;
 
 
-    @Override // GET localhost:8080/especialidades
+    @Override
     public ResponseEntity<List<EspecialidadeDTO>> listAll() throws RegraDeNegocioException {
         return new ResponseEntity<>(especialidadeService.listar(), HttpStatus.OK);
     }
@@ -36,14 +36,12 @@ public class EspecialidadeController implements InterfaceDocumentacao<Especialid
 
     @Override
     public ResponseEntity<EspecialidadeDTO> create(EspecialidadeCreateDTO especialidade) throws RegraDeNegocioException {
-        EspecialidadeDTO especialidadeCriada = especialidadeService.adicionar(especialidade);
-        return new ResponseEntity<>(especialidadeCriada, HttpStatus.OK);
+        return new ResponseEntity<>(especialidadeService.adicionar(especialidade), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<EspecialidadeDTO> update(Integer id, EspecialidadeCreateDTO especialidade) throws RegraDeNegocioException {
-        EspecialidadeDTO especialidadeAtualizada = especialidadeService.editar(id, especialidade);
-        return new ResponseEntity<>(especialidadeAtualizada, HttpStatus.OK);
+        return new ResponseEntity<>(especialidadeService.editar(id, especialidade), HttpStatus.OK);
     }
 
     @Override
