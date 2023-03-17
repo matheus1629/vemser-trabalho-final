@@ -80,7 +80,7 @@ public class MedicoService {
     public List<MedicoCompletoDTO> listarFull() throws RegraDeNegocioException {
             List<MedicoDTO> medicoDTOS = listar();
             List<EspecialidadeDTO> especialidadeDTOS = especialidadeService.listar();
-            List<UsuarioDTO> usuarioDTOS = usuarioService
+//            List<UsuarioDTO> usuarioDTOS = usuarioService
         return null;
     }
 

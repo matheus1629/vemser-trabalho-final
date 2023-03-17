@@ -1,6 +1,5 @@
 package br.com.dbc.vemser.trabalhofinal.repository;
 
-
 import br.com.dbc.vemser.trabalhofinal.dto.MedicoDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
