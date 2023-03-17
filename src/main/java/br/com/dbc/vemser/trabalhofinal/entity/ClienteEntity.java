@@ -1,8 +1,10 @@
 package br.com.dbc.vemser.trabalhofinal.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,4 +22,8 @@ public class ClienteEntity {
     @Column(name = "id_usuario")
     private Integer idUsuario;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_convenio", referencedColumnName = "id_convenio")
+    private ConvenioEntity convenioEntity;
 }

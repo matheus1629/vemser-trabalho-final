@@ -1,8 +1,10 @@
 package br.com.dbc.vemser.trabalhofinal.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,4 +22,7 @@ public class ConvenioEntity {
     @Column(name = "taxa_abatimento")
     private Double taxaAbatimento;
 
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "convenioEntity", cascade = CascadeType.MERGE)
+    private Set<ClienteEntity> clienteEntities;
 }
