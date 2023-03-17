@@ -1,8 +1,10 @@
 package br.com.dbc.vemser.trabalhofinal.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,6 +33,14 @@ public class UsuarioEntity {
     private String contatos;
     @Column(name = "tipo")
     private TipoUsuario tipoUsuario;
+
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "cliente", cascade = CascadeType.ALL)
+    private ClienteEntity cliente;
+
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "cliente", cascade = CascadeType.ALL)
+    private MedicoEntity medico;
 
     public TipoUsuario getTipoUsuario() {
         return tipoUsuario;
