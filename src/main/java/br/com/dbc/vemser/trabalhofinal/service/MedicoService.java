@@ -41,7 +41,7 @@ public class MedicoService {
         EspecialidadeEntity especialidade = especialidadeService.getEspecialidade(medico.getIdEspecialidade());
         UsuarioEntity usuario = usuarioService.getUsuario(medico.getIdUsuario());
 
-        if (Objects.equals(usuario.getTipoUsuario().getValor(), 2)) {
+        if (!Objects.equals(usuario.getTipoUsuario().ordinal(), 1)) {
             throw new RegraDeNegocioException("Este usuário não é um médico!");
         }
 
@@ -64,7 +64,7 @@ public class MedicoService {
         EspecialidadeEntity especialidade = especialidadeService.getEspecialidade(medico.getIdEspecialidade());
         UsuarioEntity usuario = usuarioService.getUsuario(medico.getIdUsuario());
 
-        if (Objects.equals(usuario.getTipoUsuario().getValor(), 2)) {
+        if (!Objects.equals(usuario.getTipoUsuario().ordinal(), 1)) {
             throw new RegraDeNegocioException("Este usuário não é um médico!");
         }
 
