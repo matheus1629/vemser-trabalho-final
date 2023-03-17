@@ -42,7 +42,7 @@ public class MedicoController implements InterfaceDocumentacao<MedicoCompletoDTO
         return new ResponseEntity<>(medicoService.listar(), HttpStatus.OK);
     }
     @Override
-    public ResponseEntity<List<MedicoCompletoDTO>> listAll() throws RegraDeNegocioException {
+    public ResponseEntity<List<MedicoCompletoDTO>> listAll() throws RegraDeNegocioException { //<todo> fazer caso dê tempo
         return new ResponseEntity<>(medicoService.listarFull(), HttpStatus.OK);
     }
 

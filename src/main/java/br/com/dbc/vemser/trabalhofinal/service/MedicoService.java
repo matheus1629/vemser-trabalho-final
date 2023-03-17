@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -21,10 +22,28 @@ public class MedicoService {
     private final EspecialidadeService especialidadeService;
 
 
+    public List<MedicoDTO> listar() throws RegraDeNegocioException {
+        return medicoRepository.findAll().stream()
+                .map(medicoEntity -> objectMapper.convertValue(medicoEntity, MedicoDTO.class))
+                .toList();
+    }
+
+    public MedicoCompletoDTO getById(Integer idMedico) throws RegraDeNegocioException {
+//        getMedico(idMedico);
+//        MedicoDTO medicoComEspecialidadeEUsuario = medicoRepository.findMedicoComEspecialidadeEUsuario(idMedico);
+//        return medicoComEspecialidadeEUsuario;
+        return null;
+    }
+
     public MedicoCompletoDTO adicionar(MedicoCreateDTO medico) throws RegraDeNegocioException {
+
         MedicoEntity medicoEntity = objectMapper.convertValue(medico, MedicoEntity.class);
         EspecialidadeEntity especialidade = especialidadeService.getEspecialidade(medico.getIdEspecialidade());
         UsuarioEntity usuario = usuarioService.getUsuario(medico.getIdUsuario());
+
+        if (Objects.equals(usuario.getTipoUsuario().getValor(), 2)) {
+            throw new RegraDeNegocioException("Este usuário não é um médico!");
+        }
 
         medicoEntity.setEspecialidadeEntity(especialidade);
         medicoEntity.setUsuarioEntity(usuario);
@@ -39,48 +58,34 @@ public class MedicoService {
         return medicoCompletoDTO;
     }
 
-    public void remover(Integer id) throws RegraDeNegocioException {
-//        try {
-//            getMedico(id);
-//            medicoRepository.remover(id);
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Médico não removido por problema no banco de dados.");
-//        }
-    }
-
     public MedicoCompletoDTO editar(Integer id, MedicoCreateDTO medico) throws RegraDeNegocioException {
-//        try {
-//            getMedico(id);
-//            if (!Objects.equals(getMedico(id).getIdUsuario(), medico.getIdUsuario())) {
-//                usuarioService.verificarIdUsuario(medico.getIdUsuario(), TipoUsuario.MEDICO);
-//            }
-//            MedicoEntity medicoEntityEditar = objectMapper.convertValue(medico, MedicoEntity.class);
-//            medicoRepository.editar(id, medicoEntityEditar);
-//            return getById(id);
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Médico não editado por problema no banco de dados.");
-//        }
+        MedicoEntity medicoEntity = objectMapper.convertValue(getMedico(id), MedicoEntity.class);
 
-        return null;
+        EspecialidadeEntity especialidade = especialidadeService.getEspecialidade(medico.getIdEspecialidade());
+        UsuarioEntity usuario = usuarioService.getUsuario(medico.getIdUsuario());
+
+        if (Objects.equals(usuario.getTipoUsuario().getValor(), 2)) {
+            throw new RegraDeNegocioException("Este usuário não é um médico!");
+        }
+
+        medicoEntity.setUsuarioEntity(usuario);
+        medicoEntity.setEspecialidadeEntity(especialidade);
+        medicoEntity.setCrm(medico.getCrm());
+
+        medicoRepository.save(medicoEntity);
+
+        MedicoCompletoDTO medicoCompletoDTO = objectMapper.convertValue(medicoEntity, MedicoCompletoDTO.class);
+        medicoCompletoDTO.setEspecialidade(objectMapper.convertValue(especialidade, EspecialidadeDTO.class));
+        medicoCompletoDTO.setUsuario(objectMapper.convertValue(usuario, UsuarioDTO.class));
+
+        return medicoCompletoDTO;
     }
 
-    public List<MedicoDTO> listar() throws RegraDeNegocioException {
-        return medicoRepository.findAll().stream()
-                .map(medicoEntity -> objectMapper.convertValue(medicoEntity, MedicoDTO.class))
-                .toList();
-    }
-
-    public MedicoCompletoDTO getById(Integer idMedico) throws RegraDeNegocioException { //
-//        getMedico(idMedico);
-//        MedicoDTO medicoComEspecialidadeEUsuario = medicoRepository.findMedicoComEspecialidadeEUsuario(idMedico);
-//        return medicoComEspecialidadeEUsuario;
-        return null;
+    public void remover(Integer id) throws RegraDeNegocioException {
+        medicoRepository.delete(getMedico(id));
     }
 
     public List<MedicoCompletoDTO> listarFull() throws RegraDeNegocioException {
-            List<MedicoDTO> medicoDTOS = listar();
-            List<EspecialidadeDTO> especialidadeDTOS = especialidadeService.listar();
-//            List<UsuarioDTO> usuarioDTOS = usuarioService
         return null;
     }
 
