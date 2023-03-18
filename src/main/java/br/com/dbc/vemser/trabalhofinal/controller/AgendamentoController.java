@@ -3,12 +3,14 @@ package br.com.dbc.vemser.trabalhofinal.controller;
 import br.com.dbc.vemser.trabalhofinal.dto.AgendamentoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.AgendamentoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.AgendamentoDadosDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.AgendamentoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Validated
@@ -51,6 +54,11 @@ public class AgendamentoController  implements  InterfaceDocumentacao<Agendament
     public ResponseEntity<Void> delete(Integer id) throws RegraDeNegocioException {
         agendamentoService.remover(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/paginado")
+    public PageDTO<AgendamentoDTO> listarPaginado(Integer pagina , Integer tamanho){
+        return agendamentoService.findAllPaginado(pagina,tamanho);
     }
 
 }
