@@ -53,31 +53,4 @@ public class AgendamentoController  implements  InterfaceDocumentacao<Agendament
         return ResponseEntity.ok().build();
     }
 
-
-    @Operation(summary = "Lista todos os agendamentos que um médico possui", description = "Listar todos os agendamentos que um médico possui passando seu ID")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Todos os registros foram listados com sucesso"),
-                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
-            }
-    )
-    @GetMapping("/{idMedico}/medico")
-    public ResponseEntity<List<AgendamentoDadosDTO>> listByMedico(@PathVariable Integer idMedico) throws RegraDeNegocioException {
-        return new ResponseEntity<>(agendamentoService.listByMedico(idMedico), HttpStatus.OK);
-    }
-
-
-    @Operation(summary = "Lista todos os agendamentos que um cliente possui", description = "Listar todos os agendamentos que um cliente possui passando seu ID")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Todos os registros foram listados com sucesso"),
-                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
-            }
-    )
-    @GetMapping("/{idCliente}/cliente")
-    public ResponseEntity<List<AgendamentoDadosDTO>> listByCliente(@PathVariable Integer idCliente) throws RegraDeNegocioException {
-        return new ResponseEntity<>(agendamentoService.listByCliente(idCliente), HttpStatus.OK);
-    }
 }

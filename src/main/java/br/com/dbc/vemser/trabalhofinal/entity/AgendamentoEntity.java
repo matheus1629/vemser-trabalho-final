@@ -19,7 +19,7 @@ public class AgendamentoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_AGENDAMENTO")
     @SequenceGenerator(name = "SEQ_AGENDAMENTO", sequenceName = "SEQ_AGENDAMENTO", allocationSize = 1)
-    @Column(name = "id_convenio")
+    @Column(name = "id_agendamento")
     private Integer idAgendamento;
     @Column(name = "id_cliente", insertable = false, updatable = false)
     private Integer idCliente;
@@ -33,12 +33,12 @@ public class AgendamentoEntity {
     private LocalDateTime dataHorario;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente")
     private ClienteEntity clienteEntity;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "id_medico", referencedColumnName = "id_medico")
     private MedicoEntity medicoEntity;
 
