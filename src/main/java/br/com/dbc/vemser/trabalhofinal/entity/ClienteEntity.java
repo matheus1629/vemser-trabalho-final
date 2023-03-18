@@ -28,7 +28,7 @@ public class ClienteEntity {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_convenio", referencedColumnName = "id_convenio", insertable = false, updatable = false)
+    @JoinColumn(name = "id_convenio", referencedColumnName = "id_convenio")
     private ConvenioEntity convenioEntity;
 
     @JsonIgnore

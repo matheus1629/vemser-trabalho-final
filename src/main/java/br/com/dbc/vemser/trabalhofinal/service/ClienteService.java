@@ -76,9 +76,8 @@ public class ClienteService {
         objectMapper.convertValue(clienteEntity, ClienteDTO.class)).toList();
     }
 
-    public ClienteCompletoDTO getById(Integer idCliente) throws RegraDeNegocioException {
-//        clienteRepository.getById(idCliente);
-        return null;
+    public ClientePersonalizadoDTO getById(Integer idCliente) throws RegraDeNegocioException {
+        ClientePersonalizadoDTO clientePersonalizadoDTO = clienteRepository.clientePersonalizado(idCliente);
     }
     public List<ClienteCompletoDTO> listarFull() throws RegraDeNegocioException {
 //            return clienteRepository.listarClienteDTOs();
