@@ -16,5 +16,5 @@ public class EspecialidadeCreateDTO {
     private double valor;
     @NotBlank
     @Schema(description = "Nome da especialdiade", example = "Cardiologista", required = true)
-    private String nome;
+    private String nomeEspecialidade;
 }

@@ -30,7 +30,7 @@ public class EspecialidadeService {
     }
 
     public EspecialidadeDTO adicionar(EspecialidadeCreateDTO especialidade) throws RegraDeNegocioException {
-        checarSeTemNumero(especialidade.getNome());
+        checarSeTemNumero(especialidade.getNomeEspecialidade());
 
         EspecialidadeEntity especialidadeEntity = objectMapper.convertValue(especialidade, EspecialidadeEntity.class);
         especialidadeRepository.save(especialidadeEntity);
@@ -40,11 +40,11 @@ public class EspecialidadeService {
     }
 
     public EspecialidadeDTO editar(Integer id, EspecialidadeCreateDTO especialidade) throws RegraDeNegocioException {
-        checarSeTemNumero(especialidade.getNome());
+        checarSeTemNumero(especialidade.getNomeEspecialidade());
 
         EspecialidadeEntity especialidadeEntityRecuperada = getEspecialidade(id);
 
-        especialidadeEntityRecuperada.setNomeEspecialidade(especialidade.getNome());
+        especialidadeEntityRecuperada.setNomeEspecialidade(especialidade.getNomeEspecialidade());
         especialidadeEntityRecuperada.setValor(especialidade.getValor());
 
         especialidadeRepository.save(especialidadeEntityRecuperada);
