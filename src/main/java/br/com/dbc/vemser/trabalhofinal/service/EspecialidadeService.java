@@ -44,7 +44,7 @@ public class EspecialidadeService {
 
         EspecialidadeEntity especialidadeEntityRecuperada = getEspecialidade(id);
 
-        especialidadeEntityRecuperada.setNome(especialidade.getNome());
+        especialidadeEntityRecuperada.setNomeEspecialidade(especialidade.getNome());
         especialidadeEntityRecuperada.setValor(especialidade.getValor());
 
         especialidadeRepository.save(especialidadeEntityRecuperada);

@@ -23,7 +23,7 @@ public class EspecialidadeEntity {
     @Column(name = "valor")
     private double valor;
     @Column(name = "nome")
-    private String nome;
+    private String nomeEspecialidade;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "especialidadeEntity", cascade = CascadeType.MERGE)
