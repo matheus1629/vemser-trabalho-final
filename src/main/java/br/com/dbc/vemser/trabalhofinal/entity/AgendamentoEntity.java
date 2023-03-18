@@ -34,12 +34,12 @@ public class AgendamentoEntity {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "id_especialidade", referencedColumnName = "id_especialidade")
+    @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente")
     private ClienteEntity clienteEntity;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "id_especialidade", referencedColumnName = "id_especialidade")
+    @JoinColumn(name = "id_medico", referencedColumnName = "id_medico")
     private MedicoEntity medicoEntity;
 
 }
