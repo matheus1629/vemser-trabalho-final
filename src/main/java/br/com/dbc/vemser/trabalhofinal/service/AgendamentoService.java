@@ -54,7 +54,7 @@ public class AgendamentoService {
 
     public AgendamentoDTO editar(Integer id, AgendamentoCreateDTO agendamentoCreateDTO) throws RegraDeNegocioException {
         AgendamentoEntity agendamentoEntity = getAgendamento(id);
-        
+
 
         return null;
     }
