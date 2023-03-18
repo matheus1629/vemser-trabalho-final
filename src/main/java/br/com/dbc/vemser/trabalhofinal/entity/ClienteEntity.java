@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,5 +35,9 @@ public class ClienteEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     private UsuarioEntity usuarioEntity;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "clienteEntity", cascade = CascadeType.ALL)
+    private Set<AgendamentoEntity> agendamentoEntities;
 
 }

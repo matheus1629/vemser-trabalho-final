@@ -7,13 +7,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity(name = "Medico")
-public class    MedicoEntity {
+public class MedicoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_MEDICO")
     @SequenceGenerator(name = "SEQ_MEDICO", sequenceName = "SEQ_MEDICO", allocationSize = 1)
@@ -36,5 +37,9 @@ public class    MedicoEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     private UsuarioEntity usuarioEntity;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "medicoEntity", cascade = CascadeType.ALL)
+    private Set<AgendamentoEntity> agendamentoEntities;
 
 }

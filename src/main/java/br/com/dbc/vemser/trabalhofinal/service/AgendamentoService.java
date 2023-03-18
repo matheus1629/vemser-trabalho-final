@@ -133,21 +133,10 @@ public class AgendamentoService {
     }
 
     public AgendamentoEntity getAgendamento(Integer id) throws RegraDeNegocioException {
-//        try {
-//            AgendamentoEntity agendamentoEntity = agendamentoRepository.getAgendamento(id);
-//            if(agendamentoEntity == null){
-//                throw new RegraDeNegocioException("Agendamento não encontrado.");
-//            }
-//            return agendamentoEntity;
-//        } catch (BancoDeDadosException e) {
-//            throw new RegraDeNegocioException("Erro no banco!");
-//        }
-//    }
-//    public AgendamentoDTO getById(Integer id) throws RegraDeNegocioException {
-//        return objectMapper.convertValue(getAgendamento(id), AgendamentoDTO.class);
-//    }
-
-        return null;
+            return agendamentoRepository.findById(id).orElseThrow(() -> new RegraDeNegocioException("Agendamento não encontrado."));
+    }
+    public AgendamentoDTO getById(Integer id) throws RegraDeNegocioException {
+        return objectMapper.convertValue(getAgendamento(id), AgendamentoDTO.class);
     }
 
 }
