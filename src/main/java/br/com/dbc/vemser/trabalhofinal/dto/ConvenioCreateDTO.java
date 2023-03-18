@@ -14,7 +14,7 @@ public class ConvenioCreateDTO {
     @NotBlank
     @Size(max = 40)
     @Schema(description = "Cadastro do orgão regulador do convênio", example = "6489418", required = true)
-    private String cadastroOragaoRegulador;
+    private String cadastroOrgaoRegulador;
 
     @DecimalMax("100.0")
     @DecimalMin("0.0")

@@ -22,9 +22,8 @@ public class ConvenioService {
 
     public ConvenioDTO adicionar(ConvenioCreateDTO convenio) throws RegraDeNegocioException {
         ConvenioEntity convenioEntity = objectMapper.convertValue(convenio, ConvenioEntity.class);
-        convenioRepository.save(convenioEntity);
-        ConvenioDTO convenioDTO = objectMapper.convertValue(convenioEntity, ConvenioDTO.class);
-        return convenioDTO;
+        ConvenioEntity convenioEntityAdicionado = convenioRepository.save(convenioEntity);
+        return objectMapper.convertValue(convenioEntityAdicionado, ConvenioDTO.class);
     }
 
     public void remover(Integer id) throws RegraDeNegocioException {
@@ -36,7 +35,7 @@ public class ConvenioService {
     public ConvenioDTO editar(Integer id, ConvenioCreateDTO convenio) throws RegraDeNegocioException {
             ConvenioEntity convenioEntityRecuperado = getConvenio(id);
             convenioEntityRecuperado.setTaxaAbatimento(convenio.getTaxaAbatimento());
-            convenioEntityRecuperado.setCadastroOrgaoRegulador(convenio.getCadastroOragaoRegulador());
+            convenioEntityRecuperado.setCadastroOrgaoRegulador(convenio.getCadastroOrgaoRegulador());
 
             convenioRepository.save(convenioEntityRecuperado);
 
