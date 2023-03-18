@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,9 +21,9 @@ public class AgendamentoEntity {
     @SequenceGenerator(name = "SEQ_AGENDAMENTO", sequenceName = "SEQ_AGENDAMENTO", allocationSize = 1)
     @Column(name = "id_convenio")
     private Integer idAgendamento;
-    @Column(name = "id_cliente")
+    @Column(name = "id_cliente", insertable = false, updatable = false)
     private Integer idCliente;
-    @Column(name = "id_medico")
+    @Column(name = "id_medico", insertable = false, updatable = false)
     private Integer idMedico;
     @Column(name = "tratamento")
     private String tratamento;
@@ -30,5 +31,15 @@ public class AgendamentoEntity {
     private String exame;
     @Column(name = "data_horario")
     private LocalDateTime dataHorario;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id_especialidade", referencedColumnName = "id_especialidade")
+    private ClienteEntity clienteEntity;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id_especialidade", referencedColumnName = "id_especialidade")
+    private MedicoEntity medicoEntity;
 
 }

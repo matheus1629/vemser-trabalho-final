@@ -36,6 +36,8 @@ public class UsuarioEntity {
     @Column(name = "tipo")
     private TipoUsuario tipoUsuario;
 
+    //<TODO> Aparantemente estas linhas são desnecessárias, pois não precisamos acessar o cliente ou medico a partir do usuario:
+/*
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "usuarioEntity", cascade = CascadeType.ALL)
     private ClienteEntity clienteEntity;
@@ -43,5 +45,5 @@ public class UsuarioEntity {
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "usuarioEntity", cascade = CascadeType.ALL)
     private MedicoEntity medicoEntity;
-
+*/
 }
