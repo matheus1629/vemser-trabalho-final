@@ -25,5 +25,21 @@ public class ClientePersonalizadoDTO {
     private String contatos;
     private String cep;
     private Integer numero;
-//    private Set<AgendamentoDTO> agendamentoDTOList;
+    private Set<AgendamentoDTO> agendamentoDTOList;
+
+    public ClientePersonalizadoDTO(Integer idCliente, Integer idConvenio, Integer idUsuario, String cadastroOrgaoRegulador, Double taxaAbatimento, String cpf, String email, String nome, TipoUsuario tipoUsuario, String contatos, String cep, Integer numero) {
+        this.idCliente = idCliente;
+        this.idConvenio = idConvenio;
+        this.idUsuario = idUsuario;
+        this.cadastroOrgaoRegulador = cadastroOrgaoRegulador;
+        this.taxaAbatimento = taxaAbatimento;
+        this.cpf = cpf;
+        this.email = email;
+        this.nome = nome;
+        this.tipoUsuario = tipoUsuario;
+        this.contatos = contatos;
+        this.cep = cep;
+        this.numero = numero;
+
+    }
 }
