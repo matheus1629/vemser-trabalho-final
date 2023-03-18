@@ -23,7 +23,8 @@ public class ConvenioService {
     public ConvenioDTO adicionar(ConvenioCreateDTO convenio) throws RegraDeNegocioException {
         ConvenioEntity convenioEntity = objectMapper.convertValue(convenio, ConvenioEntity.class);
         convenioRepository.save(convenioEntity);
-        return objectMapper.convertValue(convenioEntity, ConvenioDTO.class);
+        ConvenioDTO convenioDTO = objectMapper.convertValue(convenioEntity, ConvenioDTO.class);
+        return convenioDTO;
     }
 
     public void remover(Integer id) throws RegraDeNegocioException {

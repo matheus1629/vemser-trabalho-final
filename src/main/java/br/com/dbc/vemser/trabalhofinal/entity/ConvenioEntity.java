@@ -20,7 +20,7 @@ public class ConvenioEntity {
     @SequenceGenerator(name = "SEQ_CONVENIO", sequenceName = "SEQ_CONVENIO", allocationSize = 1)
     @Column(name = "id_convenio")
     private Integer idConvenio;
-    @Column(name = "Cadastro_Orgao_Regulador")
+    @Column(name = "cadastro_orgao_regulador")
     private String cadastroOrgaoRegulador;
     @Column(name = "taxa_abatimento")
     private Double taxaAbatimento;
