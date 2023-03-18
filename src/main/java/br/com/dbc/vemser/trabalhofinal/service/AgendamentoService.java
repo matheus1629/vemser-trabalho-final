@@ -48,15 +48,24 @@ public class AgendamentoService {
         return objectMapper.convertValue(agendamentoEntity, AgendamentoDTO.class);
     }
 
-    public void remover(Integer id) throws RegraDeNegocioException {
-            agendamentoRepository.delete(getAgendamento(id));
-    }
-
     public AgendamentoDTO editar(Integer id, AgendamentoCreateDTO agendamentoCreateDTO) throws RegraDeNegocioException {
         AgendamentoEntity agendamentoEntity = getAgendamento(id);
+        ClienteEntity clienteEntity = clienteService.getCliente(agendamentoCreateDTO.getIdCliente());
+        MedicoEntity medicoEntity = medicoService.getMedico(agendamentoCreateDTO.getIdMedico());
 
+        agendamentoEntity.setMedicoEntity(medicoEntity);
+        agendamentoEntity.setClienteEntity(clienteEntity);
+        agendamentoEntity.setExame(agendamentoCreateDTO.getExame());
+        agendamentoEntity.setTratamento(agendamentoCreateDTO.getTratamento());
+        agendamentoEntity.setDataHorario(agendamentoCreateDTO.getDataHorario());
 
-        return null;
+        agendamentoRepository.save(agendamentoEntity);
+
+        return objectMapper.convertValue(agendamentoEntity, AgendamentoDTO.class);
+    }
+
+    public void remover(Integer id) throws RegraDeNegocioException {
+            agendamentoRepository.delete(getAgendamento(id));
     }
 
     public AgendamentoEntity getAgendamento(Integer id) throws RegraDeNegocioException {

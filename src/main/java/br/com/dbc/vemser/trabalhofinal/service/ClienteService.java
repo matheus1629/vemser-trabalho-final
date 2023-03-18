@@ -78,6 +78,7 @@ public class ClienteService {
 
     public ClientePersonalizadoDTO getById(Integer idCliente) throws RegraDeNegocioException {
         ClientePersonalizadoDTO clientePersonalizadoDTO = clienteRepository.clientePersonalizado(idCliente);
+        return null;
     }
     public List<ClienteCompletoDTO> listarFull() throws RegraDeNegocioException {
 //            return clienteRepository.listarClienteDTOs();
