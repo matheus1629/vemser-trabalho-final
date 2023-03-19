@@ -6,12 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClientePersonalizadoDTO {
+public class AgendamentoClientePersonalizadoDTO {
 
     private Integer idCliente;
     private Integer idConvenio;
@@ -27,7 +26,7 @@ public class ClientePersonalizadoDTO {
     private Integer numero;
     private List<AgendamentoDTO> agendamentoDTOList;
 
-    public ClientePersonalizadoDTO(Integer idCliente, Integer idConvenio, Integer idUsuario, String cadastroOrgaoRegulador, Double taxaAbatimento, String cpf, String email, String nome, TipoUsuario tipoUsuario, String contatos, String cep, Integer numero) {
+    public AgendamentoClientePersonalizadoDTO(Integer idCliente, Integer idConvenio, Integer idUsuario, String cadastroOrgaoRegulador, Double taxaAbatimento, String cpf, String email, String nome, TipoUsuario tipoUsuario, String contatos, String cep, Integer numero) {
         this.idCliente = idCliente;
         this.idConvenio = idConvenio;
         this.idUsuario = idUsuario;

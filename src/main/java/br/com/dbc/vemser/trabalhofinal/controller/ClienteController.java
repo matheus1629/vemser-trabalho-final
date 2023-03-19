@@ -3,10 +3,8 @@ package br.com.dbc.vemser.trabalhofinal.controller;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.ClientePersonalizadoDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.ClienteService;
-import feign.Client;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -15,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -54,12 +51,7 @@ public class ClienteController implements InterfaceDocumentacao<ClienteCompletoD
     public ResponseEntity<ClienteCompletoDTO> getById(Integer id) throws RegraDeNegocioException {
         return null;
     }
-// NÃO MEXER
-    @GetMapping("/personalizado/{id}")
-    public ResponseEntity<ClientePersonalizadoDTO> getByIdPersonalizado(@RequestParam Integer id) throws RegraDeNegocioException {
-        return new ResponseEntity<>(clienteService.getById(id), HttpStatus.OK);
-    }
-    //
+
     @Override
     public ResponseEntity<ClienteCompletoDTO> create(ClienteCreateDTO cliente) throws RegraDeNegocioException {
         return new ResponseEntity<>(clienteService.adicionar(cliente), HttpStatus.OK);

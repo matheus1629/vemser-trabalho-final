@@ -1,17 +1,15 @@
 package br.com.dbc.vemser.trabalhofinal.repository;
 
-import br.com.dbc.vemser.trabalhofinal.dto.ClientePersonalizadoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.AgendamentoClientePersonalizadoDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface ClienteRepository extends JpaRepository<ClienteEntity, Integer> {
 
-    @Query("select new br.com.dbc.vemser.trabalhofinal.dto.ClientePersonalizadoDTO(" +
+    @Query("select new br.com.dbc.vemser.trabalhofinal.dto.AgendamentoClientePersonalizadoDTO(" +
             "c.idCliente," +
             "c.idConvenio," +
             "c.idUsuario," +
@@ -29,7 +27,7 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity, Integer>
             " left join c.convenioEntity con " +
             "where c.idCliente = :id"
     )
-    ClientePersonalizadoDTO clientePersonalizado(Integer id);
+    AgendamentoClientePersonalizadoDTO clientePersonalizado(Integer id);
 
 
 }

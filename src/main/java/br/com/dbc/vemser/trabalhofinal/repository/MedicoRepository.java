@@ -1,6 +1,5 @@
 package br.com.dbc.vemser.trabalhofinal.repository;
 
-import br.com.dbc.vemser.trabalhofinal.dto.ClientePersonalizadoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.MedicoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.MedicoPersonalizadoDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
