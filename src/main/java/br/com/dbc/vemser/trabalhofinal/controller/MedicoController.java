@@ -3,7 +3,6 @@ package br.com.dbc.vemser.trabalhofinal.controller;
 import br.com.dbc.vemser.trabalhofinal.dto.MedicoCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.MedicoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.MedicoDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.MedicoPersonalizadoDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.MedicoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,26 +43,11 @@ public class MedicoController implements InterfaceDocumentacao<MedicoCompletoDTO
         return new ResponseEntity<>(medicoService.listar(), HttpStatus.OK);
     }
     @Override
-    public ResponseEntity<List<MedicoCompletoDTO>> listAll() throws RegraDeNegocioException { //<todo> fazer caso dê tempo
+    public ResponseEntity<List<MedicoCompletoDTO>> listAll() throws RegraDeNegocioException {
         return new ResponseEntity<>(medicoService.listarFull(), HttpStatus.OK);
     }
 
-    //NÃO MEXER
-    @Operation(summary = "Listar todos os registros", description = "Lista todos os registros encontrados de determinado médico")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Todos os registros foram listados com sucesso"),
-                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
-            }
-    )
-    @GetMapping("/personalizado/{id}")
-    public ResponseEntity<MedicoPersonalizadoDTO> getByIdPersonalizado(@RequestParam Integer id) throws RegraDeNegocioException { //<todo> fazer caso dê tempo
-        return new ResponseEntity<>(medicoService.getByIdPersonalizado(id), HttpStatus.OK);
-    }
-    //
-
-    @Override //<todo> fazer a busca personalizada (usuario - medico- especialidade - agendamento)
+    @Override //<todo> fazer a busca personalizada
     public ResponseEntity<MedicoCompletoDTO> getById(Integer id) throws RegraDeNegocioException {
         return new ResponseEntity<>(medicoService.getById(id), HttpStatus.OK);
     }
