@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -65,7 +66,7 @@ public class AgendamentoService {
     }
 
     public void remover(Integer id) throws RegraDeNegocioException {
-            agendamentoRepository.delete(getAgendamento(id));
+        agendamentoRepository.delete(getAgendamento(id));
     }
 
     public AgendamentoEntity getAgendamento(Integer id) throws RegraDeNegocioException {
@@ -76,19 +77,25 @@ public class AgendamentoService {
         return objectMapper.convertValue(getAgendamento(id), AgendamentoDTO.class);
     }
 
-    public PageDTO<AgendamentoDTO> findAllPaginado(Integer pagina, Integer tamanho){
+    public List<AgendamentoDTO> getAllByIdClienteOrMedico(Integer id) throws RegraDeNegocioException {
+        return agendamentoRepository.findAllById(Collections.singleton(id)).stream()
+                .map(agendamentoEntity -> objectMapper.convertValue(agendamentoEntity, AgendamentoDTO.class))
+                .toList();
+    }
 
-    Pageable solicitacaoPagina = PageRequest.of(pagina,tamanho);
-    Page<AgendamentoEntity> agendamento = agendamentoRepository.findAllPaginado(solicitacaoPagina);
-    List<AgendamentoDTO> agendamentoDTO = agendamento.getContent().stream()
-            .map(x -> objectMapper.convertValue(x, AgendamentoDTO.class))
-            .toList();
+    public PageDTO<AgendamentoDTO> findAllPaginado(Integer pagina, Integer tamanho) {
 
-    return new PageDTO<>(agendamento.getTotalElements(),
-            agendamento.getTotalPages(),
-            pagina,
-            tamanho,
-            agendamentoDTO);
-}
+        Pageable solicitacaoPagina = PageRequest.of(pagina, tamanho);
+        Page<AgendamentoEntity> agendamento = agendamentoRepository.findAllPaginado(solicitacaoPagina);
+        List<AgendamentoDTO> agendamentoDTO = agendamento.getContent().stream()
+                .map(x -> objectMapper.convertValue(x, AgendamentoDTO.class))
+                .toList();
+
+        return new PageDTO<>(agendamento.getTotalElements(),
+                agendamento.getTotalPages(),
+                pagina,
+                tamanho,
+                agendamentoDTO);
+    }
 
 }

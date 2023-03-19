@@ -7,6 +7,7 @@ import br.com.dbc.vemser.trabalhofinal.repository.ClienteRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +20,9 @@ public class ClienteService {
     private final ClienteRepository clienteRepository;
     private final ObjectMapper objectMapper;
     private final UsuarioService usuarioService;
-
     private final ConvenioService convenioService;
+    private final AgendamentoService agendamentoService;
+
 
     public ClienteCompletoDTO adicionar(ClienteCreateDTO cliente) throws RegraDeNegocioException {
         ClienteEntity clienteEntity = objectMapper.convertValue(cliente, ClienteEntity.class);
@@ -78,7 +80,11 @@ public class ClienteService {
 
     public ClientePersonalizadoDTO getById(Integer idCliente) throws RegraDeNegocioException {
         ClientePersonalizadoDTO clientePersonalizadoDTO = clienteRepository.clientePersonalizado(idCliente);
-        return null;
+        List<AgendamentoDTO> listaAgendamento = agendamentoService.getAllByIdClienteOrMedico(idCliente);
+
+        clientePersonalizadoDTO.setAgendamentoDTOList(listaAgendamento);
+
+        return clientePersonalizadoDTO;
     }
     public List<ClienteCompletoDTO> listarFull() throws RegraDeNegocioException {
 //            return clienteRepository.listarClienteDTOs();
