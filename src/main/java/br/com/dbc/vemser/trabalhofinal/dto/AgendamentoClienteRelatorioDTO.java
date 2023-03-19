@@ -39,6 +39,5 @@ public class AgendamentoClienteRelatorioDTO {
         this.contatos = contatos;
         this.cep = cep;
         this.numero = numero;
-
     }
 }

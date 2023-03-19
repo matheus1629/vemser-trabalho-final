@@ -23,16 +23,11 @@ public class AgendamentoService {
     private final ClienteService clienteService;
     private final MedicoService medicoService;
     private final ObjectMapper objectMapper;
-    private final EmailService emailService;
-    private final UsuarioService usuarioService;
-
 
     public List<AgendamentoDTO> listar() throws RegraDeNegocioException {
-        return agendamentoRepository.findAgendamentoWithMedicoNomeAndClienteNome();
-/*        return agendamentoRepository.findAll().stream()
-                .map(agendamentoEntity -> objectMapper.convertValue(agendamentoEntity, AgendamentoDTO.class))
+        return agendamentoRepository.findAll().stream().map(agendamentoEntity ->
+                        objectMapper.convertValue(agendamentoEntity, AgendamentoDTO.class))
                 .toList();
-*/
     }
 
     public AgendamentoDTO adicionar(AgendamentoCreateDTO agendamentoCreateDTO) throws RegraDeNegocioException {

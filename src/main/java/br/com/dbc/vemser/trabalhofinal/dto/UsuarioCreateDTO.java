@@ -2,11 +2,15 @@ package br.com.dbc.vemser.trabalhofinal.dto;
 
 import br.com.dbc.vemser.trabalhofinal.entity.TipoUsuario;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UsuarioCreateDTO {
     @NotBlank
     @Size(min = 11, max = 11)
