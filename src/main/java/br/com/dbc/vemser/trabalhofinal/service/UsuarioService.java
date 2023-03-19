@@ -1,13 +1,19 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
+import br.com.dbc.vemser.trabalhofinal.dto.AgendamentoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.UsuarioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.UsuarioDTO;
+import br.com.dbc.vemser.trabalhofinal.entity.AgendamentoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.TipoUsuario;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.UsuarioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -91,5 +97,18 @@ public class UsuarioService {
         if (getUsuario(id).getTipoUsuario() != tipoUsuario) {
             throw new RegraDeNegocioException("O id de usuário informado não é adequado para esta operação!");
         }
+    }
+    public PageDTO<UsuarioDTO> listAll(Integer pagina,Integer tamanho ) {
+        Pageable solicitacaoPagina = PageRequest.of(pagina,tamanho);
+        Page<UsuarioEntity> usuario = usuarioRepository.findAll(solicitacaoPagina);
+        List<UsuarioDTO> usuarioDTO = usuario.getContent().stream()
+                .map(x -> objectMapper.convertValue(x, UsuarioDTO.class))
+                .toList();
+
+        return new PageDTO<>(usuario.getTotalElements(),
+                usuario.getTotalPages(),
+                pagina,
+                tamanho,
+                usuarioDTO);
     }
 }
