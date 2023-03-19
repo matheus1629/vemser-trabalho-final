@@ -1,34 +1,24 @@
 package br.com.dbc.vemser.trabalhofinal.controller;
 
-import br.com.dbc.vemser.trabalhofinal.dto.AgendamentoCreateDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.AgendamentoDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.AgendamentoDadosDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.*;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.AgendamentoService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Validated
 @RestController
 @RequestMapping("/agendamento")
 @RequiredArgsConstructor
-public class AgendamentoController  implements  InterfaceDocumentacao<AgendamentoDTO, AgendamentoCreateDTO, Integer> {
+public class AgendamentoController implements InterfaceDocumentacao<AgendamentoDTO, AgendamentoCreateDTO, Integer> {
 
     private final AgendamentoService agendamentoService;
+
     @Override
     public ResponseEntity<List<AgendamentoDTO>> listAll() throws RegraDeNegocioException {
         return new ResponseEntity<>(agendamentoService.listar(), HttpStatus.OK);
@@ -37,6 +27,16 @@ public class AgendamentoController  implements  InterfaceDocumentacao<Agendament
     @Override
     public ResponseEntity<AgendamentoDTO> getById(Integer id) throws RegraDeNegocioException {
         return new ResponseEntity<>(agendamentoService.getById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/{idCliente}/Relatorio-Cliente")
+    public ResponseEntity<AgendamentoClienteRelatorioDTO> getClienteByIdPersonalizado(@PathVariable("idCliente") Integer idCliente) throws RegraDeNegocioException {
+        return new ResponseEntity<>(agendamentoService.getRelatorioClienteById(idCliente), HttpStatus.OK);
+    }
+
+    @GetMapping("/{idMedico}/Relatorio-Medico")
+    public ResponseEntity<AgendamentoMedicoRelatorioDTO> getMedicoByIdPersonalizado(@PathVariable("idMedico") Integer idMedico) throws RegraDeNegocioException {
+        return new ResponseEntity<>(agendamentoService.getRelatorioMedicoById(idMedico), HttpStatus.OK);
     }
 
     @Override
@@ -56,8 +56,8 @@ public class AgendamentoController  implements  InterfaceDocumentacao<Agendament
     }
 
     @GetMapping("/paginado")
-    public PageDTO<AgendamentoDTO> listarPaginado(Integer pagina , Integer tamanho){
-        return agendamentoService.findAllPaginado(pagina,tamanho);
+    public PageDTO<AgendamentoDTO> listarPaginado(Integer pagina, Integer tamanho) {
+        return agendamentoService.findAllPaginado(pagina, tamanho);
     }
 
 }
