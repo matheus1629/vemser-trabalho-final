@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -32,8 +33,8 @@ public class ClienteService {
     }
 
     public ClienteCompletoDTO getById(Integer idCliente) throws RegraDeNegocioException {
-        getCliente(idCliente);
-        return clienteRepository.getByIdPersonalizado(idCliente);
+        Optional<ClienteCompletoDTO> clienteEncontrado = clienteRepository.getByIdPersonalizado(idCliente);
+        return clienteEncontrado.get();
     }
 
     public ClienteCompletoDTO adicionar(ClienteCreateDTO cliente) throws RegraDeNegocioException {
