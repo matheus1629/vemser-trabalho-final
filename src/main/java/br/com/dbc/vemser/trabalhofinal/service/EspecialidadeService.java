@@ -53,7 +53,11 @@ public class EspecialidadeService {
     }
 
     public void remover(Integer id) throws RegraDeNegocioException {
-        especialidadeRepository.delete(getEspecialidade(id));
+        if(getEspecialidade(id).getMedicoEntities().isEmpty()){
+            especialidadeRepository.deleteById(id);
+        }else{
+            throw new RegraDeNegocioException("A especialidade que deseja excluir está sendo usado por algum(ns) médico(s), associe-o(s) a outra antes.");
+        }
     }
 
     public EspecialidadeEntity getEspecialidade(Integer id) throws RegraDeNegocioException {
