@@ -94,4 +94,9 @@ public class MedicoService {
                 .orElseThrow(() -> new RegraDeNegocioException("Médico não existe!"));
     }
 
+    public MedicoPersonalizadoDTO getByIdPersonalizado(Integer id) throws RegraDeNegocioException {
+        getMedico(id);
+        return medicoRepository.getByIdPersonalizado(id);
+    }
+
 }

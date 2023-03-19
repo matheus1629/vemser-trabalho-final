@@ -50,16 +50,16 @@ public class ClienteController implements InterfaceDocumentacao<ClienteCompletoD
         return null;
     }
 
-
     @Override
     public ResponseEntity<ClienteCompletoDTO> getById(Integer id) throws RegraDeNegocioException {
         return null;
     }
+// NÃO MEXER
     @GetMapping("/personalizado/{id}")
     public ResponseEntity<ClientePersonalizadoDTO> getByIdPersonalizado(@RequestParam Integer id) throws RegraDeNegocioException {
         return new ResponseEntity<>(clienteService.getById(id), HttpStatus.OK);
     }
-
+    //
     @Override
     public ResponseEntity<ClienteCompletoDTO> create(ClienteCreateDTO cliente) throws RegraDeNegocioException {
         return new ResponseEntity<>(clienteService.adicionar(cliente), HttpStatus.OK);
