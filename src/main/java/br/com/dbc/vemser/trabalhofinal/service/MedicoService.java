@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -33,8 +34,11 @@ public class MedicoService {
     }
 
     public MedicoCompletoDTO getById(Integer idMedico) throws RegraDeNegocioException {
-        getMedico(idMedico);
-        return medicoRepository.getByIdPersonalizado(idMedico);
+        Optional<MedicoCompletoDTO> medicoRetornado = medicoRepository.getByIdPersonalizado(idMedico);
+        if(medicoRetornado.isEmpty()){
+            throw new RegraDeNegocioException("Usuário não encontrado.");
+        }
+        return medicoRetornado.get();
     }
 
     public MedicoCompletoDTO adicionar(MedicoCreateDTO medico) throws RegraDeNegocioException {

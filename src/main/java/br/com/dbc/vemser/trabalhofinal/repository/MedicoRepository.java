@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MedicoRepository extends JpaRepository<MedicoEntity, Integer> {
@@ -31,7 +32,7 @@ public interface MedicoRepository extends JpaRepository<MedicoEntity, Integer> {
             " left join m.especialidadeEntity es" +
             " where m.idMedico = :id"
     )
-    MedicoCompletoDTO getByIdPersonalizado(Integer id);
+    Optional<MedicoCompletoDTO> getByIdPersonalizado(Integer id);
 
     @Query("select new br.com.dbc.vemser.trabalhofinal.dto.MedicoCompletoDTO(" +
             "m.idMedico, " +

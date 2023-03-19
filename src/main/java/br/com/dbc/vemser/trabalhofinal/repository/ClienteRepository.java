@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ClienteRepository extends JpaRepository<ClienteEntity, Integer> {
@@ -29,7 +30,7 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity, Integer>
             " left join c.convenioEntity con " +
             "where c.idCliente = :id"
     )
-    ClienteCompletoDTO getByIdPersonalizado(Integer id);
+    Optional<ClienteCompletoDTO> getByIdPersonalizado(Integer id);
 
     @Query("select new br.com.dbc.vemser.trabalhofinal.dto.ClienteCompletoDTO(" +
             "c.idCliente," +
