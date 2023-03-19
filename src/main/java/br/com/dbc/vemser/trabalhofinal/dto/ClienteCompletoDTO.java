@@ -1,6 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.dto;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import br.com.dbc.vemser.trabalhofinal.entity.TipoUsuario;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,11 +10,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ClienteCompletoDTO {
 
-    @Schema(description = "Id do cliente", example = "1", required = true)
     private Integer idCliente;
-    @Schema(description = "Objeto UsuarioDTO", required = true)
-    private UsuarioDTO usuario;
-    @Schema(description = "Objeto ConvenioDTO", required = true)
-    private ConvenioDTO convenio;
-
+    private Integer idConvenio;
+    private Integer idUsuario;
+    private String cadastroOrgaoRegulador;
+    private Double taxaAbatimento;
+    private String cpf;
+    private String email;
+    private String nome;
+    private TipoUsuario tipoUsuario;
+    private String contatos;
+    private String cep;
+    private Integer numero;
 }
