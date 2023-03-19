@@ -28,11 +28,13 @@ public class MedicoService {
                 .toList();
     }
 
+    public List<MedicoCompletoDTO> listarFull() throws RegraDeNegocioException {
+        return medicoRepository.listarFull();
+    }
+
     public MedicoCompletoDTO getById(Integer idMedico) throws RegraDeNegocioException {
-//        getMedico(idMedico);
-//        MedicoDTO medicoComEspecialidadeEUsuario = medicoRepository.findMedicoComEspecialidadeEUsuario(idMedico);
-//        return medicoComEspecialidadeEUsuario;
-        return null;
+        getMedico(idMedico);
+        return medicoRepository.getByIdPersonalizado(idMedico);
     }
 
     public MedicoCompletoDTO adicionar(MedicoCreateDTO medico) throws RegraDeNegocioException {
@@ -48,14 +50,9 @@ public class MedicoService {
         medicoEntity.setEspecialidadeEntity(especialidade);
         medicoEntity.setUsuarioEntity(usuario);
 
-        medicoRepository.save(medicoEntity);
+        MedicoEntity medicoAdicionado = medicoRepository.save(medicoEntity);
 
-        // criação do MedicoCompletoDTO para retorno
-        MedicoCompletoDTO medicoCompletoDTO = objectMapper.convertValue(medicoEntity, MedicoCompletoDTO.class);
-        medicoCompletoDTO.setEspecialidade(objectMapper.convertValue(especialidade, EspecialidadeDTO.class));
-        medicoCompletoDTO.setUsuario(objectMapper.convertValue(usuario, UsuarioDTO.class));
-
-        return medicoCompletoDTO;
+        return getById(medicoAdicionado.getIdMedico());
     }
 
     public MedicoCompletoDTO editar(Integer id, MedicoCreateDTO medico) throws RegraDeNegocioException {
@@ -72,31 +69,18 @@ public class MedicoService {
         medicoEntity.setEspecialidadeEntity(especialidade);
         medicoEntity.setCrm(medico.getCrm());
 
-        medicoRepository.save(medicoEntity);
+        MedicoEntity medicoEditado = medicoRepository.save(medicoEntity);
 
-        MedicoCompletoDTO medicoCompletoDTO = objectMapper.convertValue(medicoEntity, MedicoCompletoDTO.class);
-        medicoCompletoDTO.setEspecialidade(objectMapper.convertValue(especialidade, EspecialidadeDTO.class));
-        medicoCompletoDTO.setUsuario(objectMapper.convertValue(usuario, UsuarioDTO.class));
-
-        return medicoCompletoDTO;
+        return getById(medicoEditado.getIdMedico());
     }
 
     public void remover(Integer id) throws RegraDeNegocioException {
         medicoRepository.delete(getMedico(id));
     }
 
-    public List<MedicoCompletoDTO> listarFull() throws RegraDeNegocioException {
-        return null;
-    }
-
     public MedicoEntity getMedico(Integer id) throws RegraDeNegocioException {
         return medicoRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("Médico não existe!"));
-    }
-
-    public MedicoPersonalizadoDTO getByIdPersonalizado(Integer id) throws RegraDeNegocioException {
-        getMedico(id);
-        return medicoRepository.getByIdPersonalizado(id);
     }
 
 }

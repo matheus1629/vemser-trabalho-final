@@ -29,16 +29,15 @@ public class AgendamentoController implements InterfaceDocumentacao<AgendamentoD
         return new ResponseEntity<>(agendamentoService.getById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/Relatorio-Cliente/{idCliente}")
-    public ResponseEntity<AgendamentoClientePersonalizadoDTO> getClienteByIdPersonalizado(@PathVariable("idCliente") Integer idCliente) throws RegraDeNegocioException {
+    @GetMapping("/{idCliente}/Relatorio-Cliente")
+    public ResponseEntity<AgendamentoClienteRelatorioDTO> getClienteByIdPersonalizado(@PathVariable("idCliente") Integer idCliente) throws RegraDeNegocioException {
         return new ResponseEntity<>(agendamentoService.getRelatorioClienteById(idCliente), HttpStatus.OK);
     }
 
-//    @GetMapping("/medico/${idMedico}")
-//    public ResponseEntity<MedicoPersonalizadoDTO> getMedicoByIdPersonalizado(@RequestParam("idMedico") Integer idMedico) throws RegraDeNegocioException {
-//        return null;
-////        return new ResponseEntity<>(agendamentoService.getRelatorioMedicoById(id), HttpStatus.OK);
-//    }
+    @GetMapping("/{idMedico}/Relatorio-Medico")
+    public ResponseEntity<AgendamentoMedicoRelatorioDTO> getMedicoByIdPersonalizado(@PathVariable("idMedico") Integer idMedico) throws RegraDeNegocioException {
+        return new ResponseEntity<>(agendamentoService.getRelatorioMedicoById(idMedico), HttpStatus.OK);
+    }
 
     @Override
     public ResponseEntity<AgendamentoDTO> create(AgendamentoCreateDTO agendamento) throws RegraDeNegocioException {

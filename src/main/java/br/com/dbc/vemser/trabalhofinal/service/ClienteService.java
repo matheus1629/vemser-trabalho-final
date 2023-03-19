@@ -21,30 +21,36 @@ public class ClienteService {
     private final UsuarioService usuarioService;
     private final ConvenioService convenioService;
 
+    public List<ClienteDTO> listar() throws RegraDeNegocioException {
+        return clienteRepository.findAll().stream().map(clienteEntity ->
+                objectMapper.convertValue(clienteEntity, ClienteDTO.class))
+                .toList();
+    }
+
+    public List<ClienteCompletoDTO> listarFull() throws RegraDeNegocioException {
+        return clienteRepository.listarFull();
+    }
+
+    public ClienteCompletoDTO getById(Integer idCliente) throws RegraDeNegocioException {
+        getCliente(idCliente);
+        return clienteRepository.getByIdPersonalizado(idCliente);
+    }
+
     public ClienteCompletoDTO adicionar(ClienteCreateDTO cliente) throws RegraDeNegocioException {
         ClienteEntity clienteEntity = objectMapper.convertValue(cliente, ClienteEntity.class);
         UsuarioEntity usuarioEntity = usuarioService.getUsuario(cliente.getIdUsuario());
         ConvenioEntity convenioEntity = convenioService.getConvenio(cliente.getIdConvenio());
 
-        if (Objects.equals(usuarioEntity.getTipoUsuario().ordinal(), 2)) {
+        if (!Objects.equals(usuarioEntity.getTipoUsuario().ordinal(), 2)) {
             throw new RegraDeNegocioException("Este usuário não é um cliente!");
         }
 
         clienteEntity.setUsuarioEntity(usuarioEntity);
         clienteEntity.setConvenioEntity(convenioEntity);
 
-        clienteRepository.save(clienteEntity);
+        ClienteEntity clienteAdicionado = clienteRepository.save(clienteEntity);
 
-        ClienteCompletoDTO clienteCompletoDTO = objectMapper.convertValue(clienteEntity, ClienteCompletoDTO.class);
-        clienteCompletoDTO.setConvenio(objectMapper.convertValue(convenioEntity, ConvenioDTO.class));
-        clienteCompletoDTO.setUsuario(objectMapper.convertValue(usuarioEntity, UsuarioDTO.class));
-
-        return clienteCompletoDTO;
-    }
-
-    public void remover(Integer id) throws RegraDeNegocioException {
-        getCliente(id);
-        clienteRepository.deleteById(id);
+        return getById(clienteAdicionado.getIdCliente());
     }
 
     public ClienteCompletoDTO editar(Integer id, ClienteCreateDTO cliente) throws RegraDeNegocioException {
@@ -53,40 +59,23 @@ public class ClienteService {
         UsuarioEntity usuarioEntity = usuarioService.getUsuario(cliente.getIdUsuario());
         ConvenioEntity convenioEntity = convenioService.getConvenio(cliente.getIdConvenio());
 
-        if (Objects.equals(usuarioEntity.getTipoUsuario().ordinal(), 2)) {
+        if (!Objects.equals(usuarioEntity.getTipoUsuario().ordinal(), 2)) {
             throw new RegraDeNegocioException("Este usuário não é um cliente!");
         }
 
         clienteEntity.setUsuarioEntity(usuarioEntity);
         clienteEntity.setConvenioEntity(convenioEntity);
 
-        clienteRepository.save(clienteEntity);
+        ClienteEntity clienteEditado = clienteRepository.save(clienteEntity);
 
-        ClienteCompletoDTO clienteCompletoDTO = objectMapper.convertValue(clienteEntity, ClienteCompletoDTO.class);
-        clienteCompletoDTO.setConvenio(objectMapper.convertValue(convenioEntity, ConvenioDTO.class));
-        clienteCompletoDTO.setUsuario(objectMapper.convertValue(usuarioEntity, UsuarioDTO.class));
-
-        return clienteCompletoDTO;
+        return getById(clienteEditado.getIdCliente());
 
     }
 
-    public List<ClienteDTO> listar() throws RegraDeNegocioException {
-        return clienteRepository.findAll().stream().map(clienteEntity ->
-        objectMapper.convertValue(clienteEntity, ClienteDTO.class)).toList();
+    public void remover(Integer id) throws RegraDeNegocioException {
+        clienteRepository.delete(getCliente(id));
     }
 
-    public AgendamentoClientePersonalizadoDTO getById(Integer idCliente) throws RegraDeNegocioException {
-        AgendamentoClientePersonalizadoDTO agendamentoClientePersonalizadoDTO = clienteRepository.clientePersonalizado(idCliente);
-//        List<AgendamentoDTO> listaAgendamento = agendamentoService.getAllByIdClienteOrMedico(idCliente);
-
-//        clientePersonalizadoDTO.setAgendamentoDTOList(listaAgendamento);
-
-        return agendamentoClientePersonalizadoDTO;
-    }
-    public List<ClienteCompletoDTO> listarFull() throws RegraDeNegocioException {
-//            return clienteRepository.listarClienteDTOs();
-        return null;
-    }
     public ClienteEntity getCliente(Integer id) throws RegraDeNegocioException {
             return clienteRepository.findAll()
                     .stream()

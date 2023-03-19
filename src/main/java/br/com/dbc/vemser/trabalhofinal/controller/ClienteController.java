@@ -43,13 +43,12 @@ public class ClienteController implements InterfaceDocumentacao<ClienteCompletoD
 
     @Override
     public ResponseEntity<List<ClienteCompletoDTO>> listAll() throws RegraDeNegocioException {
-//        return new ResponseEntity<>(clienteService.listarFull(), HttpStatus.OK);
-        return null;
+        return new ResponseEntity<>(clienteService.listarFull(), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<ClienteCompletoDTO> getById(Integer id) throws RegraDeNegocioException {
-        return null;
+        return new ResponseEntity<>(clienteService.getById(id), HttpStatus.OK);
     }
 
     @Override

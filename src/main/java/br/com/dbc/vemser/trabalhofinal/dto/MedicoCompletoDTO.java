@@ -1,17 +1,24 @@
 package br.com.dbc.vemser.trabalhofinal.dto;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import br.com.dbc.vemser.trabalhofinal.entity.TipoUsuario;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-public class MedicoCompletoDTO extends MedicoCreateDTO{
+@AllArgsConstructor
+public class MedicoCompletoDTO {
 
-    @Schema(description = "Id do Medico", example = "1", required = true)
     private Integer idMedico;
-
-    @Schema(description = "Objeto usuarioDTO", required = true)
-    private UsuarioDTO usuario;
-
-    @Schema(description = "Objeto especialidadeDTO", required = true)
-    private EspecialidadeDTO especialidade;
+    private String crm;
+    private Integer idEspecialidade;
+    private Integer idUsuario;
+    private Double valor;
+    private String nomeEspecilidade;
+    private String cpf;
+    private String email;
+    private String nome;
+    private TipoUsuario tipoUsuario;
+    private String contatos;
+    private String cep;
+    private Integer numero;
 }

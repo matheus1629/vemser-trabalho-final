@@ -1,9 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
-import br.com.dbc.vemser.trabalhofinal.dto.AgendamentoClientePersonalizadoDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.AgendamentoCreateDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.AgendamentoDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.*;
 import br.com.dbc.vemser.trabalhofinal.entity.AgendamentoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
@@ -81,37 +78,27 @@ public class AgendamentoService {
     }
 
 
-    public AgendamentoClientePersonalizadoDTO getRelatorioClienteById(Integer idCliente) throws RegraDeNegocioException {
-        clienteService.getCliente(idCliente);
-        AgendamentoClientePersonalizadoDTO agendamentoClientePersonalizadoDTO = agendamentoRepository.clientePersonalizado(idCliente);
-
+    public AgendamentoClienteRelatorioDTO getRelatorioClienteById(Integer idCliente) throws RegraDeNegocioException {
+        AgendamentoClienteRelatorioDTO agendamentoRelatorio = objectMapper.convertValue(clienteService.getById(idCliente), AgendamentoClienteRelatorioDTO.class);
 
         List<AgendamentoDTO> allByIdCliente = agendamentoRepository.findAllByIdCliente(idCliente).stream()
                 .map(agendamentoEntity -> objectMapper.convertValue(agendamentoEntity, AgendamentoDTO.class))
                 .toList();
-        agendamentoClientePersonalizadoDTO.setAgendamentoDTOList(allByIdCliente);
+        agendamentoRelatorio.setAgendamentoDTOList(allByIdCliente);
 
-        return agendamentoClientePersonalizadoDTO;
+        return agendamentoRelatorio;
     }
 
-//    public AgendamentoClientePersonalizadoDTO getRelatorioClienteById(Integer idCliente, TipoUsuario tipoUsuario) throws RegraDeNegocioException {
-//        clienteService.getCliente(idCliente);
-//        AgendamentoClientePersonalizadoDTO agendamentoClientePersonalizadoDTO = agendamentoRepository.clientePersonalizado(idCliente);
-//
-//        List<AgendamentoDTO> allByIdCliente = agendamentoRepository.findAllByIdClienteOrMedico(idCliente, "id_" + tipoUsuario.toString()).stream()
-//                .map(agendamentoEntity -> objectMapper.convertValue(agendamentoEntity, AgendamentoDTO.class))
-//                .toList();
-//
-//        agendamentoClientePersonalizadoDTO.setAgendamentoDTOList(allByIdCliente);
-//
-//        return agendamentoClientePersonalizadoDTO;
-//    }
-//
-//    public List<AgendamentoDTO> getAllByIdClienteOrMedico(Integer id, TipoUsuario tipoUsuario) throws RegraDeNegocioException {
-//        return agendamentoRepository.findAllByIdClienteOrMedico(id, tipoUsuario.toString()).stream()
-//                .map(agendamentoEntity -> objectMapper.convertValue(agendamentoEntity, AgendamentoDTO.class))
-//                .toList();
-//    }
+    public AgendamentoMedicoRelatorioDTO getRelatorioMedicoById(Integer idMedico) throws RegraDeNegocioException {
+        AgendamentoMedicoRelatorioDTO agendamentoRelatorio = objectMapper.convertValue(medicoService.getById(idMedico), AgendamentoMedicoRelatorioDTO.class);
+
+        List<AgendamentoDTO> allByIdMedico = agendamentoRepository.findAllByIdMedico(idMedico).stream()
+                .map(agendamentoEntity -> objectMapper.convertValue(agendamentoEntity, AgendamentoDTO.class))
+                .toList();
+        agendamentoRelatorio.setAgendamentoDTOList(allByIdMedico);
+
+        return agendamentoRelatorio;
+    }
 
     public PageDTO<AgendamentoDTO> findAllPaginado(Integer pagina, Integer tamanho) {
 

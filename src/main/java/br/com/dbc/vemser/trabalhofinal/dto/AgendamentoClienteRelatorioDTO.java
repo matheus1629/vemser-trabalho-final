@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AgendamentoClientePersonalizadoDTO {
+public class AgendamentoClienteRelatorioDTO {
 
     private Integer idCliente;
     private Integer idConvenio;
@@ -26,7 +26,7 @@ public class AgendamentoClientePersonalizadoDTO {
     private Integer numero;
     private List<AgendamentoDTO> agendamentoDTOList;
 
-    public AgendamentoClientePersonalizadoDTO(Integer idCliente, Integer idConvenio, Integer idUsuario, String cadastroOrgaoRegulador, Double taxaAbatimento, String cpf, String email, String nome, TipoUsuario tipoUsuario, String contatos, String cep, Integer numero) {
+    public AgendamentoClienteRelatorioDTO(Integer idCliente, Integer idConvenio, Integer idUsuario, String cadastroOrgaoRegulador, Double taxaAbatimento, String cpf, String email, String nome, TipoUsuario tipoUsuario, String contatos, String cep, Integer numero) {
         this.idCliente = idCliente;
         this.idConvenio = idConvenio;
         this.idUsuario = idUsuario;
