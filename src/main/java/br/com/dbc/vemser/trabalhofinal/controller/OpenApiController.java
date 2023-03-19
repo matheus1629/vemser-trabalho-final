@@ -12,10 +12,10 @@ import java.io.IOException;
 @RestController
 public class OpenApiController {
 
-    @Operation(hidden = true)
-    @GetMapping(value = "/")
-    public void index(HttpServletResponse response) throws IOException {
-        response.sendRedirect("/swagger-ui/index.html");
-    }
+//    @Operation(hidden = true)
+//    @GetMapping(value = "/")
+//    public void index(HttpServletResponse response) throws IOException {
+//        response.sendRedirect("/swagger-ui/index.html");
+//    }
 
 }
