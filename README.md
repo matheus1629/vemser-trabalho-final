@@ -3,31 +3,28 @@
 <h2 style="text-align: center" >Projeto Java para Agendamento e Gestão de Consultas Médicas</h2>
 
 <p>
-    Este projeto tem como ponto principal o desenvolvimento de uma API RESTful do sistema back-end para a gerência e agendamentoEntities de consultas médicas.
+    Este projeto tem como ponto principal o desenvolvimento de uma API RESTful do sistema back-end para a gerência e agendamento de consultas médicas.
 </p>
 <hr>
 <p>
     <strong> ⛺ Estrutura principal:</strong>
     <br>Pode-se criar, editar, excluir, consultar e listar:
     <ul>
-        <li>Usuário - <i>possui informações pessoais básicas e de login. Pode ser médico ou clienteEntity.</i></li>
-        <li>Cliente - <i>é vinculado a algum usuário de seu tipo, esse pode ter algum Convênio.</i></li>
+        <li>Cliente - <i>possui informações pessoais básicas e de login, esse pode ter algum Convênio.</i></li>
         <li>Convênio - <i>para o cadastro no Cliente, podendo ter algum abatimento no valor da consulta.</i></li>
-        <li>Médico - <i>também vinculado a algum usuário de seu tipo, possuem necessariamente alguma Especialidade.</i></li>
+        <li>Médico - <i>possui informações pessoais básicas e de login, deve ter necessariamente alguma Especialidade.</i></li>
         <li>Especialidade - <i>para registrar a atuação e variante do valor de consulta dos médicos.</i></li>
         <li>Agendamento - <i>é usado para registrar uma consulta de um paciente (Cliente) com um médico.</i></li>
     </ul>
-    O sistema conta também com o envio de e-mails informativos ao cadastrar um usuário (ao e-mail desse) e para ações de criação, edição e remoção de agendamentoEntity (enviado tanto ao médico, quanto ao clienteEntity).
-</p>
+   </p>
 <hr>
 
 ### 🛠 Tecnologias e padrões de projeto
 <ul>
     <li>Java 17</li>
-    <li>JDBC 8</li>
     <li>Spring Boot</li>
+    <li>Spring Data</li>
     <li>Banco de dados Oracle</li>
-    <li>JavaMail com templates FreeMarker</li>
     <li>Swagger</li>
     <li>Jenkins</li>
     <li>Abordagem MVC</li>
@@ -49,7 +46,7 @@
 
 #### Vem Ser - Trabalho final do Módulo 3
 ## Trello da divisão de tarefas:
-<p>https://trello.com/b/cbQhdkhN/kanban-m%C3%B3dulo-3-trabalho-final</p>
+<p>https://trello.com/b/pY4BMcN8/trabalho-final-spring-data</p>
 
 <hr>
 <h2>Autores</h2> 
@@ -62,4 +59,4 @@
 </table>
 
 <hr>
-<p>Este projeto foi baseado no seguinte repositório: https://github.com/pedro-s-20/vemser-trabalho-final-BD</p>
+<p>Este projeto foi baseado no seguinte repositório: https://github.com/Gabriel-Gomes-Meira/trabalho_final_spring</p>
