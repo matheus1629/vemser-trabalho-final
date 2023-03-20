@@ -40,7 +40,7 @@
 
 ### Diagrama de classes (Estrutura do código)
 
-<a href="docs/Diagrama_de_Classes.png">Clique aqui para visualizar.</a>
+<a href="docs/Diagrama_de_Classes.jpg">Clique aqui para visualizar.</a>
 
 <hr>
 
