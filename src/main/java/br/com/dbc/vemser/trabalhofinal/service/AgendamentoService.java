@@ -24,12 +24,6 @@ public class AgendamentoService {
     private final MedicoService medicoService;
     private final ObjectMapper objectMapper;
 
-    public List<AgendamentoDTO> listar() throws RegraDeNegocioException {
-        return agendamentoRepository.findAll().stream().map(agendamentoEntity ->
-                        objectMapper.convertValue(agendamentoEntity, AgendamentoDTO.class))
-                .toList();
-    }
-
     public AgendamentoDTO adicionar(AgendamentoCreateDTO agendamentoCreateDTO) throws RegraDeNegocioException {
         ClienteEntity clienteEntity = clienteService.getCliente(agendamentoCreateDTO.getIdCliente());
         MedicoEntity medicoEntity = medicoService.getMedico(agendamentoCreateDTO.getIdMedico());
@@ -81,6 +75,10 @@ public class AgendamentoService {
                 .toList();
         agendamentoRelatorio.setAgendamentoDTOList(allByIdCliente);
 
+        if (allByIdCliente.isEmpty()) {
+            throw new RegraDeNegocioException("Esse cliente não possui agendamento");
+        }
+
         return agendamentoRelatorio;
     }
 
@@ -91,6 +89,10 @@ public class AgendamentoService {
                 .map(agendamentoEntity -> objectMapper.convertValue(agendamentoEntity, AgendamentoDTO.class))
                 .toList();
         agendamentoRelatorio.setAgendamentoDTOList(allByIdMedico);
+
+        if (allByIdMedico.isEmpty()) {
+            throw new RegraDeNegocioException("Esse médico não possui agendamento");
+        }
 
         return agendamentoRelatorio;
     }
