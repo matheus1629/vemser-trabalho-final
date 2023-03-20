@@ -3,12 +3,9 @@ package br.com.dbc.vemser.trabalhofinal.controller;
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.UsuarioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.UsuarioDTO;
-import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -29,8 +26,9 @@ public class UsuarioController implements InterfaceDocumentacao<UsuarioDTO, Usua
 
 
     @Override
-    public ResponseEntity<List<UsuarioDTO>> listAll() throws RegraDeNegocioException {
-        return new ResponseEntity<>(usuarioService.listar(), HttpStatus.OK);
+    @GetMapping("/paginado")
+    public ResponseEntity<PageDTO<UsuarioDTO>> list(@RequestParam Integer pagina, @RequestParam Integer tamanho) {
+        return ResponseEntity.ok(usuarioService.listAll(pagina,tamanho));
     }
 
     @Override
@@ -54,8 +52,5 @@ public class UsuarioController implements InterfaceDocumentacao<UsuarioDTO, Usua
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/paginado")
-    public ResponseEntity<PageDTO<UsuarioDTO>> list(@RequestParam Integer pagina,@RequestParam Integer tamanho) {
-        return ResponseEntity.ok(usuarioService.listAll(pagina,tamanho));
-    }
+
 }
