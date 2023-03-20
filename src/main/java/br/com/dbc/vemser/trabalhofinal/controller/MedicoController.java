@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping("/medico")
 @RestController
 @RequiredArgsConstructor
-public class MedicoController implements InterfaceDocumentacao<MedicoCompletoDTO, MedicoCreateDTO, Integer> {
+public class MedicoController implements InterfaceDocumentacao<MedicoCompletoDTO, MedicoCreateDTO, Integer, Integer> {
 
     private final MedicoService medicoService;
 

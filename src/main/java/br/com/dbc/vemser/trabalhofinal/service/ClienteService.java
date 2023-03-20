@@ -38,43 +38,47 @@ public class ClienteService {
     }
 
     public ClienteCompletoDTO adicionar(ClienteCreateDTO cliente) throws RegraDeNegocioException {
+
+        // Adicionando o Usuario com as informações recebidas no ClienteCreateDTO
+        UsuarioEntity usuarioEntity = objectMapper.convertValue(cliente, UsuarioEntity.class);
+        usuarioEntity.setTipoUsuario(TipoUsuario.CLIENTE);
+        usuarioService.validarUsuarioAdicionado(usuarioEntity);
+        usuarioService.adicionar(usuarioEntity);
+
+        // Adicionando o usuario que foi salvado no Cliente a salvar
         ClienteEntity clienteEntity = objectMapper.convertValue(cliente, ClienteEntity.class);
-        UsuarioEntity usuarioEntity = usuarioService.getUsuario(cliente.getIdUsuario());
-        ConvenioEntity convenioEntity = convenioService.getConvenio(cliente.getIdConvenio());
-
-        if (!Objects.equals(usuarioEntity.getTipoUsuario().ordinal(), 2)) {
-            throw new RegraDeNegocioException("Este usuário não é um cliente!");
-        }
-
         clienteEntity.setUsuarioEntity(usuarioEntity);
-        clienteEntity.setConvenioEntity(convenioEntity);
 
-        ClienteEntity clienteAdicionado = clienteRepository.save(clienteEntity);
+        // Adicionando Convenio em Cliente a salvar
+        clienteEntity.setConvenioEntity(convenioService.getConvenio(cliente.getIdConvenio()));
 
-        return getById(clienteAdicionado.getIdCliente());
+        clienteRepository.save(clienteEntity);
+
+        return getById(clienteEntity.getIdCliente());
     }
 
     public ClienteCompletoDTO editar(Integer id, ClienteCreateDTO cliente) throws RegraDeNegocioException {
 
-        ClienteEntity clienteEntity = objectMapper.convertValue(getCliente(id), ClienteEntity.class);
-        UsuarioEntity usuarioEntity = usuarioService.getUsuario(cliente.getIdUsuario());
-        ConvenioEntity convenioEntity = convenioService.getConvenio(cliente.getIdConvenio());
+        ClienteEntity clienteEntity = getCliente(id);
 
-        if (!Objects.equals(usuarioEntity.getTipoUsuario().ordinal(), 2)) {
-            throw new RegraDeNegocioException("Este usuário não é um cliente!");
-        }
+//        UsuarioEntity usuarioDTO = usuarioService.getUsuario(clienteEntity.getUsuarioEntity().getIdUsuario());
 
-        clienteEntity.setUsuarioEntity(usuarioEntity);
-        clienteEntity.setConvenioEntity(convenioEntity);
+        UsuarioCreateDTO usuarioDTO = objectMapper.convertValue(cliente, UsuarioCreateDTO.class);
+        usuarioDTO.setTipoUsuario(TipoUsuario.CLIENTE);
+
+        usuarioService.validarUsuarioEditado(usuarioDTO, clienteEntity.getIdUsuario());
+        usuarioService.editar(usuarioDTO, clienteEntity.getIdUsuario());
+
 
         ClienteEntity clienteEditado = clienteRepository.save(clienteEntity);
 
         return getById(clienteEditado.getIdCliente());
-
     }
 
     public void remover(Integer id) throws RegraDeNegocioException {
-        clienteRepository.delete(getCliente(id));
+        ClienteEntity clienteEntity = getCliente(id);
+        usuarioService.remover(clienteEntity.getIdUsuario());
+        clienteRepository.delete(clienteEntity);
     }
 
     public ClienteEntity getCliente(Integer id) throws RegraDeNegocioException {

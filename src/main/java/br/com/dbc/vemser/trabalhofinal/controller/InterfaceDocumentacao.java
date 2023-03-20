@@ -1,7 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.controller;
 
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.UsuarioDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -10,9 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
-public interface InterfaceDocumentacao<saida, entrada, numero> {
+public interface InterfaceDocumentacao<saida, entrada, id, numero2> {
 
     @Operation(summary = "Listar registros", description = "Lista todos os registros")
     @ApiResponses(
@@ -23,7 +21,7 @@ public interface InterfaceDocumentacao<saida, entrada, numero> {
             }
     )
     @GetMapping()
-    ResponseEntity<PageDTO<saida>> list(@RequestParam numero pagina, @RequestParam numero tamanho);
+    ResponseEntity<PageDTO<saida>> list(@RequestParam id pagina, @RequestParam numero2 tamanho);
 
     @Operation(summary = "Recuperar um registro", description = "Lista um registro passando seu ID")
     @ApiResponses(
@@ -33,8 +31,8 @@ public interface InterfaceDocumentacao<saida, entrada, numero> {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @GetMapping("/{numero}")
-    ResponseEntity<saida> getById(@PathVariable numero numero) throws RegraDeNegocioException;
+    @GetMapping("/{id}")
+    ResponseEntity<saida> getById(@PathVariable id id) throws RegraDeNegocioException;
 
     @Operation(summary = "Criar registro", description = "Cria um registro")
     @ApiResponses(
@@ -56,8 +54,8 @@ public interface InterfaceDocumentacao<saida, entrada, numero> {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @PutMapping("/{numero}")
-    ResponseEntity<saida> update(@PathVariable numero numero, @Valid @RequestBody entrada e) throws RegraDeNegocioException;
+    @PutMapping("/{id}")
+    ResponseEntity<saida> update(@PathVariable id id, @Valid @RequestBody entrada e) throws RegraDeNegocioException;
 
     @Operation(summary = "Deletar registro", description = "Detela um registro passando o id")
     @ApiResponses(
@@ -67,6 +65,6 @@ public interface InterfaceDocumentacao<saida, entrada, numero> {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @DeleteMapping("/{numero}")
-    ResponseEntity<Void> delete(@PathVariable numero numero) throws RegraDeNegocioException;
+    @DeleteMapping("/{id}")
+    ResponseEntity<Void> delete(@PathVariable id id) throws RegraDeNegocioException;
 }

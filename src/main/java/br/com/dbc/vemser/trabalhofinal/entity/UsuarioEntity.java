@@ -36,7 +36,6 @@ public class UsuarioEntity {
     @Column(name = "tipo")
     private TipoUsuario tipoUsuario;
 
-
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "usuarioEntity", cascade = CascadeType.ALL)
     private ClienteEntity clienteEntity;

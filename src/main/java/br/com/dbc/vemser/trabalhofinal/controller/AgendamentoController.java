@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/agendamento")
 @RequiredArgsConstructor
-public class AgendamentoController implements InterfaceDocumentacao<AgendamentoDTO, AgendamentoCreateDTO, Integer> {
+public class AgendamentoController implements InterfaceDocumentacao<AgendamentoDTO, AgendamentoCreateDTO, Integer, Integer> {
 
     private final AgendamentoService agendamentoService;
 

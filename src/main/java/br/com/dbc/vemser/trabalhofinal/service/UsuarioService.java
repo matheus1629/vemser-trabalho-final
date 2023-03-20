@@ -1,10 +1,8 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
-import br.com.dbc.vemser.trabalhofinal.dto.AgendamentoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.UsuarioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.UsuarioDTO;
-import br.com.dbc.vemser.trabalhofinal.entity.AgendamentoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.TipoUsuario;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
@@ -17,7 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 //<TODO> VER SE VAMOS MANTER A CONTROLLER DO USUARIO OU SE VAMOS MECLAR USUARIO SERVICE NO MEDICO E CLIENTE.
 
@@ -29,12 +27,8 @@ public class UsuarioService {
     private final ObjectMapper objectMapper;
     private final EmailService emailService;
 
-    public UsuarioDTO adicionar(UsuarioCreateDTO usuario) throws RegraDeNegocioException {
-
-        validarUsuario(objectMapper.convertValue(usuario, UsuarioEntity.class));
-        UsuarioEntity usuarioAdicionado = usuarioRepository.save(objectMapper.convertValue(usuario, UsuarioEntity.class));
-
-        return objectMapper.convertValue(usuarioAdicionado, UsuarioDTO.class);
+    public void adicionar(UsuarioEntity usuario) throws RegraDeNegocioException {
+        usuarioRepository.save(usuario);
     }
 
     public void remover(Integer id) throws RegraDeNegocioException {
@@ -42,49 +36,61 @@ public class UsuarioService {
         usuarioRepository.deleteById(usuario.getIdUsuario());
     }
 
-    public UsuarioDTO editar(Integer id, UsuarioCreateDTO usuario) throws RegraDeNegocioException {
+    public void editar(UsuarioCreateDTO usuario, Integer id) throws RegraDeNegocioException {
 
-            UsuarioEntity usuarioRecuperado = getUsuario(id);
-            validarUsuario(objectMapper.convertValue(usuario, UsuarioEntity.class));
+        UsuarioEntity usuarioRecuperado = getUsuario(id);
+        usuarioRecuperado.setCpf(usuario.getCpf());
+        usuarioRecuperado.setEmail(usuario.getEmail());
+        usuarioRecuperado.setNome(usuario.getNome());
+        usuarioRecuperado.setSenha(usuario.getSenha());
+        usuarioRecuperado.setCep(usuario.getCep());
+        usuarioRecuperado.setNumero(usuario.getNumero());
+        usuarioRecuperado.setContatos(usuario.getContatos());
+        usuarioRecuperado.setTipoUsuario(usuario.getTipoUsuario());
 
-            usuarioRecuperado.setCpf(usuario.getCpf());
-            usuarioRecuperado.setEmail(usuario.getEmail());
-            usuarioRecuperado.setNome(usuario.getNome());
-            usuarioRecuperado.setSenha(usuario.getSenha());
-            usuarioRecuperado.setCep(usuario.getCep());
-            usuarioRecuperado.setNumero(usuario.getNumero());
-            usuarioRecuperado.setContatos(usuario.getContatos());
-            usuarioRecuperado.setTipoUsuario(usuario.getTipoUsuario());
-
-        return objectMapper.convertValue(usuarioRepository.save(usuarioRecuperado), UsuarioDTO.class);
+        usuarioRepository.save(usuarioRecuperado);
     }
 
     public List<UsuarioDTO> listar() throws RegraDeNegocioException {
         return usuarioRepository.findAll().stream().map(usuario -> objectMapper.convertValue(usuario, UsuarioDTO.class)).toList();
     }
 
-    //<TODO> ver uma forma de verificar diretamente no banco
-    private UsuarioEntity validarUsuario(UsuarioEntity usuarioEntity) throws RegraDeNegocioException {
+    public void validarUsuarioAdicionado(UsuarioEntity usuarioEntity) throws RegraDeNegocioException {
+
+        List<UsuarioEntity> usuarioEntities = usuarioRepository.findAll();
+
+        for (UsuarioEntity value : usuarioEntities) {
+            //Quando estivermos atualizando, devemos verifiar se email e cpf já existem em outro
+            if (value.getCpf().equals(usuarioEntity.getCpf())) {
+                throw new RegraDeNegocioException("Já existe usuário com esse CPF!");
+            }
+            if (value.getEmail().equals(usuarioEntity.getEmail())) {
+                throw new RegraDeNegocioException("Já existe usuário com esse e-mail!");
+            }
+        }
+    }
+
+    public void validarUsuarioEditado(UsuarioCreateDTO usuarioCreateDTO, Integer id) throws RegraDeNegocioException {
 
         List<UsuarioEntity> usuarioEntities = usuarioRepository.findAll();
 
         for (UsuarioEntity value : usuarioEntities) {
             //Quando estivermos atualizando, devemos verifiar se email e cpf já existem em outro usuário ALÉM do que está sendo atualizado.
-            if (value.getCpf().equals(usuarioEntity.getCpf()) &&
-                    !Objects.equals(value.getIdUsuario(), usuarioEntity.getIdUsuario())) {
+            if (value.getCpf().equals(usuarioCreateDTO.getCpf()) && !value.getIdUsuario().equals(id)) {
                 throw new RegraDeNegocioException("Já existe usuário com esse CPF!");
             }
-            if (value.getEmail().equals(usuarioEntity.getEmail()) &&
-                    !Objects.equals(value.getIdUsuario(), usuarioEntity.getIdUsuario())) {
+            if (value.getEmail().equals(usuarioCreateDTO.getEmail()) && !value.getIdUsuario().equals(id)) {
                 throw new RegraDeNegocioException("Já existe usuário com esse e-mail!");
             }
         }
-        return usuarioEntity;
     }
 
     public UsuarioEntity getUsuario(Integer id) throws RegraDeNegocioException {
-        return usuarioRepository.findById(id)
-                .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado!"));
+        Optional<UsuarioEntity> usuarioEntity = usuarioRepository.findById(id);
+        if (usuarioEntity.isEmpty()) {
+            throw new RegraDeNegocioException("Usuário não encontrado!");
+        }
+         return usuarioEntity.get();
     }
 
     public UsuarioDTO getById(Integer id) throws RegraDeNegocioException {

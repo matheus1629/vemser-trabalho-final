@@ -18,7 +18,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping("/cliente")
-public class ClienteController implements InterfaceDocumentacao<ClienteCompletoDTO, ClienteCreateDTO, Integer> {
+public class ClienteController implements InterfaceDocumentacao<ClienteCompletoDTO, ClienteCreateDTO, Integer, Integer> {
 
     private final ClienteService clienteService;
 
