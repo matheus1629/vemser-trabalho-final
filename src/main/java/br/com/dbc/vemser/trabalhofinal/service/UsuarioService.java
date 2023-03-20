@@ -17,15 +17,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-//<TODO> VER SE VAMOS MANTER A CONTROLLER DO USUARIO OU SE VAMOS MECLAR USUARIO SERVICE NO MEDICO E CLIENTE.
-
 @RequiredArgsConstructor
 @Service
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final ObjectMapper objectMapper;
-    private final EmailService emailService;
 
     public void adicionar(UsuarioEntity usuario) throws RegraDeNegocioException {
         usuarioRepository.save(usuario);
@@ -59,6 +56,16 @@ public class UsuarioService {
 
         List<UsuarioEntity> usuarioEntities = usuarioRepository.findAll();
 
+        if (usuarioEntity.getTipoUsuario().equals(TipoUsuario.MEDICO)) {
+            for (UsuarioEntity value : usuarioEntities) {
+                if (value.getMedicoEntity() != null) {
+                    if (value.getMedicoEntity().getCrm().equals(usuarioEntity.getMedicoEntity().getCrm())) {
+                        throw new RegraDeNegocioException("Já existe usuário com esse CRM!");
+                    }
+                }
+            }
+        }
+
         for (UsuarioEntity value : usuarioEntities) {
             //Quando estivermos atualizando, devemos verifiar se email e cpf já existem em outro
             if (value.getCpf().equals(usuarioEntity.getCpf())) {
@@ -67,12 +74,32 @@ public class UsuarioService {
             if (value.getEmail().equals(usuarioEntity.getEmail())) {
                 throw new RegraDeNegocioException("Já existe usuário com esse e-mail!");
             }
+
         }
     }
 
     public void validarUsuarioEditado(UsuarioCreateDTO usuarioCreateDTO, Integer id) throws RegraDeNegocioException {
 
         List<UsuarioEntity> usuarioEntities = usuarioRepository.findAll();
+
+        String crm = null;
+        if (usuarioCreateDTO.getTipoUsuario().equals(TipoUsuario.MEDICO)) {
+            for (UsuarioEntity value : usuarioEntities) {
+                if (value.getMedicoEntity() != null) {
+                    if (value.getCpf().equals(usuarioCreateDTO.getCpf())) {
+                        crm = value.getMedicoEntity().getCrm();
+
+                    }
+                }
+            }
+            for (UsuarioEntity value : usuarioEntities) {
+                if (value.getMedicoEntity() != null) {
+                    if (value.getMedicoEntity().getCrm().equals(crm) && !value.getIdUsuario().equals(id)) {
+                        throw new RegraDeNegocioException("Já existe usuário com esse CRM!");
+                    }
+                }
+            }
+        }
 
         for (UsuarioEntity value : usuarioEntities) {
             //Quando estivermos atualizando, devemos verifiar se email e cpf já existem em outro usuário ALÉM do que está sendo atualizado.

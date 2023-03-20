@@ -1,8 +1,11 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
-import br.com.dbc.vemser.trabalhofinal.dto.*;
-import br.com.dbc.vemser.trabalhofinal.entity.EspecialidadeEntity;
+import br.com.dbc.vemser.trabalhofinal.dto.MedicoCompletoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.MedicoCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.UsuarioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.TipoUsuario;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.MedicoRepository;
@@ -14,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -49,43 +51,47 @@ public class MedicoService {
 
     public MedicoCompletoDTO adicionar(MedicoCreateDTO medico) throws RegraDeNegocioException {
 
+        UsuarioEntity usuarioEntity = objectMapper.convertValue(medico, UsuarioEntity.class);
+        usuarioEntity.setTipoUsuario(TipoUsuario.MEDICO);
+
+        // Adicionando o usuario que foi salvado no Medico a salvar
         MedicoEntity medicoEntity = objectMapper.convertValue(medico, MedicoEntity.class);
-        EspecialidadeEntity especialidade = especialidadeService.getEspecialidade(medico.getIdEspecialidade());
-        UsuarioEntity usuario = usuarioService.getUsuario(medico.getIdUsuario());
+        usuarioEntity.setMedicoEntity(medicoEntity);
+        medicoEntity.setUsuarioEntity(usuarioEntity);
 
-        if (!Objects.equals(usuario.getTipoUsuario().ordinal(), 1)) {
-            throw new RegraDeNegocioException("Este usuário não é um médico!");
-        }
+        // Adicionando Convenio em Medico a salvar
+        medicoEntity.setEspecialidadeEntity(especialidadeService.getEspecialidade(medico.getIdEspecialidade()));
 
-        medicoEntity.setEspecialidadeEntity(especialidade);
-        medicoEntity.setUsuarioEntity(usuario);
+        usuarioService.validarUsuarioAdicionado(usuarioEntity);
+        usuarioService.adicionar(usuarioEntity);
 
-        MedicoEntity medicoAdicionado = medicoRepository.save(medicoEntity);
 
-        return getById(medicoAdicionado.getIdMedico());
+
+        medicoRepository.save(medicoEntity);
+
+        return getById(medicoEntity.getIdMedico());
     }
 
     public MedicoCompletoDTO editar(Integer id, MedicoCreateDTO medico) throws RegraDeNegocioException {
-        MedicoEntity medicoEntity = objectMapper.convertValue(getMedico(id), MedicoEntity.class);
+        MedicoEntity medicoEntity = getMedico(id);
 
-        EspecialidadeEntity especialidade = especialidadeService.getEspecialidade(medico.getIdEspecialidade());
-        UsuarioEntity usuario = usuarioService.getUsuario(medico.getIdUsuario());
+        UsuarioCreateDTO usuarioDTO = objectMapper.convertValue(medico, UsuarioCreateDTO.class);
+        usuarioDTO.setTipoUsuario(TipoUsuario.MEDICO);
 
-        if (!Objects.equals(usuario.getTipoUsuario().ordinal(), 1)) {
-            throw new RegraDeNegocioException("Este usuário não é um médico!");
-        }
 
-        medicoEntity.setUsuarioEntity(usuario);
-        medicoEntity.setEspecialidadeEntity(especialidade);
+        usuarioService.validarUsuarioEditado(usuarioDTO, medicoEntity.getIdUsuario());
+        usuarioService.editar(usuarioDTO, medicoEntity.getIdUsuario());
+
+
         medicoEntity.setCrm(medico.getCrm());
-
+        medicoEntity.setEspecialidadeEntity(especialidadeService.getEspecialidade(medico.getIdEspecialidade()));
         MedicoEntity medicoEditado = medicoRepository.save(medicoEntity);
 
         return getById(medicoEditado.getIdMedico());
     }
 
     public void remover(Integer id) throws RegraDeNegocioException {
-        medicoRepository.delete(getMedico(id));
+        usuarioService.remover(getMedico(id).getIdUsuario());
     }
 
     public MedicoEntity getMedico(Integer id) throws RegraDeNegocioException {

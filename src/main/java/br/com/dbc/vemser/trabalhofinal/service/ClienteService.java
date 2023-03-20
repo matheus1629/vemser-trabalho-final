@@ -1,7 +1,12 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
-import br.com.dbc.vemser.trabalhofinal.dto.*;
-import br.com.dbc.vemser.trabalhofinal.entity.*;
+import br.com.dbc.vemser.trabalhofinal.dto.ClienteCompletoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.ClienteCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.UsuarioCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.TipoUsuario;
+import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.ClienteRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -66,8 +70,6 @@ public class ClienteService {
 
         ClienteEntity clienteEntity = getCliente(id);
 
-//        UsuarioEntity usuarioDTO = usuarioService.getUsuario(clienteEntity.getUsuarioEntity().getIdUsuario());
-
         UsuarioCreateDTO usuarioDTO = objectMapper.convertValue(cliente, UsuarioCreateDTO.class);
         usuarioDTO.setTipoUsuario(TipoUsuario.CLIENTE);
 
@@ -81,9 +83,7 @@ public class ClienteService {
     }
 
     public void remover(Integer id) throws RegraDeNegocioException {
-        ClienteEntity clienteEntity = getCliente(id);
-        usuarioService.remover(clienteEntity.getIdUsuario());
-        clienteRepository.delete(clienteEntity);
+        usuarioService.remover(getCliente(id).getIdUsuario());
     }
 
     public ClienteEntity getCliente(Integer id) throws RegraDeNegocioException {
