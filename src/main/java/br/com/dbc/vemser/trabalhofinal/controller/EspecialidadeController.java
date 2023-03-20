@@ -26,7 +26,7 @@ public class EspecialidadeController implements InterfaceDocumentacao<Especialid
 
     @Override
     public ResponseEntity<PageDTO<EspecialidadeDTO>> list(Integer pagina, Integer tamanho) {
-        return null;
+        return new ResponseEntity<>(especialidadeService.list(pagina, tamanho), HttpStatus.OK);
     }
 
     @Override
