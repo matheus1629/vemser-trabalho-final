@@ -23,7 +23,7 @@ public interface InterfaceDocumentacao<saida, entrada, numero> {
             }
     )
     @GetMapping()
-    ResponseEntity<PageDTO<UsuarioDTO>> list(@RequestParam numero pagina, @RequestParam numero tamanho);
+    ResponseEntity<PageDTO<saida>> list(@RequestParam numero pagina, @RequestParam numero tamanho);
 
     @Operation(summary = "Recuperar um registro", description = "Lista um registro passando seu ID")
     @ApiResponses(

@@ -3,6 +3,7 @@ package br.com.dbc.vemser.trabalhofinal.controller;
 
 import br.com.dbc.vemser.trabalhofinal.dto.ConvenioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ConvenioDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.ConvenioService;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @Validated
 @RestController
 @RequiredArgsConstructor
@@ -22,9 +21,10 @@ public class ConvenioController implements InterfaceDocumentacao<ConvenioDTO, Co
 
     private final ConvenioService convenioService;
 
+
     @Override
-    public ResponseEntity<List<ConvenioDTO>> listAll() throws RegraDeNegocioException {
-        return new ResponseEntity<>(convenioService.listar(), HttpStatus.OK);
+    public ResponseEntity<PageDTO<ConvenioDTO>> list(Integer pagina, Integer tamanho) {
+        return null;
     }
 
     @Override

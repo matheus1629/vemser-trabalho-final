@@ -3,6 +3,7 @@ package br.com.dbc.vemser.trabalhofinal.controller;
 
 import br.com.dbc.vemser.trabalhofinal.dto.EspecialidadeCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.EspecialidadeDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.EspecialidadeService;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @Validated
 @Slf4j
@@ -26,8 +25,8 @@ public class EspecialidadeController implements InterfaceDocumentacao<Especialid
 
 
     @Override
-    public ResponseEntity<List<EspecialidadeDTO>> listAll() throws RegraDeNegocioException {
-        return new ResponseEntity<>(especialidadeService.listar(), HttpStatus.OK);
+    public ResponseEntity<PageDTO<EspecialidadeDTO>> list(Integer pagina, Integer tamanho) {
+        return null;
     }
 
     @Override

@@ -1,8 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.controller;
 
-import br.com.dbc.vemser.trabalhofinal.dto.MedicoCompletoDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.MedicoCreateDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.MedicoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.*;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.MedicoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -30,21 +27,9 @@ public class MedicoController implements InterfaceDocumentacao<MedicoCompletoDTO
     private final MedicoService medicoService;
 
 
-    @Operation(summary = "Listar todos os registros", description = "Lista todos os registros sem incluir as informações da tabela usuário")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Todos os registros foram listados com sucesso"),
-                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
-            }
-    )
-    @GetMapping("/simple")
-    public ResponseEntity<List<MedicoDTO>> listAllSimple() throws RegraDeNegocioException {
-        return new ResponseEntity<>(medicoService.listar(), HttpStatus.OK);
-    }
     @Override
-    public ResponseEntity<List<MedicoCompletoDTO>> listAll() throws RegraDeNegocioException {
-        return new ResponseEntity<>(medicoService.listarFull(), HttpStatus.OK);
+    public ResponseEntity<PageDTO<MedicoCompletoDTO>> list(Integer pagina, Integer tamanho) {
+        return null;
     }
 
     @Override

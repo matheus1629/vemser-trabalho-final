@@ -19,14 +19,10 @@ public class AgendamentoController implements InterfaceDocumentacao<AgendamentoD
 
     private final AgendamentoService agendamentoService;
 
-    @Override
-    public ResponseEntity<List<AgendamentoDTO>> listAll() throws RegraDeNegocioException {
-        return new ResponseEntity<>(agendamentoService.listar(), HttpStatus.OK);
-    }
 
-    @GetMapping("/paginado")
-    public PageDTO<AgendamentoDTO> listAll(Integer pagina, Integer tamanho) {
-        return agendamentoService.findAllPaginado(pagina, tamanho);
+    @Override
+    public ResponseEntity<PageDTO<AgendamentoDTO>> list(Integer pagina, Integer tamanho) {
+        return new ResponseEntity<>(agendamentoService.findAllPaginado(pagina, tamanho), HttpStatus.OK);
     }
 
     @Override
