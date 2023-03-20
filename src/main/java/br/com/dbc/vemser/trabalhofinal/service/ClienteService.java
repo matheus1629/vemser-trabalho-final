@@ -7,6 +7,9 @@ import br.com.dbc.vemser.trabalhofinal.repository.ClienteRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,16 +25,18 @@ public class ClienteService {
     private final UsuarioService usuarioService;
     private final ConvenioService convenioService;
 
-    public List<ClienteDTO> listar() throws RegraDeNegocioException {
-        return clienteRepository.findAll().stream().map(clienteEntity ->
-                objectMapper.convertValue(clienteEntity, ClienteDTO.class))
+    public PageDTO<ClienteCompletoDTO> list(Integer pagina, Integer tamanho) {
+        Pageable solicitacaoPagina = PageRequest.of(pagina,tamanho);
+        Page<ClienteCompletoDTO> cliente = clienteRepository.listarFull(solicitacaoPagina);
+        List<ClienteCompletoDTO> clienteDTO = cliente.getContent().stream()
                 .toList();
-    }
 
-    public List<ClienteCompletoDTO> listarFull() throws RegraDeNegocioException {
-        return clienteRepository.listarFull();
+        return new PageDTO<>(cliente.getTotalElements(),
+                cliente.getTotalPages(),
+                pagina,
+                tamanho,
+                clienteDTO);
     }
-
     public ClienteCompletoDTO getById(Integer idCliente) throws RegraDeNegocioException {
         Optional<ClienteCompletoDTO> clienteEncontrado = clienteRepository.getByIdPersonalizado(idCliente);
         return clienteEncontrado.get();

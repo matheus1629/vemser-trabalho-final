@@ -6,6 +6,7 @@ import br.com.dbc.vemser.trabalhofinal.service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,19 +18,15 @@ import java.util.List;
 
 @Validated
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/cliente")
 public class ClienteController implements InterfaceDocumentacao<ClienteCompletoDTO, ClienteCreateDTO, Integer> {
 
     private final ClienteService clienteService;
 
-    public ClienteController(ClienteService clienteService) {
-        this.clienteService = clienteService;
-    }
-
-
     @Override
     public ResponseEntity<PageDTO<ClienteCompletoDTO>> list(Integer pagina, Integer tamanho) {
-        return null;
+        return new ResponseEntity<>(clienteService.list(pagina, tamanho), HttpStatus.OK);
     }
 
     @Override
