@@ -44,7 +44,7 @@
 
 <hr>
 
-#### Vem Ser - Trabalho final do Módulo 3
+#### Vem Ser - Trabalho final do Módulo 3.2
 ## Trello da divisão de tarefas:
 <p>https://trello.com/b/pY4BMcN8/trabalho-final-spring-data</p>
 
@@ -54,7 +54,7 @@
   <tr>
     <td align="center"><a href="https://github.com/matheus1629"><img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/89110918?v=4" width="100px;" alt=""/><br /><sub><b>Matheus Palermo</b></sub></a><br /></td>
     <td align="center"><a href="https://github.com/pedro-s-20"><img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/63027972?v=4" width="100px;" alt=""/><br /><sub><b>Pedro Sousa</b></sub></a><br /></td>
-    <td align="center"><a href="https://github.com/Gabriel-Gomes-Meira"><img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/62515106?v=4" width="100px;" alt=""/><br /><sub><b>Gabriel Meira</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/Thassio141"><img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/73563601?v=4" width="100px;" alt=""/><br /><sub><b>Thassio Vagner</b></sub></a><br /></td>
   </tr>
 </table>
 
