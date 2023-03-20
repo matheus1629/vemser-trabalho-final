@@ -65,9 +65,7 @@ public class MedicoService {
 
         usuarioService.validarUsuarioAdicionado(usuarioEntity);
         usuarioService.adicionar(usuarioEntity);
-
-
-
+        
         medicoRepository.save(medicoEntity);
 
         return getById(medicoEntity.getIdMedico());
@@ -87,7 +85,7 @@ public class MedicoService {
         }
         usuarioService.validarUsuarioEditado(usuarioDTO, medicoEntity.getIdUsuario());
         usuarioService.editar(usuarioDTO, medicoEntity.getIdUsuario());
-        
+
         medicoEntity.setCrm(medico.getCrm());
         medicoEntity.setEspecialidadeEntity(especialidadeService.getEspecialidade(medico.getIdEspecialidade()));
         MedicoEntity medicoEditado = medicoRepository.save(medicoEntity);
