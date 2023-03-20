@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Service
@@ -79,10 +80,14 @@ public class MedicoService {
         usuarioDTO.setTipoUsuario(TipoUsuario.MEDICO);
 
 
+        List<MedicoEntity> listaMedico = medicoRepository.findAll().stream().filter(medicoEntity1 -> medicoEntity1.getCrm().equals(medico.getCrm())).toList();;
+        for (MedicoEntity medicoVerificarCRM: listaMedico) {
+            if (medico.getCrm().equals(medicoVerificarCRM.getCrm()))
+                throw new RegraDeNegocioException("CRM já existe!");
+        }
         usuarioService.validarUsuarioEditado(usuarioDTO, medicoEntity.getIdUsuario());
         usuarioService.editar(usuarioDTO, medicoEntity.getIdUsuario());
-
-
+        
         medicoEntity.setCrm(medico.getCrm());
         medicoEntity.setEspecialidadeEntity(especialidadeService.getEspecialidade(medico.getIdEspecialidade()));
         MedicoEntity medicoEditado = medicoRepository.save(medicoEntity);

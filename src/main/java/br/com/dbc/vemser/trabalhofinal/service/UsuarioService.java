@@ -82,25 +82,6 @@ public class UsuarioService {
 
         List<UsuarioEntity> usuarioEntities = usuarioRepository.findAll();
 
-        String crm = null;
-        if (usuarioCreateDTO.getTipoUsuario().equals(TipoUsuario.MEDICO)) {
-            for (UsuarioEntity value : usuarioEntities) {
-                if (value.getMedicoEntity() != null) {
-                    if (value.getCpf().equals(usuarioCreateDTO.getCpf())) {
-                        crm = value.getMedicoEntity().getCrm();
-
-                    }
-                }
-            }
-            for (UsuarioEntity value : usuarioEntities) {
-                if (value.getMedicoEntity() != null) {
-                    if (value.getMedicoEntity().getCrm().equals(crm) && !value.getIdUsuario().equals(id)) {
-                        throw new RegraDeNegocioException("Já existe usuário com esse CRM!");
-                    }
-                }
-            }
-        }
-
         for (UsuarioEntity value : usuarioEntities) {
             //Quando estivermos atualizando, devemos verifiar se email e cpf já existem em outro usuário ALÉM do que está sendo atualizado.
             if (value.getCpf().equals(usuarioCreateDTO.getCpf()) && !value.getIdUsuario().equals(id)) {
