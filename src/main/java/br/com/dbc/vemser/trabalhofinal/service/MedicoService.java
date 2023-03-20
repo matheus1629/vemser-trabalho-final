@@ -65,7 +65,7 @@ public class MedicoService {
 
         usuarioService.validarUsuarioAdicionado(usuarioEntity);
         usuarioService.adicionar(usuarioEntity);
-        
+
         medicoRepository.save(medicoEntity);
 
         return getById(medicoEntity.getIdMedico());
