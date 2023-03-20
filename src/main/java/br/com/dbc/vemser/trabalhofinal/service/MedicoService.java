@@ -52,6 +52,8 @@ public class MedicoService {
 
     public MedicoCompletoDTO adicionar(MedicoCreateDTO medico) throws RegraDeNegocioException {
 
+        checarSeTemNumero(medico.getNome());
+
         UsuarioEntity usuarioEntity = objectMapper.convertValue(medico, UsuarioEntity.class);
         usuarioEntity.setTipoUsuario(TipoUsuario.MEDICO);
 
@@ -66,14 +68,15 @@ public class MedicoService {
         usuarioService.validarUsuarioAdicionado(usuarioEntity);
         usuarioService.adicionar(usuarioEntity);
 
-
-
         medicoRepository.save(medicoEntity);
 
         return getById(medicoEntity.getIdMedico());
     }
 
     public MedicoCompletoDTO editar(Integer id, MedicoCreateDTO medico) throws RegraDeNegocioException {
+
+        checarSeTemNumero(medico.getNome());
+
         MedicoEntity medicoEntity = getMedico(id);
 
         UsuarioCreateDTO usuarioDTO = objectMapper.convertValue(medico, UsuarioCreateDTO.class);
@@ -102,6 +105,12 @@ public class MedicoService {
     public MedicoEntity getMedico(Integer id) throws RegraDeNegocioException {
         return medicoRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("Médico não existe!"));
+    }
+
+    public void checarSeTemNumero(String string) throws RegraDeNegocioException {
+        if (string.matches(".*[0-9].*")) { // checa se tem número no nome
+            throw new RegraDeNegocioException("O nome da especialidade não pode conter número");
+        }
     }
 
 }

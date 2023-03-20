@@ -42,11 +42,15 @@ public class ClienteService {
                 clienteDTO);
     }
     public ClienteCompletoDTO getById(Integer idCliente) throws RegraDeNegocioException {
-        Optional<ClienteCompletoDTO> clienteEncontrado = clienteRepository.getByIdPersonalizado(idCliente);
-        return clienteEncontrado.get();
+        Optional<ClienteCompletoDTO> clienteRetornado = clienteRepository.getByIdPersonalizado(idCliente);
+        if(clienteRetornado.isEmpty()){
+            throw new RegraDeNegocioException("Usuário não encontrado.");
+        }
+        return clienteRetornado.get();
     }
 
     public ClienteCompletoDTO adicionar(ClienteCreateDTO cliente) throws RegraDeNegocioException {
+        checarSeTemNumero(cliente.getNome());
 
         // Adicionando o Usuario com as informações recebidas no ClienteCreateDTO
         UsuarioEntity usuarioEntity = objectMapper.convertValue(cliente, UsuarioEntity.class);
@@ -67,6 +71,7 @@ public class ClienteService {
     }
 
     public ClienteCompletoDTO editar(Integer id, ClienteCreateDTO cliente) throws RegraDeNegocioException {
+        checarSeTemNumero(cliente.getNome());
 
         ClienteEntity clienteEntity = getCliente(id);
 
@@ -93,4 +98,11 @@ public class ClienteService {
                     .findFirst()
                     .orElseThrow(() -> new RegraDeNegocioException("Cliente não encontrado!"));
     }
+
+    public void checarSeTemNumero(String string) throws RegraDeNegocioException {
+        if (string.matches(".*[0-9].*")) { // checa se tem número no nome
+            throw new RegraDeNegocioException("O nome da especialidade não pode conter número");
+        }
+    }
+
 }
