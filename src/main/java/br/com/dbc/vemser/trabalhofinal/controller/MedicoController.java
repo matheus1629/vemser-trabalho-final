@@ -29,7 +29,7 @@ public class MedicoController implements InterfaceDocumentacao<MedicoCompletoDTO
 
     @Override
     public ResponseEntity<PageDTO<MedicoCompletoDTO>> list(Integer pagina, Integer tamanho) {
-        return null;
+        return new ResponseEntity<>(medicoService.list(pagina, tamanho), HttpStatus.OK);
     }
 
     @Override

@@ -24,7 +24,7 @@ public class ConvenioController implements InterfaceDocumentacao<ConvenioDTO, Co
 
     @Override
     public ResponseEntity<PageDTO<ConvenioDTO>> list(Integer pagina, Integer tamanho) {
-        return null;
+        return new ResponseEntity<>(convenioService.list(pagina, tamanho), HttpStatus.OK);
     }
 
     @Override

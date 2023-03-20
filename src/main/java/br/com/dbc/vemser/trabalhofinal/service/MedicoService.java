@@ -8,6 +8,9 @@ import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.MedicoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,14 +26,17 @@ public class MedicoService {
     private final EspecialidadeService especialidadeService;
 
 
-    public List<MedicoDTO> listar() throws RegraDeNegocioException {
-        return medicoRepository.findAll().stream()
-                .map(medicoEntity -> objectMapper.convertValue(medicoEntity, MedicoDTO.class))
+    public PageDTO<MedicoCompletoDTO> list(Integer pagina, Integer tamanho){
+        Pageable solicitacaoPagina = PageRequest.of(pagina,tamanho);
+        Page<MedicoCompletoDTO> medico = medicoRepository.listarFull(solicitacaoPagina);
+        List<MedicoCompletoDTO> medicoDTO = medico.getContent().stream()
                 .toList();
-    }
 
-    public List<MedicoCompletoDTO> listarFull() throws RegraDeNegocioException {
-        return medicoRepository.listarFull();
+        return new PageDTO<>(medico.getTotalElements(),
+                medico.getTotalPages(),
+                pagina,
+                tamanho,
+                medicoDTO);
     }
 
     public MedicoCompletoDTO getById(Integer idMedico) throws RegraDeNegocioException {

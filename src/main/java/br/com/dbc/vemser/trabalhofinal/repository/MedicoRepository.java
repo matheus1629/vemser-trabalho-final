@@ -3,9 +3,12 @@ package br.com.dbc.vemser.trabalhofinal.repository;
 import br.com.dbc.vemser.trabalhofinal.dto.MedicoCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.MedicoDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -52,6 +55,6 @@ public interface MedicoRepository extends JpaRepository<MedicoEntity, Integer> {
             " left join m.usuarioEntity u" +
             " left join m.especialidadeEntity es"
     )
-    List<MedicoCompletoDTO> listarFull();
+    Page<MedicoCompletoDTO> listarFull(Pageable pageable);
 
 }

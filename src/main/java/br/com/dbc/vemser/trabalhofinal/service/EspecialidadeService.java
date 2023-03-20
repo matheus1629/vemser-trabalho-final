@@ -1,12 +1,14 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
-import br.com.dbc.vemser.trabalhofinal.dto.EspecialidadeCreateDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.EspecialidadeDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.*;
 import br.com.dbc.vemser.trabalhofinal.entity.EspecialidadeEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.EspecialidadeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,10 +21,18 @@ public class EspecialidadeService {
     private final ObjectMapper objectMapper;
 
 
-    public List<EspecialidadeDTO> listar() throws RegraDeNegocioException {
-        return especialidadeRepository.findAll().stream()
-                .map(especialidadeEntity -> objectMapper.convertValue(especialidadeEntity, EspecialidadeDTO.class))
+    public PageDTO<EspecialidadeDTO> list(Integer pagina, Integer tamanho){
+        Pageable solicitacaoPagina = PageRequest.of(pagina,tamanho);
+        Page<EspecialidadeEntity> especialidade = especialidadeRepository.findAll(solicitacaoPagina);
+        List<EspecialidadeDTO> especialidadeDTO = especialidade.getContent().stream()
+                .map(x -> objectMapper.convertValue(x, EspecialidadeDTO.class))
                 .toList();
+
+        return new PageDTO<>(especialidade.getTotalElements(),
+                especialidade.getTotalPages(),
+                pagina,
+                tamanho,
+                especialidadeDTO);
     }
 
     public EspecialidadeDTO getById(Integer id) throws RegraDeNegocioException {
