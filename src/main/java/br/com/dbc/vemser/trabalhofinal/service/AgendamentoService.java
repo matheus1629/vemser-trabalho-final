@@ -98,7 +98,7 @@ public class AgendamentoService {
     public PageDTO<AgendamentoDTO> findAllPaginado(Integer pagina, Integer tamanho) {
 
         Pageable solicitacaoPagina = PageRequest.of(pagina, tamanho);
-        Page<AgendamentoEntity> agendamento = agendamentoRepository.findAllPaginado(solicitacaoPagina);
+        Page<AgendamentoEntity> agendamento = agendamentoRepository.findAll(solicitacaoPagina);
         List<AgendamentoDTO> agendamentoDTO = agendamento.getContent().stream()
                 .map(x -> objectMapper.convertValue(x, AgendamentoDTO.class))
                 .toList();

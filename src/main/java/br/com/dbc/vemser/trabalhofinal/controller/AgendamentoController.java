@@ -24,17 +24,22 @@ public class AgendamentoController implements InterfaceDocumentacao<AgendamentoD
         return new ResponseEntity<>(agendamentoService.listar(), HttpStatus.OK);
     }
 
+    @GetMapping("/paginado")
+    public PageDTO<AgendamentoDTO> listAll(Integer pagina, Integer tamanho) {
+        return agendamentoService.findAllPaginado(pagina, tamanho);
+    }
+
     @Override
     public ResponseEntity<AgendamentoDTO> getById(Integer id) throws RegraDeNegocioException {
         return new ResponseEntity<>(agendamentoService.getById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/{idCliente}/Relatorio-Cliente")
+    @GetMapping("/{idCliente}/relatorio-cliente")
     public ResponseEntity<AgendamentoClienteRelatorioDTO> getClienteByIdPersonalizado(@PathVariable("idCliente") Integer idCliente) throws RegraDeNegocioException {
         return new ResponseEntity<>(agendamentoService.getRelatorioClienteById(idCliente), HttpStatus.OK);
     }
 
-    @GetMapping("/{idMedico}/Relatorio-Medico")
+    @GetMapping("/{idMedico}/relatorio-medico")
     public ResponseEntity<AgendamentoMedicoRelatorioDTO> getMedicoByIdPersonalizado(@PathVariable("idMedico") Integer idMedico) throws RegraDeNegocioException {
         return new ResponseEntity<>(agendamentoService.getRelatorioMedicoById(idMedico), HttpStatus.OK);
     }
@@ -55,9 +60,6 @@ public class AgendamentoController implements InterfaceDocumentacao<AgendamentoD
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/paginado")
-    public PageDTO<AgendamentoDTO> listarPaginado(Integer pagina, Integer tamanho) {
-        return agendamentoService.findAllPaginado(pagina, tamanho);
-    }
+
 
 }

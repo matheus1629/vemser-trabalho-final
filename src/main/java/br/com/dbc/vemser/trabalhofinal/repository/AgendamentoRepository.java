@@ -14,27 +14,8 @@ import java.util.List;
 @Repository
 public interface AgendamentoRepository extends JpaRepository<AgendamentoEntity, Integer> {
 
-    @Query("select a from Agendamento a")
-    Page<AgendamentoEntity> findAllPaginado(Pageable pageable);
-
-//    @Query("select new br.com.dbc.vemser.trabalhofinal.dto.AgendamentoDTO(" +
-//            "a.idAgendamento, " +
-//            "a.idCliente, " +
-//            "a.idMedico, " +
-//            "a.tratamento, " +
-//            "a.exame, " +
-//            "a.dataHorario)" +
-//            "from Agendamento a" +
-//            " left join a.clienteEntity c" +
-//            " left join a.medicoEntity m"
-//    )
-//    List<AgendamentoDTO> buscarAgendamentoCompleto();
-
-    @Query(value = "Select a from Agendamento a where a.idCliente = :id")
     List<AgendamentoEntity> findAllByIdCliente(Integer id);
 
-    @Query(value = "Select a from Agendamento a where a.idMedico = :id")
     List<AgendamentoEntity> findAllByIdMedico(Integer id);
-
 
 }

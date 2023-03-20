@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AgendamentoMedicoRelatorioDTO {
+public class AgendamentoMedicoRelatorioDTO extends MedicoCompletoDTO{
 
     private Integer idMedico;
     private String crm;
