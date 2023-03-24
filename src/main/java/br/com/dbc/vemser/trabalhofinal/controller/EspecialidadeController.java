@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.trabalhofinal.controller;
 
 
+import br.com.dbc.vemser.trabalhofinal.controller.In.InterfaceDocumentacao;
 import br.com.dbc.vemser.trabalhofinal.dto.EspecialidadeCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.EspecialidadeDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;

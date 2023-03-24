@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.controller;
 
+import br.com.dbc.vemser.trabalhofinal.controller.In.InterfaceDocumentacao;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
@@ -30,7 +31,7 @@ public class ClienteController implements InterfaceDocumentacao<ClienteCompletoD
         return new ResponseEntity<>(clienteService.getById(id), HttpStatus.OK);
     }
 
-    @Override
+    @Override//TODO retirar o create do Medico e Cliente
     public ResponseEntity<ClienteCompletoDTO> create(ClienteCreateDTO cliente) throws RegraDeNegocioException {
         return new ResponseEntity<>(clienteService.adicionar(cliente), HttpStatus.OK);
     }
