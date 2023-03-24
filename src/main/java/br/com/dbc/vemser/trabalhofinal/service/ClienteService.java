@@ -5,8 +5,10 @@ import br.com.dbc.vemser.trabalhofinal.dto.ClienteCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.UsuarioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
+import br.com.dbc.vemser.trabalhofinal.repository.AgendamentoRepository;
 import br.com.dbc.vemser.trabalhofinal.repository.ClienteRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ public class ClienteService {
     private final ObjectMapper objectMapper;
     private final UsuarioService usuarioService;
     private final ConvenioService convenioService;
+    private final AgendamentoService agendamentoService;
 
     public PageDTO<ClienteCompletoDTO> list(Integer pagina, Integer tamanho) {
         Pageable solicitacaoPagina = PageRequest.of(pagina,tamanho);
@@ -88,14 +91,12 @@ public class ClienteService {
 
     public void remover(Integer id) throws RegraDeNegocioException {
         usuarioService.remover(getCliente(id).getIdUsuario());
+        agendamentoService.removerPorClienteDesativado(getCliente(id));
     }
 
     public ClienteEntity getCliente(Integer id) throws RegraDeNegocioException {
-            return clienteRepository.findAll()
-                    .stream()
-                    .filter(clienteEntity -> clienteEntity.getIdCliente().equals(id))
-                    .findFirst()
-                    .orElseThrow(() -> new RegraDeNegocioException("Cliente não encontrado!"));
+        return clienteRepository.findById(id)
+                .orElseThrow(() -> new RegraDeNegocioException("Cliente não existe!"));
     }
 
     public void checarSeTemNumero(String string) throws RegraDeNegocioException {

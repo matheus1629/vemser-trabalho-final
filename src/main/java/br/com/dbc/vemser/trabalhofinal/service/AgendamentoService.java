@@ -60,6 +60,14 @@ public class AgendamentoService {
         agendamentoRepository.delete(getAgendamento(id));
     }
 
+    public void removerPorMedicoDesativado(MedicoEntity medicoEntity) throws RegraDeNegocioException {
+        agendamentoRepository.deleteByMedicoEntity(medicoEntity);
+    }
+
+    public void removerPorClienteDesativado(ClienteEntity clienteEntity) throws RegraDeNegocioException {
+        agendamentoRepository.deleteByClienteEntity(clienteEntity);
+    }
+
     public AgendamentoEntity getAgendamento(Integer id) throws RegraDeNegocioException {
         return agendamentoRepository.findById(id).orElseThrow(() -> new RegraDeNegocioException("Agendamento não encontrado."));
     }

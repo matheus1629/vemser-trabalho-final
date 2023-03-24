@@ -56,4 +56,7 @@ public interface MedicoRepository extends JpaRepository<MedicoEntity, Integer> {
     )
     Page<MedicoCompletoDTO> listarFull(Pageable pageable);
 
+
+    @Query("SELECT m from Medico m where m.idMedico = :id and m.usuarioEntity.ativo = 1")
+    Optional<MedicoEntity> findById(Integer id);
 }

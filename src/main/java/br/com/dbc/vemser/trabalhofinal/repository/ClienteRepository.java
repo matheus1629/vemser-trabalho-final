@@ -2,6 +2,7 @@ package br.com.dbc.vemser.trabalhofinal.repository;
 
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -54,5 +55,7 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity, Integer>
     )
     Page<ClienteCompletoDTO> listarFull(Pageable pageable);
 
+    @Query("SELECT c from Cliente c where c.idCliente = :id and c.usuarioEntity.ativo = 1")
+    Optional<ClienteEntity> findById(Integer id);
 
 }

@@ -34,6 +34,7 @@ public class UsuarioService {
     public void remover(Integer id) throws RegraDeNegocioException {
         UsuarioEntity usuario = getUsuario(id);
         usuario.setAtivo(0);
+        usuarioRepository.save(usuario);
     }
 
     public void editar(UsuarioCreateDTO usuario, Integer id) throws RegraDeNegocioException {

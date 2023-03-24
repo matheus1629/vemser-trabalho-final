@@ -25,6 +25,7 @@ public class MedicoService {
     private final ObjectMapper objectMapper;
     private final UsuarioService usuarioService;
     private final EspecialidadeService especialidadeService;
+    private final AgendamentoService agendamentoService;
 
 
     public PageDTO<MedicoCompletoDTO> list(Integer pagina, Integer tamanho){
@@ -49,7 +50,6 @@ public class MedicoService {
     }
 
     public MedicoCompletoDTO adicionar(MedicoCreateDTO medico) throws RegraDeNegocioException {
-
         checarSeTemNumero(medico.getNome());
 
         UsuarioEntity usuarioEntity = objectMapper.convertValue(medico, UsuarioEntity.class);
@@ -72,7 +72,6 @@ public class MedicoService {
     }
 
     public MedicoCompletoDTO editar(Integer id, MedicoCreateDTO medico) throws RegraDeNegocioException {
-
         checarSeTemNumero(medico.getNome());
 
         MedicoEntity medicoEntity = getMedico(id);
@@ -97,6 +96,7 @@ public class MedicoService {
 
     public void remover(Integer id) throws RegraDeNegocioException {
         usuarioService.remover(getMedico(id).getIdUsuario());
+        agendamentoService.removerPorMedicoDesativado(getMedico(id));
     }
 
     public MedicoEntity getMedico(Integer id) throws RegraDeNegocioException {
