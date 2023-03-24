@@ -13,11 +13,11 @@
                 <tr>
                     <td align="center" valign="top" bgcolor="#ffffff"
                         style="background-color: #ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; padding: 0px 15px 10px 15px;">
-                    <h2> Olá ${agendamentoEntity.getMedico()}, </h2>
+                    <h2> Olá ${agendamento.getMedicoEntity().getUsuarioEntity().getNome()}, </h2>
                     <p>
                         Um agendamentoEntity seu foi <strong>removido</strong>: <br>
-                        <strong>ID do agendamentoEntity: ${agendamentoEntity.getIdAgendamento()}</strong><br>
-                        <strong>Estava marcado para o seguinte dia e horário: ${agendamentoEntity.getDataHorario()} <strong>
+                        <strong>ID do agendamento: ${agendamento.getIdAgendamento()}</strong><br>
+                        <strong>Estava marcado para o seguinte dia e horário: ${agendamento.getDataHorario()} <strong>
                         Qualquer dúvida é só contatar o suporte pelo e-mail ${email}<br>
                         Att,<br>
                         Safety Corp.<br>
