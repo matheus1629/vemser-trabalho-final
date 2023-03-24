@@ -15,8 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class TokenService {
     private AuthenticationManager authenticationManager;
 
     private TokenService(@Lazy AuthenticationManager authenticationManager) {
-        authenticationManager = this.authenticationManager;
+        this.authenticationManager = authenticationManager;
     }
 
     // FIXME RECUPERAR O TEMPO DE EXPIRAÇÃO DOS PROPERTIES
@@ -42,14 +41,14 @@ public class TokenService {
 
 
     public String generateToken(UsuarioEntity usuarioEntity) {
-        java.util.Date now = new java.util.Date();
-        java.util.Date exp = new java.util.Date(now.getTime() + Long.parseLong(expiration));
+        Date now = new Date();
+        Date exp = new Date(now.getTime() + Long.parseLong(expiration));
 
         List<String> cargos = usuarioEntity.getAuthorities().stream()
                 .map(grantedAuthority -> grantedAuthority.getAuthority())
                 .toList();
 
-        String token = Jwts.builder()
+        return Jwts.builder()
                 .claim(CHAVE_LOGIN, usuarioEntity.getEmail())
                 .claim(Claims.ID, usuarioEntity.getIdUsuario())
                 .claim(CARGOS_CHAVE, cargos)
@@ -57,7 +56,6 @@ public class TokenService {
                 .setExpiration(exp)
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
-        return token;
     }
 
     public UsernamePasswordAuthenticationToken isValid(String token) {
