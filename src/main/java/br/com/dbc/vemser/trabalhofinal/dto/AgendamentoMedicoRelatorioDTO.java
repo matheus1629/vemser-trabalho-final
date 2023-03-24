@@ -20,14 +20,14 @@ public class AgendamentoMedicoRelatorioDTO extends MedicoCompletoDTO{
     private String cpf;
     private String email;
     private String nome;
-    private Integer idCargo;
+    private String nomeCargo;
     private String contatos;
     private String cep;
     private Integer numero;
 
     private List<AgendamentoDTO> agendamentoDTOList;
 
-    public AgendamentoMedicoRelatorioDTO(Integer idMedico, String crm, Integer idEspecialidade, Integer idUsuario, Double valor, String nomeEspecilidade, String cpf, String email, String nome, Integer idCargo, String contatos, String cep, Integer numero) {
+    public AgendamentoMedicoRelatorioDTO(Integer idMedico, String crm, Integer idEspecialidade, Integer idUsuario, Double valor, String nomeEspecilidade, String cpf, String email, String nome, String nomeCargo, String contatos, String cep, Integer numero) {
         this.idMedico = idMedico;
         this.crm = crm;
         this.idEspecialidade = idEspecialidade;
@@ -37,7 +37,7 @@ public class AgendamentoMedicoRelatorioDTO extends MedicoCompletoDTO{
         this.cpf = cpf;
         this.email = email;
         this.nome = nome;
-        this.idCargo = idCargo;
+        this.nomeCargo = nomeCargo;
         this.contatos = contatos;
         this.cep = cep;
         this.numero = numero;

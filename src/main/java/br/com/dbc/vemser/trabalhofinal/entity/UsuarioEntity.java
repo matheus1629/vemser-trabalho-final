@@ -25,7 +25,7 @@ public class UsuarioEntity implements UserDetails {
     @SequenceGenerator(name = "SEQ_USUARIO", sequenceName = "SEQ_USUARIO", allocationSize = 1)
     @Column(name = "id_usuario")
     private Integer idUsuario;
-    @Column(name = "id_cargo",insertable = false, updatable=false)
+    @Column(name = "id_cargo")
     private Integer idCargo;
     @Column(name = "cpf")
     private String cpf;
@@ -52,7 +52,7 @@ public class UsuarioEntity implements UserDetails {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_cargo", referencedColumnName = "id_cargo")
+    @JoinColumn(name = "id_cargo", referencedColumnName = "id_cargo",insertable = false, updatable=false)
     private CargoEntity cargoEntity;
 
 

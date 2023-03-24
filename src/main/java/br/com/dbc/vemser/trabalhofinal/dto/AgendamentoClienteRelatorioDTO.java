@@ -19,13 +19,13 @@ public class AgendamentoClienteRelatorioDTO {
     private String cpf;
     private String email;
     private String nome;
-    private Integer idCargo;
+    private String nomeCargo;
     private String contatos;
     private String cep;
     private Integer numero;
     private List<AgendamentoDTO> agendamentoDTOList;
 
-    public AgendamentoClienteRelatorioDTO(Integer idCliente, Integer idConvenio, Integer idUsuario, String cadastroOrgaoRegulador, Double taxaAbatimento, String cpf, String email, String nome, Integer idCargo, String contatos, String cep, Integer numero) {
+    public AgendamentoClienteRelatorioDTO(Integer idCliente, Integer idConvenio, Integer idUsuario, String cadastroOrgaoRegulador, Double taxaAbatimento, String cpf, String email, String nome, String nomeCargo, String contatos, String cep, Integer numero) {
         this.idCliente = idCliente;
         this.idConvenio = idConvenio;
         this.idUsuario = idUsuario;
@@ -34,7 +34,7 @@ public class AgendamentoClienteRelatorioDTO {
         this.cpf = cpf;
         this.email = email;
         this.nome = nome;
-        this.idCargo = idCargo;
+        this.nomeCargo = nomeCargo;
         this.contatos = contatos;
         this.cep = cep;
         this.numero = numero;
