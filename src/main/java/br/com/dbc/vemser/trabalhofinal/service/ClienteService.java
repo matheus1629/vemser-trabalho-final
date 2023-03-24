@@ -2,17 +2,16 @@ package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.dto.*;
 import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
-import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
-import br.com.dbc.vemser.trabalhofinal.repository.AgendamentoRepository;
 import br.com.dbc.vemser.trabalhofinal.repository.ClienteRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,13 +19,21 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
+
 public class ClienteService {
     private final ClienteRepository clienteRepository;
     private final ObjectMapper objectMapper;
     private final UsuarioService usuarioService;
     private final ConvenioService convenioService;
     private final AgendamentoService agendamentoService;
+
+    public ClienteService(ClienteRepository clienteRepository, ObjectMapper objectMapper, UsuarioService usuarioService, ConvenioService convenioService, @Lazy AgendamentoService agendamentoService) {
+        this.clienteRepository = clienteRepository;
+        this.objectMapper = objectMapper;
+        this.usuarioService = usuarioService;
+        this.convenioService = convenioService;
+        this.agendamentoService = agendamentoService;
+    }
 
     public PageDTO<ClienteCompletoDTO> list(Integer pagina, Integer tamanho) {
         Pageable solicitacaoPagina = PageRequest.of(pagina,tamanho);
@@ -41,8 +48,9 @@ public class ClienteService {
                 clienteDTO);
     }
 
-    public ClienteCompletoDTO listar() {
-
+    public ClienteCompletoDTO recuperarCliente() throws RegraDeNegocioException {
+        ClienteEntity clienteEntity = clienteRepository.getClienteEntityByIdUsuario(usuarioService.getIdLoggedUser());
+        return getById(clienteEntity.getIdCliente());
     }
     public ClienteCompletoDTO getById(Integer idCliente) throws RegraDeNegocioException {
         Optional<ClienteCompletoDTO> clienteRetornado = clienteRepository.getByIdPersonalizado(idCliente);
@@ -99,6 +107,8 @@ public class ClienteService {
         return clienteRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("Cliente não existe!"));
     }
+
+
 
     public void checarSeTemNumero(String string) throws RegraDeNegocioException {
         if (string.matches(".*[0-9].*")) { // checa se tem número no nome

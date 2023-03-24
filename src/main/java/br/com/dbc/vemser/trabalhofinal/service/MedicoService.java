@@ -1,15 +1,14 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
-import br.com.dbc.vemser.trabalhofinal.dto.MedicoCompletoDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.MedicoCreateDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.UsuarioCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.*;
+import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.MedicoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Service
 public class MedicoService {
     private final MedicoRepository medicoRepository;
@@ -27,6 +25,13 @@ public class MedicoService {
     private final EspecialidadeService especialidadeService;
     private final AgendamentoService agendamentoService;
 
+    public MedicoService(MedicoRepository medicoRepository, ObjectMapper objectMapper, UsuarioService usuarioService, EspecialidadeService especialidadeService, @Lazy AgendamentoService agendamentoService) {
+        this.medicoRepository = medicoRepository;
+        this.objectMapper = objectMapper;
+        this.usuarioService = usuarioService;
+        this.especialidadeService = especialidadeService;
+        this.agendamentoService = agendamentoService;
+    }
 
     public PageDTO<MedicoCompletoDTO> list(Integer pagina, Integer tamanho){
         Pageable solicitacaoPagina = PageRequest.of(pagina,tamanho);
@@ -39,6 +44,11 @@ public class MedicoService {
                 pagina,
                 tamanho,
                 medicoDTO);
+    }
+
+    public MedicoCompletoDTO recuperarMedico() throws RegraDeNegocioException {
+        MedicoEntity medicoEntity = medicoRepository.getMedicoEntityByIdUsuario(usuarioService.getIdLoggedUser());
+        return getById(medicoEntity.getIdMedico());
     }
 
     public MedicoCompletoDTO getById(Integer idMedico) throws RegraDeNegocioException {

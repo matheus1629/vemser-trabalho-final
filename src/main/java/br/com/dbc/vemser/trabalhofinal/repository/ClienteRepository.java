@@ -58,4 +58,5 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity, Integer>
     @Query("SELECT c from Cliente c where c.idCliente = :id and c.usuarioEntity.ativo = 1")
     Optional<ClienteEntity> findById(Integer id);
 
+    ClienteEntity getClienteEntityByIdUsuario(Integer idLoggedUser);
 }

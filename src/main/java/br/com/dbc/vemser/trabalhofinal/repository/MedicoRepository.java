@@ -59,4 +59,6 @@ public interface MedicoRepository extends JpaRepository<MedicoEntity, Integer> {
 
     @Query("SELECT m from Medico m where m.idMedico = :id and m.usuarioEntity.ativo = 1")
     Optional<MedicoEntity> findById(Integer id);
+
+    MedicoEntity getMedicoEntityByIdUsuario(Integer idLoggedUser);
 }

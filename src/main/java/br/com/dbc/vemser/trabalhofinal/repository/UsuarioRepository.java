@@ -12,6 +12,6 @@ public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Integer>
 
     Optional<UsuarioEntity> findByEmail(String email);
 
-    @Query("update from Usuario u set u.ativo = 1 where u.idUsuario = :id")
+    @Query("update from Usuario u set u.ativo = 1 where u.idUsuario = :idUsuario")
     void reativarUsuario(Integer idUsuario);
 }
