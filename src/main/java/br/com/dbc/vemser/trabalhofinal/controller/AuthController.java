@@ -7,6 +7,7 @@ import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.security.TokenService;
 import br.com.dbc.vemser.trabalhofinal.service.ClienteService;
 import br.com.dbc.vemser.trabalhofinal.service.MedicoService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+@Tag(name="Autenticação")
 @RestController
 @RequestMapping("/auth")
 @Validated

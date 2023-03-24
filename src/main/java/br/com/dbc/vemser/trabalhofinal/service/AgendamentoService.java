@@ -7,12 +7,15 @@ import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.AgendamentoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -23,6 +26,7 @@ public class AgendamentoService {
     private final ClienteService clienteService;
     private final MedicoService medicoService;
     private final ObjectMapper objectMapper;
+    private final EmailService emailService;
 
     public AgendamentoDTO adicionar(AgendamentoCreateDTO agendamentoCreateDTO) throws RegraDeNegocioException {
         ClienteEntity clienteEntity = clienteService.getCliente(agendamentoCreateDTO.getIdCliente());
@@ -35,6 +39,12 @@ public class AgendamentoService {
         agendamentoEntity.setValorAgendamento(medicoEntity.getEspecialidadeEntity().getValor() * (clienteEntity.getConvenioEntity().getTaxaAbatimento()/100));
 
         agendamentoRepository.save(agendamentoEntity);
+        try{
+            emailService.sendEmailUsuario(clienteEntity.getUsuarioEntity(), TipoEmail.AGENDAMENTO_CRIADO_CLIENTE);
+            emailService.sendEmailUsuario(medicoEntity.getUsuarioEntity(), TipoEmail.AGENDAMENTO_CRIADO_MEDICO);
+        } catch (MessagingException | TemplateException | IOException e) {
+            throw new RegraDeNegocioException("Erro ao enviar o e-mail com as informações do agendamento.");
+        }
 
         return objectMapper.convertValue(agendamentoEntity, AgendamentoDTO.class);
     }
@@ -52,12 +62,25 @@ public class AgendamentoService {
         agendamentoEntity.setValorAgendamento(medicoEntity.getEspecialidadeEntity().getValor() * (clienteEntity.getConvenioEntity().getTaxaAbatimento()/100));
 
         agendamentoRepository.save(agendamentoEntity);
+        try{
+            emailService.sendEmailAgendamento(clienteEntity.getUsuarioEntity(), agendamentoEntity, TipoEmail.AGENDAMENTO_EDITADO_CLIENTE);
+            emailService.sendEmailAgendamento(medicoEntity.getUsuarioEntity(), agendamentoEntity, TipoEmail.AGENDAMENTO_EDITADO_MEDICO);
+        } catch (MessagingException | TemplateException | IOException e) {
+            throw new RegraDeNegocioException("Erro ao enviar o e-mail de edição no agendamento.");
+        }
 
         return objectMapper.convertValue(agendamentoEntity, AgendamentoDTO.class);
     }
 
     public void remover(Integer id) throws RegraDeNegocioException {
-        agendamentoRepository.delete(getAgendamento(id));
+        AgendamentoEntity agendamentoEntity = getAgendamento(id);
+        try{
+            emailService.sendEmailAgendamento(agendamentoEntity.getClienteEntity().getUsuarioEntity(), agendamentoEntity, TipoEmail.AGENDAMENTO_CANCELADO_CLIENTE);
+            emailService.sendEmailAgendamento(agendamentoEntity.getMedicoEntity().getUsuarioEntity(), agendamentoEntity, TipoEmail.AGENDAMENTO_CANCELADO_MEDICO);
+        } catch (MessagingException | TemplateException | IOException e) {
+            throw new RegraDeNegocioException("Erro ao enviar o e-mail de cancelamento do agendamento.");
+        }
+        agendamentoRepository.delete(agendamentoEntity);
     }
 
     public void removerPorMedicoDesativado(MedicoEntity medicoEntity) throws RegraDeNegocioException {

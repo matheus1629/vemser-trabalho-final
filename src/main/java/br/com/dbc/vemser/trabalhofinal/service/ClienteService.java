@@ -6,14 +6,18 @@ import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.ClienteRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import freemarker.template.TemplateException;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,13 +30,20 @@ public class ClienteService {
     private final UsuarioService usuarioService;
     private final ConvenioService convenioService;
     private final AgendamentoService agendamentoService;
+    private final EmailService emailService;
 
-    public ClienteService(ClienteRepository clienteRepository, ObjectMapper objectMapper, UsuarioService usuarioService, ConvenioService convenioService, @Lazy AgendamentoService agendamentoService) {
+    public ClienteService(ClienteRepository clienteRepository,
+                          ObjectMapper objectMapper,
+                          UsuarioService usuarioService,
+                          ConvenioService convenioService,
+                          @Lazy AgendamentoService agendamentoService,
+                          EmailService emailService) {
         this.clienteRepository = clienteRepository;
         this.objectMapper = objectMapper;
         this.usuarioService = usuarioService;
         this.convenioService = convenioService;
         this.agendamentoService = agendamentoService;
+        this.emailService = emailService;
     }
 
     public PageDTO<ClienteCompletoDTO> list(Integer pagina, Integer tamanho) {
@@ -52,6 +63,7 @@ public class ClienteService {
         ClienteEntity clienteEntity = clienteRepository.getClienteEntityByIdUsuario(usuarioService.getIdLoggedUser());
         return getById(clienteEntity.getIdCliente());
     }
+
     public ClienteCompletoDTO getById(Integer idCliente) throws RegraDeNegocioException {
         Optional<ClienteCompletoDTO> clienteRetornado = clienteRepository.getByIdPersonalizado(idCliente);
         if(clienteRetornado.isEmpty()){
@@ -60,7 +72,7 @@ public class ClienteService {
         return clienteRetornado.get();
     }
 
-    public ClienteCompletoDTO adicionar(ClienteCreateDTO cliente) throws RegraDeNegocioException {
+    public ClienteCompletoDTO adicionar(ClienteCreateDTO cliente) throws RegraDeNegocioException{
         checarSeTemNumero(cliente.getNome());
 
         // Adicionando o Usuario com as informações recebidas no ClienteCreateDTO
@@ -77,6 +89,12 @@ public class ClienteService {
         clienteEntity.setConvenioEntity(convenioService.getConvenio(cliente.getIdConvenio()));
 
         clienteRepository.save(clienteEntity);
+        try{
+            emailService.sendEmailUsuario(clienteEntity.getUsuarioEntity(), TipoEmail.USUARIO_CADASTRO);
+        } catch (MessagingException | TemplateException | IOException e) {
+            usuarioService.hardDelete(clienteEntity.getUsuarioEntity().getIdUsuario());
+            throw new RegraDeNegocioException("Erro ao enviar o e-mail. Cadastro não realizado.");
+        }
 
         return getById(clienteEntity.getIdCliente());
     }
@@ -107,8 +125,6 @@ public class ClienteService {
         return clienteRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("Cliente não existe!"));
     }
-
-
 
     public void checarSeTemNumero(String string) throws RegraDeNegocioException {
         if (string.matches(".*[0-9].*")) { // checa se tem número no nome
