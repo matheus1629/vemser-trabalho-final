@@ -6,6 +6,7 @@ import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -60,20 +61,25 @@ public class TokenService {
 
     public UsernamePasswordAuthenticationToken isValid(String token) {
         if (token != null) {
-            Claims body = Jwts.parser()
-                    .setSigningKey(secret)
-                    .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-                    .getBody();
-            String user = body.get(Claims.ID, String.class);
-            if (user != null) {
-                List<String> cargos = body.get(CARGOS_CHAVE, List.class);
-                List<SimpleGrantedAuthority> cargosDoMeuUsuario = cargos.stream()
-                        .map(authority -> new SimpleGrantedAuthority(authority))
-                        .toList();
+            try {
+                Claims body = Jwts.parser()
+                        .setSigningKey(secret)
+                        .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+                        .getBody();
+                String user = body.get(Claims.ID, String.class);
+                if (user != null) {
+                    List<String> cargos = body.get(CARGOS_CHAVE, List.class);
+                    List<SimpleGrantedAuthority> cargosDoMeuUsuario = cargos.stream()
+                            .map(authority -> new SimpleGrantedAuthority(authority))
+                            .toList();
 
-                return new UsernamePasswordAuthenticationToken(user, null, cargosDoMeuUsuario);
+                    return new UsernamePasswordAuthenticationToken(user, null, cargosDoMeuUsuario);
+                }
+            } catch (SignatureException e) {
+                return null;
             }
         }
+
         return null;
     }
 
