@@ -4,30 +4,46 @@ import br.com.dbc.vemser.trabalhofinal.controller.documentacao.InterfaceDocument
 import br.com.dbc.vemser.trabalhofinal.dto.*;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.AgendamentoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Validated
 @RestController
 @RequestMapping("/agendamento")
 @RequiredArgsConstructor
-public class AgendamentoController implements InterfaceDocumentacao<AgendamentoDTO, AgendamentoCreateDTO, Integer, Integer> {
+public class AgendamentoController  {
 
     private final AgendamentoService agendamentoService;
 
 
-    @Override
+    @Operation(summary = "Listar registros", description = "Lista todos os registros")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Todos os registros foram listados com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @GetMapping()
     public ResponseEntity<PageDTO<AgendamentoDTO>> list(Integer pagina, Integer tamanho) {
         return new ResponseEntity<>(agendamentoService.findAllPaginado(pagina, tamanho), HttpStatus.OK);
     }
 
-    @Override
+    @Operation(summary = "Recuperar um registro", description = "Lista um registro passando seu ID")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "O registro foi lsitado com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @GetMapping("/{id}")
     public ResponseEntity<AgendamentoDTO> getById(Integer id) throws RegraDeNegocioException {
         return new ResponseEntity<>(agendamentoService.getById(id), HttpStatus.OK);
     }
@@ -42,17 +58,41 @@ public class AgendamentoController implements InterfaceDocumentacao<AgendamentoD
         return new ResponseEntity<>(agendamentoService.getRelatorioMedicoById(idMedico), HttpStatus.OK);
     }
 
-    @Override
+    @Operation(summary = "Criar registro", description = "Cria um registro")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Registro criado com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @PostMapping
     public ResponseEntity<AgendamentoDTO> create(AgendamentoCreateDTO agendamento) throws RegraDeNegocioException {
         return new ResponseEntity<>(agendamentoService.adicionar(agendamento), HttpStatus.OK);
     }
 
-    @Override
+    @Operation(summary = "Atualizar registro", description = "Atualiza um registro passando o id")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Registro atualizado com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @PutMapping("/{id}")
     public ResponseEntity<AgendamentoDTO> update(Integer id, AgendamentoCreateDTO agendamento) throws RegraDeNegocioException {
         return new ResponseEntity<>(agendamentoService.editar(id, agendamento), HttpStatus.OK);
     }
 
-    @Override
+    @Operation(summary = "Deletar registro", description = "Detela um registro passando o id")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Registro deletado com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(Integer id) throws RegraDeNegocioException {
         agendamentoService.remover(id);
         return ResponseEntity.ok().build();

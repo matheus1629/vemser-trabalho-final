@@ -1,11 +1,15 @@
 package br.com.dbc.vemser.trabalhofinal.controller;
 
+import br.com.dbc.vemser.trabalhofinal.controller.documentacao.DocumentacaoCliente;
 import br.com.dbc.vemser.trabalhofinal.controller.documentacao.InterfaceDocumentacao;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.ClienteService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/cliente")
-public class ClienteController implements InterfaceDocumentacao<ClienteCompletoDTO, ClienteCreateDTO, Integer, Integer> {
+public class ClienteController implements DocumentacaoCliente<ClienteCompletoDTO, ClienteCreateDTO, Integer, Integer> {
 
     private final ClienteService clienteService;
 
-    @Override
-    public ResponseEntity<PageDTO<ClienteCompletoDTO>> list(Integer pagina, Integer tamanho) {
-        return new ResponseEntity<>(clienteService.list(pagina, tamanho), HttpStatus.OK);
-    }
+
 
     @GetMapping("/verificar-info")
     public ResponseEntity<ClienteCompletoDTO> recuperarCliente() throws RegraDeNegocioException {
@@ -33,15 +34,20 @@ public class ClienteController implements InterfaceDocumentacao<ClienteCompletoD
     }
 
 
-    @Override
-    public ResponseEntity<ClienteCompletoDTO> getById(Integer id) throws RegraDeNegocioException {
-        return new ResponseEntity<>(clienteService.getById(id), HttpStatus.OK);
-    }
+//    @Operation(summary = "Recuperar um registro", description = "Lista um registro passando seu ID")
+//    @ApiResponses(
+//            value = {
+//                    @ApiResponse(responseCode = "200", description = "O registro foi lsitado com sucesso"),
+//                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+//                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+//            }
+//    )
+//    @GetMapping("/{id}")
+//    public ResponseEntity<ClienteCompletoDTO> getById(Integer id) throws RegraDeNegocioException {
+//        return new ResponseEntity<>(clienteService.getById(id), HttpStatus.OK);
+//    }
 
-    @Override//TODO retirar o create do Medico e Cliente
-    public ResponseEntity<ClienteCompletoDTO> create(ClienteCreateDTO cliente) throws RegraDeNegocioException {
-        return new ResponseEntity<>(clienteService.adicionar(cliente), HttpStatus.OK);
-    }
+
 
     @Override
     public ResponseEntity<ClienteCompletoDTO> update(Integer id, ClienteCreateDTO cliente) throws RegraDeNegocioException {
