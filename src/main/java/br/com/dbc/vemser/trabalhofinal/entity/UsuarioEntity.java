@@ -25,7 +25,7 @@ public class UsuarioEntity implements UserDetails {
     @SequenceGenerator(name = "SEQ_USUARIO", sequenceName = "SEQ_USUARIO", allocationSize = 1)
     @Column(name = "id_usuario")
     private Integer idUsuario;
-    @Column(name = "id_cargo")
+    @Column(name = "id_cargo",insertable = false, updatable=false)
     private Integer idCargo;
     @Column(name = "cpf")
     private String cpf;
@@ -52,15 +52,13 @@ public class UsuarioEntity implements UserDetails {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_cargo", referencedColumnName = "id_cargo",insertable = false, updatable=false)
+    @JoinColumn(name = "id_cargo", referencedColumnName = "id_cargo")
     private CargoEntity cargoEntity;
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<CargoEntity> cargoEntity = null;
-        cargoEntity.add(this.cargoEntity); // PODE DAR ERRO!!!
-        return cargoEntity;
+        return Collections.singleton(cargoEntity);
     }
 
     @Override
