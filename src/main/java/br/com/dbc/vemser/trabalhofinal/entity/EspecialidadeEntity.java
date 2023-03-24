@@ -14,7 +14,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity(name = "Especialidade")
-public class EspecialidadeEntity {
+public class    EspecialidadeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CONVENIO")
     @SequenceGenerator(name = "SEQ_CONVENIO", sequenceName = "SEQ_CONVENIO", allocationSize = 1)

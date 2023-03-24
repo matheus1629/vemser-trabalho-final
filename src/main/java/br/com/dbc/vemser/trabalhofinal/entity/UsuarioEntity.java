@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,6 +20,8 @@ public class UsuarioEntity {
     @SequenceGenerator(name = "SEQ_USUARIO", sequenceName = "SEQ_USUARIO", allocationSize = 1)
     @Column(name = "id_usuario")
     private Integer idUsuario;
+    @Column(name = "id_cargo",insertable = false, updatable=false)
+    private Integer idCargo;
     @Column(name = "cpf")
     private String cpf;
     @Column(name = "email")
@@ -44,4 +47,8 @@ public class UsuarioEntity {
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "usuarioEntity", cascade = CascadeType.ALL)
     private MedicoEntity medicoEntity;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cargo", referencedColumnName = "id_cargo")
+    private CargoEntity cargoEntity;
 }
