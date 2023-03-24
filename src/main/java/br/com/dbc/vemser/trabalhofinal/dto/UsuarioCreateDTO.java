@@ -39,7 +39,5 @@ public class UsuarioCreateDTO {
     @NotNull
     @Schema(description = "Número de telefone ou celular", example = "849261850, 4599765234")
     private String contatos;
-    @NotNull
-    @Schema(description = "Indentificar se o usuário é um médico ou um cliente", example = "1", required = true)
-    private Integer idCargo;
+
 }

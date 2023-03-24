@@ -22,14 +22,15 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity, Integer>
             "u.cpf, " +
             "u.email, " +
             "u.nome, " +
-            "u.tipoUsuario, " +
+            "ca.nomeCargo, " +
             "u.contatos, " +
             "u.cep, " +
             "u.numero) " +
             "from Cliente c" +
             " left join c.usuarioEntity u " +
             " left join c.convenioEntity con " +
-            "where c.idCliente = :id"
+            " left join c.usuarioEntity.cargoEntity ca" +
+            " where c.idCliente = :id"
     )
     Optional<ClienteCompletoDTO> getByIdPersonalizado(Integer id);
 
@@ -42,12 +43,13 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity, Integer>
             "u.cpf, " +
             "u.email, " +
             "u.nome, " +
-            "u.tipoUsuario, " +
+            "ca.nomeCargo, " +
             "u.contatos, " +
             "u.cep, " +
             "u.numero) " +
             "from Cliente c" +
             " left join c.usuarioEntity u " +
+            " left join c.usuarioEntity.cargoEntity ca" +
             " left join c.convenioEntity con "
     )
     Page<ClienteCompletoDTO> listarFull(Pageable pageable);

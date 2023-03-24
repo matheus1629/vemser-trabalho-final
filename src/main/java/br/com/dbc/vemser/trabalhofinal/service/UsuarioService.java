@@ -42,7 +42,6 @@ public class UsuarioService {
         usuarioRecuperado.setCep(usuario.getCep());
         usuarioRecuperado.setNumero(usuario.getNumero());
         usuarioRecuperado.setContatos(usuario.getContatos());
-        usuarioRecuperado.setTipoUsuario(usuario.getIdCargo());
 
         usuarioRepository.save(usuarioRecuperado);
     }
@@ -55,7 +54,7 @@ public class UsuarioService {
 
         List<UsuarioEntity> usuarioEntities = usuarioRepository.findAll();
 
-        if (usuarioEntity.getTipoUsuario().equals(TipoUsuario.MEDICO)) {
+        if (usuarioEntity.getIdCargo().equals(2)) {
             for (UsuarioEntity value : usuarioEntities) {
                 if (value.getMedicoEntity() != null) {
                     if (value.getMedicoEntity().getCrm().equals(usuarioEntity.getMedicoEntity().getCrm())) {
@@ -106,11 +105,7 @@ public class UsuarioService {
 
     // Verifica a disponilidade do id_usuario
 
-    public void verificarIdUsuario(Integer id, TipoUsuario tipoUsuario) throws RegraDeNegocioException {
-        if (getUsuario(id).getTipoUsuario() != tipoUsuario) {
-            throw new RegraDeNegocioException("O id de usuário informado não é adequado para esta operação!");
-        }
-    }
+
     public PageDTO<UsuarioDTO> listAll(Integer pagina,Integer tamanho ) {
         Pageable solicitacaoPagina = PageRequest.of(pagina,tamanho);
         Page<UsuarioEntity> usuario = usuarioRepository.findAll(solicitacaoPagina);

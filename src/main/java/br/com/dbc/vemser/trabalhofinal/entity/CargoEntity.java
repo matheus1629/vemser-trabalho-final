@@ -21,7 +21,7 @@ public class CargoEntity {
     @Column(name = "id_cargo")
     private Integer idCargo;
     @Column(name = "nome", insertable= false, updatable=false)
-    private String nome;
+    private String nomeCargo;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cargoEntity", cascade = CascadeType.MERGE)

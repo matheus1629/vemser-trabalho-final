@@ -17,7 +17,7 @@ public class ClienteCompletoDTO {
     private String cpf;
     private String email;
     private String nome;
-    private Integer idCargo;
+    private String nomeCargo;
     private String contatos;
     private String cep;
     private Integer numero;
