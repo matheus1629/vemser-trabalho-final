@@ -23,15 +23,17 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final ObjectMapper objectMapper;
+    private final PasswordEncoder passwordEncoder;
 
     public void adicionar(UsuarioEntity usuario) throws RegraDeNegocioException {
         usuario.setAtivo(1);
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         usuarioRepository.save(usuario);
     }
 
     public void remover(Integer id) throws RegraDeNegocioException {
         UsuarioEntity usuario = getUsuario(id);
-        usuarioRepository.deleteById(usuario.getIdUsuario());
+        usuario.setAtivo(0);
     }
 
     public void editar(UsuarioCreateDTO usuario, Integer id) throws RegraDeNegocioException {
@@ -40,7 +42,7 @@ public class UsuarioService {
         usuarioRecuperado.setCpf(usuario.getCpf());
         usuarioRecuperado.setEmail(usuario.getEmail());
         usuarioRecuperado.setNome(usuario.getNome());
-        usuarioRecuperado.setSenha(usuario.getSenha());
+        usuarioRecuperado.setSenha(passwordEncoder.encode(usuario.getSenha()));
         usuarioRecuperado.setCep(usuario.getCep());
         usuarioRecuperado.setNumero(usuario.getNumero());
         usuarioRecuperado.setContatos(usuario.getContatos());
