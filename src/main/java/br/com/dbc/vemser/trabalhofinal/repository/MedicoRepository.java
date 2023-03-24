@@ -14,43 +14,44 @@ import java.util.Optional;
 public interface MedicoRepository extends JpaRepository<MedicoEntity, Integer> {
 
     @Query("select new br.com.dbc.vemser.trabalhofinal.dto.MedicoCompletoDTO(" +
-            "m.idMedico, " +
-            "m.crm, " +
-            "m.idEspecialidade, " +
-            "m.idUsuario, " +
-            "es.valor, " +
-            "es.nomeEspecialidade, " +
-            "u.cpf, " +
-            "u.email, " +
-            "u.nome ," +
-            "u.tipoUsuario, " +
-            "u.contatos, " +
-            "u.cep, " +
-            "u.numero) " +
-            "from Medico m" +
+            " m.idMedico, " +
+            " m.crm, " +
+            " m.idEspecialidade, " +
+            " m.idUsuario, " +
+            " es.valor, " +
+            " es.nomeEspecialidade, " +
+            " u.cpf, " +
+            " u.email, " +
+            " u.nome ," +
+            " ca.nomeCargo, " +
+            " u.contatos, " +
+            " u.cep, " +
+            " u.numero) " +
+            " from Medico m" +
             " left join m.usuarioEntity u" +
             " left join m.especialidadeEntity es" +
+            " left join u.cargoEntity ca" +
             " where m.idMedico = :id"
     )
     Optional<MedicoCompletoDTO> getByIdPersonalizado(Integer id);
 
     @Query("select new br.com.dbc.vemser.trabalhofinal.dto.MedicoCompletoDTO(" +
-            "m.idMedico, " +
-            "m.crm, " +
-            "m.idEspecialidade, " +
-            "m.idUsuario, " +
-            "es.valor, " +
-            "es.nomeEspecialidade, " +
-            "u.cpf, " +
-            "u.email, " +
-            "u.nome ," +
-            "ca.nomeCargo, " +
-            "u.contatos, " +
-            "u.cep, " +
-            "u.numero) " +
-            "from Medico m" +
+            " m.idMedico, " +
+            " m.crm, " +
+            " m.idEspecialidade, " +
+            " m.idUsuario, " +
+            " es.valor, " +
+            " es.nomeEspecialidade, " +
+            " u.cpf, " +
+            " u.email, " +
+            " u.nome," +
+            " ca.nomeCargo, " +
+            " u.contatos, " +
+            " u.cep, " +
+            " u.numero) " +
+            " from Medico m" +
             " left join m.usuarioEntity u" +
-            " left join m.usuarioEntity.cargoEntity ca" +
+            " left join u.cargoEntity ca" +
             " left join m.especialidadeEntity es"
     )
     Page<MedicoCompletoDTO> listarFull(Pageable pageable);
