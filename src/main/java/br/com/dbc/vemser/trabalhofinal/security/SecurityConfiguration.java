@@ -43,7 +43,6 @@ public class SecurityConfiguration {
                 "/swagger-resources/**",
                 "/swagger-ui/**",
                 "/auth",
-                "/auth/cadastro-administartivo",
                 "/auth/cadastro-cliente" ,
                 "/auth/cadastro-medico"
         );

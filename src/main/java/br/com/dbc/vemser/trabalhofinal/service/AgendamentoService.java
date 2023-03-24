@@ -32,6 +32,7 @@ public class AgendamentoService {
 
         agendamentoEntity.setClienteEntity(clienteEntity);
         agendamentoEntity.setMedicoEntity(medicoEntity);
+        agendamentoEntity.setValorAgendamento(medicoEntity.getEspecialidadeEntity().getValor() * (clienteEntity.getConvenioEntity().getTaxaAbatimento()/100));
 
         agendamentoRepository.save(agendamentoEntity);
 
@@ -48,6 +49,7 @@ public class AgendamentoService {
         agendamentoEntity.setExame(agendamentoCreateDTO.getExame());
         agendamentoEntity.setTratamento(agendamentoCreateDTO.getTratamento());
         agendamentoEntity.setDataHorario(agendamentoCreateDTO.getDataHorario());
+        agendamentoEntity.setValorAgendamento(medicoEntity.getEspecialidadeEntity().getValor() * (clienteEntity.getConvenioEntity().getTaxaAbatimento()/100));
 
         agendamentoRepository.save(agendamentoEntity);
 

@@ -25,6 +25,7 @@ public class UsuarioService {
     private final ObjectMapper objectMapper;
 
     public void adicionar(UsuarioEntity usuario) throws RegraDeNegocioException {
+        usuario.setAtivo(1);
         usuarioRepository.save(usuario);
     }
 
@@ -43,8 +44,6 @@ public class UsuarioService {
         usuarioRecuperado.setCep(usuario.getCep());
         usuarioRecuperado.setNumero(usuario.getNumero());
         usuarioRecuperado.setContatos(usuario.getContatos());
-        //<TODO testar se é possível salvar somente algumas alterações>
-        usuarioRecuperado.setIdCargo(usuario.getIdCargo());
 
         usuarioRepository.save(usuarioRecuperado);
     }

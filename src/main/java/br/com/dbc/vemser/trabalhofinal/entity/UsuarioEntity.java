@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.trabalhofinal.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,6 +42,8 @@ public class UsuarioEntity implements UserDetails {
     private Integer numero;
     @Column(name = "contatos")
     private String contatos;
+    @Column(name = "ativo")
+    private Integer ativo;
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "usuarioEntity", cascade = CascadeType.ALL)
