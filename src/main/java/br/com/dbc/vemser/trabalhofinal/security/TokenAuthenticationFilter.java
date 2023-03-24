@@ -19,14 +19,13 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final String BEARER = "Bearer ";
 
-    // toda requisição ele vai verificar se o token existe e validar se ele está correto...
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String tokenFromHeader = getTokenFromHeader(request);
 
         UsernamePasswordAuthenticationToken usuario = tokenService.isValid(tokenFromHeader);
-        SecurityContextHolder.getContext().setAuthentication(usuario); // se não tiver nada no token = null
+        SecurityContextHolder.getContext().setAuthentication(usuario);
 
         filterChain.doFilter(request, response);
     }
@@ -37,7 +36,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         if (token == null) {
             return null;
         }
-        return token.replace(BEARER, ""); // dXNlcjsxMjM=
+        return token.replace(BEARER, "");
     }
 
 }

@@ -44,12 +44,13 @@ public interface MedicoRepository extends JpaRepository<MedicoEntity, Integer> {
             "u.cpf, " +
             "u.email, " +
             "u.nome ," +
-            "u.tipoUsuario, " +
+            "ca.nomeCargo, " +
             "u.contatos, " +
             "u.cep, " +
             "u.numero) " +
             "from Medico m" +
             " left join m.usuarioEntity u" +
+            " left join m.usuarioEntity.cargoEntity ca" +
             " left join m.especialidadeEntity es"
     )
     Page<MedicoCompletoDTO> listarFull(Pageable pageable);

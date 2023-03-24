@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,6 +43,8 @@ public class UsuarioService {
         usuarioRecuperado.setCep(usuario.getCep());
         usuarioRecuperado.setNumero(usuario.getNumero());
         usuarioRecuperado.setContatos(usuario.getContatos());
+        //<TODO testar se é possível salvar somente algumas alterações>
+        usuarioRecuperado.setIdCargo(usuario.getIdCargo());
 
         usuarioRepository.save(usuarioRecuperado);
     }
@@ -118,5 +121,9 @@ public class UsuarioService {
                 pagina,
                 tamanho,
                 usuarioDTO);
+    }
+
+    public Optional<UsuarioEntity> findByEmail(String email) {
+        return usuarioRepository.findByEmail(email);
     }
 }

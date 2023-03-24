@@ -53,7 +53,7 @@ public class ClienteService {
 
         // Adicionando o Usuario com as informações recebidas no ClienteCreateDTO
         UsuarioEntity usuarioEntity = objectMapper.convertValue(cliente, UsuarioEntity.class);
-        usuarioEntity.setTipoUsuario(TipoUsuario.CLIENTE);
+        usuarioEntity.setIdCargo(3);
         usuarioService.validarUsuarioAdicionado(usuarioEntity);
         usuarioService.adicionar(usuarioEntity);
 
@@ -74,11 +74,11 @@ public class ClienteService {
 
         ClienteEntity clienteEntity = getCliente(id);
 
-        UsuarioCreateDTO usuarioDTO = objectMapper.convertValue(cliente, UsuarioCreateDTO.class);
-        usuarioDTO.setIdCargo(TipoUsuario.CLIENTE);
+        UsuarioCreateDTO usuarioCreateDTO = objectMapper.convertValue(cliente, UsuarioCreateDTO.class);
+        usuarioCreateDTO.setIdCargo(3);
 
-        usuarioService.validarUsuarioEditado(usuarioDTO, clienteEntity.getIdUsuario());
-        usuarioService.editar(usuarioDTO, clienteEntity.getIdUsuario());
+        usuarioService.validarUsuarioEditado(usuarioCreateDTO, clienteEntity.getIdUsuario());
+        usuarioService.editar(usuarioCreateDTO, clienteEntity.getIdUsuario());
 
 
         ClienteEntity clienteEditado = clienteRepository.save(clienteEntity);

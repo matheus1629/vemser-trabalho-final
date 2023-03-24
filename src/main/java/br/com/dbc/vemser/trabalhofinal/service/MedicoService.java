@@ -53,7 +53,7 @@ public class MedicoService {
         checarSeTemNumero(medico.getNome());
 
         UsuarioEntity usuarioEntity = objectMapper.convertValue(medico, UsuarioEntity.class);
-        usuarioEntity.setTipoUsuario(TipoUsuario.MEDICO);
+        usuarioEntity.setIdCargo(2);
 
         // Adicionando o usuario que foi salvado no Medico a salvar
         MedicoEntity medicoEntity = objectMapper.convertValue(medico, MedicoEntity.class);
@@ -78,8 +78,7 @@ public class MedicoService {
         MedicoEntity medicoEntity = getMedico(id);
 
         UsuarioCreateDTO usuarioDTO = objectMapper.convertValue(medico, UsuarioCreateDTO.class);
-        usuarioDTO.setIdCargo(TipoUsuario.MEDICO);
-
+        usuarioDTO.setIdCargo(2);
 
         List<MedicoEntity> listaMedico = medicoRepository.findAll().stream().filter(medicoEntity1 -> medicoEntity1.getCrm().equals(medico.getCrm())).toList();;
         for (MedicoEntity medicoVerificarCRM: listaMedico) {
