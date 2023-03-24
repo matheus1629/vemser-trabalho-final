@@ -63,7 +63,7 @@ public class EmailService {
 
     // AGENDAMENTO
 
-    public void sendEmailAgendamento(UsuarioDTO usuario, AgendamentoEntity agendamento, TipoEmail tipoEmail) throws MessagingException, TemplateException, IOException {
+    public void sendEmailAgendamento(UsuarioEntity usuario, AgendamentoEntity agendamento, TipoEmail tipoEmail) throws MessagingException, TemplateException, IOException {
         MimeMessageHelper mimeMessageHelper = buildEmailAgendamento(usuario.getEmail(), tipoEmail);
         mimeMessageHelper.setText(getAgendamentoTemplate(agendamento, tipoEmail), true);
 

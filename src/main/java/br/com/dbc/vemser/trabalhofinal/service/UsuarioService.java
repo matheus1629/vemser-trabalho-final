@@ -38,6 +38,11 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
     }
 
+    public void hardDelete(Integer id) throws RegraDeNegocioException {
+        UsuarioEntity usuario = getUsuario(id);
+        usuarioRepository.delete(usuario);
+    }
+
     public void editar(UsuarioCreateDTO usuario, Integer id) throws RegraDeNegocioException {
 
         UsuarioEntity usuarioRecuperado = getUsuario(id);

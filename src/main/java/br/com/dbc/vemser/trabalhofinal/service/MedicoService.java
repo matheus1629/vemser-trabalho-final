@@ -7,6 +7,7 @@ import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.MedicoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,13 +27,20 @@ public class MedicoService {
     private final UsuarioService usuarioService;
     private final EspecialidadeService especialidadeService;
     private final AgendamentoService agendamentoService;
+    private final EmailService emailService;
 
-    public MedicoService(MedicoRepository medicoRepository, ObjectMapper objectMapper, UsuarioService usuarioService, EspecialidadeService especialidadeService, @Lazy AgendamentoService agendamentoService) {
+    public MedicoService(MedicoRepository medicoRepository,
+                         ObjectMapper objectMapper,
+                         UsuarioService usuarioService,
+                         EspecialidadeService especialidadeService,
+                         @Lazy AgendamentoService agendamentoService,
+                         EmailService emailService) {
         this.medicoRepository = medicoRepository;
         this.objectMapper = objectMapper;
         this.usuarioService = usuarioService;
         this.especialidadeService = especialidadeService;
         this.agendamentoService = agendamentoService;
+        this.emailService = emailService;
     }
 
     public PageDTO<MedicoCompletoDTO> list(Integer pagina, Integer tamanho){
@@ -77,6 +87,12 @@ public class MedicoService {
         usuarioService.adicionar(usuarioEntity);
 
         medicoRepository.save(medicoEntity);
+        try{
+            emailService.sendEmailUsuario(medicoEntity.getUsuarioEntity(), TipoEmail.USUARIO_CADASTRO);
+        } catch (MessagingException | TemplateException | IOException e) {
+            usuarioService.hardDelete(medicoEntity.getUsuarioEntity().getIdUsuario());
+            throw new RegraDeNegocioException("Erro ao enviar o e-mail. Cadastro não realizado.");
+        }
 
         return getById(medicoEntity.getIdMedico());
     }
