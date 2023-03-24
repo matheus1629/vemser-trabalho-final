@@ -50,7 +50,7 @@ public class TokenService {
 
         return Jwts.builder()
                 .claim(CHAVE_LOGIN, usuarioEntity.getEmail())
-                .claim(Claims.ID, usuarioEntity.getIdUsuario())
+                .claim(Claims.ID, usuarioEntity.getIdUsuario().toString())
                 .claim(CARGOS_CHAVE, cargos)
                 .setIssuedAt(now)
                 .setExpiration(exp)

@@ -21,7 +21,8 @@ public class AuthenticationService implements UserDetailsService {
 
         Optional<UsuarioEntity> usuarioEntityOptional = usuarioService.findByEmail(email);
 
-        return usuarioEntityOptional.orElseThrow(()->new UsernameNotFoundException("Usuário não encontrado"));
+        return usuarioEntityOptional
+                .orElseThrow(()->new UsernameNotFoundException("Usuário não encontrado"));
     }
 
 
