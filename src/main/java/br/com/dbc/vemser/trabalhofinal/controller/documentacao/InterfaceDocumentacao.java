@@ -1,4 +1,4 @@
-package br.com.dbc.vemser.trabalhofinal.controller.In;
+package br.com.dbc.vemser.trabalhofinal.controller.documentacao;
 
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;

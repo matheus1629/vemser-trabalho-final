@@ -1,6 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.controller;
 
-import br.com.dbc.vemser.trabalhofinal.controller.In.InterfaceDocumentacao;
+import br.com.dbc.vemser.trabalhofinal.controller.documentacao.InterfaceDocumentacao;
 import br.com.dbc.vemser.trabalhofinal.dto.*;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.AgendamentoService;

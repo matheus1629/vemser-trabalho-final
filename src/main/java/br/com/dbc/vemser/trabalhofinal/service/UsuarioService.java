@@ -128,4 +128,14 @@ public class UsuarioService {
     public Optional<UsuarioEntity> findByEmail(String email) {
         return usuarioRepository.findByEmail(email);
     }
+
+    public UsuarioDTO reativarUsuario(Integer idUsuario) throws RegraDeNegocioException {
+        UsuarioEntity usuarioEntity = getUsuario(idUsuario);
+        if (usuarioEntity.getAtivo() == 1) {
+            throw new RegraDeNegocioException("Este usuário já está ativo!");
+        }
+        usuarioRepository.reativarUsuario(usuarioEntity.getIdUsuario());
+
+        return objectMapper.convertValue(usuarioEntity, UsuarioDTO.class);
+    }
 }

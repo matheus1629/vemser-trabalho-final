@@ -1,6 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.controller;
 
-import br.com.dbc.vemser.trabalhofinal.controller.In.InterfaceDocumentacao;
+import br.com.dbc.vemser.trabalhofinal.controller.documentacao.InterfaceDocumentacao;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
@@ -9,7 +9,9 @@ import br.com.dbc.vemser.trabalhofinal.service.ClienteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +27,12 @@ public class ClienteController implements InterfaceDocumentacao<ClienteCompletoD
     public ResponseEntity<PageDTO<ClienteCompletoDTO>> list(Integer pagina, Integer tamanho) {
         return new ResponseEntity<>(clienteService.list(pagina, tamanho), HttpStatus.OK);
     }
+
+    @GetMapping("/verificar-info")
+    public ResponseEntity<PageDTO<ClienteCompletoDTO>> listar() {
+        return new ResponseEntity<>(clienteService.listar(), HttpStatus.OK);
+    }
+
 
     @Override
     public ResponseEntity<ClienteCompletoDTO> getById(Integer id) throws RegraDeNegocioException {

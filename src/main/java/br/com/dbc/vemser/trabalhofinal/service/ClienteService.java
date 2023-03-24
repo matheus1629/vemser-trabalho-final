@@ -1,9 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
-import br.com.dbc.vemser.trabalhofinal.dto.ClienteCompletoDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.ClienteCreateDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.UsuarioCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.*;
 import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
@@ -42,6 +39,10 @@ public class ClienteService {
                 pagina,
                 tamanho,
                 clienteDTO);
+    }
+
+    public ClienteCompletoDTO listar() {
+
     }
     public ClienteCompletoDTO getById(Integer idCliente) throws RegraDeNegocioException {
         Optional<ClienteCompletoDTO> clienteRetornado = clienteRepository.getByIdPersonalizado(idCliente);
