@@ -5,7 +5,6 @@ import br.com.dbc.vemser.trabalhofinal.dto.MedicoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.UsuarioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
-import br.com.dbc.vemser.trabalhofinal.entity.TipoUsuario;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.MedicoRepository;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Service
@@ -80,7 +78,7 @@ public class MedicoService {
         MedicoEntity medicoEntity = getMedico(id);
 
         UsuarioCreateDTO usuarioDTO = objectMapper.convertValue(medico, UsuarioCreateDTO.class);
-        usuarioDTO.setTipoUsuario(TipoUsuario.MEDICO);
+        usuarioDTO.setIdCargo(TipoUsuario.MEDICO);
 
 
         List<MedicoEntity> listaMedico = medicoRepository.findAll().stream().filter(medicoEntity1 -> medicoEntity1.getCrm().equals(medico.getCrm())).toList();;

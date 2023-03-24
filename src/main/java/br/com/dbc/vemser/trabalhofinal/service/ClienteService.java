@@ -5,7 +5,6 @@ import br.com.dbc.vemser.trabalhofinal.dto.ClienteCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.UsuarioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
-import br.com.dbc.vemser.trabalhofinal.entity.TipoUsuario;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.ClienteRepository;
@@ -76,7 +75,7 @@ public class ClienteService {
         ClienteEntity clienteEntity = getCliente(id);
 
         UsuarioCreateDTO usuarioDTO = objectMapper.convertValue(cliente, UsuarioCreateDTO.class);
-        usuarioDTO.setTipoUsuario(TipoUsuario.CLIENTE);
+        usuarioDTO.setIdCargo(TipoUsuario.CLIENTE);
 
         usuarioService.validarUsuarioEditado(usuarioDTO, clienteEntity.getIdUsuario());
         usuarioService.editar(usuarioDTO, clienteEntity.getIdUsuario());

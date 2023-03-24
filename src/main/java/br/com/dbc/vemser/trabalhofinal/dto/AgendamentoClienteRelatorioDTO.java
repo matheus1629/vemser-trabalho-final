@@ -1,6 +1,5 @@
 package br.com.dbc.vemser.trabalhofinal.dto;
 
-import br.com.dbc.vemser.trabalhofinal.entity.TipoUsuario;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,13 +19,13 @@ public class AgendamentoClienteRelatorioDTO {
     private String cpf;
     private String email;
     private String nome;
-    private TipoUsuario tipoUsuario;
+    private Integer idCargo;
     private String contatos;
     private String cep;
     private Integer numero;
     private List<AgendamentoDTO> agendamentoDTOList;
 
-    public AgendamentoClienteRelatorioDTO(Integer idCliente, Integer idConvenio, Integer idUsuario, String cadastroOrgaoRegulador, Double taxaAbatimento, String cpf, String email, String nome, TipoUsuario tipoUsuario, String contatos, String cep, Integer numero) {
+    public AgendamentoClienteRelatorioDTO(Integer idCliente, Integer idConvenio, Integer idUsuario, String cadastroOrgaoRegulador, Double taxaAbatimento, String cpf, String email, String nome, Integer idCargo, String contatos, String cep, Integer numero) {
         this.idCliente = idCliente;
         this.idConvenio = idConvenio;
         this.idUsuario = idUsuario;
@@ -35,7 +34,7 @@ public class AgendamentoClienteRelatorioDTO {
         this.cpf = cpf;
         this.email = email;
         this.nome = nome;
-        this.tipoUsuario = tipoUsuario;
+        this.idCargo = idCargo;
         this.contatos = contatos;
         this.cep = cep;
         this.numero = numero;

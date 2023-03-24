@@ -1,6 +1,5 @@
 package br.com.dbc.vemser.trabalhofinal.dto;
 
-import br.com.dbc.vemser.trabalhofinal.entity.TipoUsuario;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,6 +40,6 @@ public class UsuarioCreateDTO {
     @Schema(description = "Número de telefone ou celular", example = "849261850, 4599765234")
     private String contatos;
     @NotNull
-    @Schema(description = "Indentificar se o usuário é um médico ou um cliente", example = "MEDICO", required = true)
-    private TipoUsuario tipoUsuario;
+    @Schema(description = "Indentificar se o usuário é um médico ou um cliente", example = "1", required = true)
+    private Integer idCargo;
 }

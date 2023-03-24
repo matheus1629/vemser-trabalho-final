@@ -36,8 +36,6 @@ public class UsuarioEntity {
     private Integer numero;
     @Column(name = "contatos")
     private String contatos;
-    @Column(name = "tipo")
-    private TipoUsuario tipoUsuario;
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "usuarioEntity", cascade = CascadeType.ALL)
