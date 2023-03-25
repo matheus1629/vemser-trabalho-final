@@ -102,17 +102,20 @@ public class ClienteService {
         return getById(clienteEntity.getIdCliente());
     }
 
-    public ClienteCompletoDTO editar(Integer id, ClienteCreateDTO cliente) throws RegraDeNegocioException {
+    public ClienteCompletoDTO editar(ClienteUpdateDTO cliente) throws RegraDeNegocioException {
+        ClienteEntity clienteEntity = objectMapper.convertValue(recuperarCliente(), ClienteEntity.class);
+//        cliente.setIdUsuario(clienteEntity.getIdUsuario());
+
+        clienteEntity.setConvenioEntity(convenioService.getConvenio(cliente.getIdConvenio()));
+        clienteEntity.setUsuarioEntity(usuarioService.getUsuario(clienteEntity.getIdUsuario()));
+
         checarSeTemNumero(cliente.getNome());
 
-        ClienteEntity clienteEntity = getCliente(id);
-
         UsuarioCreateDTO usuarioCreateDTO = objectMapper.convertValue(cliente, UsuarioCreateDTO.class);
-        usuarioCreateDTO.setIdCargo(3);
+//        usuarioCreateDTO.setIdCargo(3);
 
         usuarioService.validarUsuarioEditado(usuarioCreateDTO, clienteEntity.getIdUsuario());
         usuarioService.editar(usuarioCreateDTO, clienteEntity.getIdUsuario());
-
 
         ClienteEntity clienteEditado = clienteRepository.save(clienteEntity);
 

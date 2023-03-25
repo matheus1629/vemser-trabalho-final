@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 public interface DocumentacaoMedico<MedicoCompletoDTO> {
@@ -20,7 +21,7 @@ public interface DocumentacaoMedico<MedicoCompletoDTO> {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @PutMapping("/verificar-info")
+    @GetMapping
     ResponseEntity<MedicoCompletoDTO> recuperarCliente() throws RegraDeNegocioException;
 
 

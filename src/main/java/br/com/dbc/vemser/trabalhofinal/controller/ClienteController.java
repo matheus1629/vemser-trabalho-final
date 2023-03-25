@@ -3,6 +3,7 @@ package br.com.dbc.vemser.trabalhofinal.controller;
 import br.com.dbc.vemser.trabalhofinal.controller.documentacao.DocumentacaoCliente;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.ClienteUpdateDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.ClienteService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/cliente")
-public class ClienteController implements DocumentacaoCliente<ClienteCompletoDTO> {
+public class ClienteController implements DocumentacaoCliente<ClienteCompletoDTO, ClienteUpdateDTO> {
 
     private final ClienteService clienteService;
 
@@ -30,11 +31,9 @@ public class ClienteController implements DocumentacaoCliente<ClienteCompletoDTO
 
 
     @Override
-    public ResponseEntity<ClienteCompletoDTO> update(Integer id, ClienteCreateDTO cliente) throws RegraDeNegocioException {
-        return new ResponseEntity<>(clienteService.editar(id, cliente), HttpStatus.OK);
+    public ResponseEntity<ClienteCompletoDTO> update(ClienteUpdateDTO cliente) throws RegraDeNegocioException {
+        return new ResponseEntity<>(clienteService.editar(cliente), HttpStatus.OK);
     }
-
-
 
 
 }

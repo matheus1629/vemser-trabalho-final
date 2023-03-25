@@ -2,6 +2,7 @@ package br.com.dbc.vemser.trabalhofinal.controller.documentacao;
 
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.ClienteUpdateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-public interface DocumentacaoCliente<ClienteCompletoDTO> {
+public interface DocumentacaoCliente<ClienteCompletoDTO, ClienteUpdateDTO> {
 
     @Operation(summary = "Atualizar Cliente", description = "Recuperar as informações de Cliente pelo respectivo token")
     @ApiResponses(
@@ -22,7 +23,7 @@ public interface DocumentacaoCliente<ClienteCompletoDTO> {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @PutMapping("/verificar-info")
+    @GetMapping("/verificar-info")
     ResponseEntity<ClienteCompletoDTO> recuperarCliente() throws RegraDeNegocioException;
 
 
@@ -35,7 +36,7 @@ public interface DocumentacaoCliente<ClienteCompletoDTO> {
             }
     )
     @PutMapping("/{id}")
-    ResponseEntity<ClienteCompletoDTO> update(Integer id, ClienteCreateDTO cliente) throws RegraDeNegocioException;
+    ResponseEntity<ClienteCompletoDTO> update(ClienteUpdateDTO cliente) throws RegraDeNegocioException;
 
 
 }

@@ -47,9 +47,7 @@ public class UsuarioService {
 
         UsuarioEntity usuarioRecuperado = getUsuario(id);
         usuarioRecuperado.setCpf(usuario.getCpf());
-        usuarioRecuperado.setEmail(usuario.getEmail());
         usuarioRecuperado.setNome(usuario.getNome());
-        usuarioRecuperado.setSenha(passwordEncoder.encode(usuario.getSenha()));
         usuarioRecuperado.setCep(usuario.getCep());
         usuarioRecuperado.setNumero(usuario.getNumero());
         usuarioRecuperado.setContatos(usuario.getContatos());
