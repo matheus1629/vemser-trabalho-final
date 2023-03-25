@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name="Administrativo")
 @Validated
 @RestController
@@ -41,6 +43,11 @@ public class AdministrativoController {
         return new ResponseEntity<>(medicoService.getById(id), HttpStatus.OK);
     }
 
+    @GetMapping("/listar-administradores")
+    public ResponseEntity<List<UsuarioDTO>> list() throws RegraDeNegocioException{
+        return new ResponseEntity<>(administrativoService.listar(),HttpStatus.OK);
+    }
+
     @DeleteMapping("/deletar-medico/{id}")
     public ResponseEntity<Void> deleteMedico(Integer id) throws RegraDeNegocioException {
         medicoService.remover(id);
@@ -66,7 +73,7 @@ public class AdministrativoController {
 
 
     @DeleteMapping("/deletar-admin/{id}")
-    public ResponseEntity<Void> deleteAdmin(Integer id) throws RegraDeNegocioException {
+    public ResponseEntity<Void> remove(Integer id) throws RegraDeNegocioException {
         administrativoService.remover(id);
         return ResponseEntity.ok().build();
     }
