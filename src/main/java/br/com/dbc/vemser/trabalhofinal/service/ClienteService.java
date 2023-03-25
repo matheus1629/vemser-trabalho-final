@@ -2,6 +2,7 @@ package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.dto.*;
 import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.ConvenioEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.ClienteRepository;
@@ -78,6 +79,8 @@ public class ClienteService {
         // Adicionando o Usuario com as informações recebidas no ClienteCreateDTO
         UsuarioEntity usuarioEntity = objectMapper.convertValue(cliente, UsuarioEntity.class);
         usuarioEntity.setIdCargo(3);
+        ConvenioEntity convenioEntity = convenioService.getConvenio(cliente.getIdConvenio());
+
         usuarioService.validarUsuarioAdicionado(usuarioEntity);
         usuarioService.adicionar(usuarioEntity);
 
@@ -86,7 +89,7 @@ public class ClienteService {
         clienteEntity.setUsuarioEntity(usuarioEntity);
 
         // Adicionando Convenio em Cliente a salvar
-        clienteEntity.setConvenioEntity(convenioService.getConvenio(cliente.getIdConvenio()));
+        clienteEntity.setConvenioEntity(convenioEntity);
 
         clienteRepository.save(clienteEntity);
         try{

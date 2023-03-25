@@ -15,7 +15,7 @@
                         style="background-color: #ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; padding: 0px 15px 10px 15px;">
                     <h2> Olá ${agendamento.getMedicoEntity().getUsuarioEntity().getNome()}, </h2>
                     <p>
-                        Um agendamentoEntity seu foi <strong>removido</strong>: <br>
+                        Um agendamento seu foi <strong>removido</strong>: <br>
                         <strong>ID do agendamento: ${agendamento.getIdAgendamento()}</strong><br>
                         <strong>Estava marcado para o seguinte dia e horário: ${agendamento.getDataHorario()} <strong>
                         Qualquer dúvida é só contatar o suporte pelo e-mail ${email}<br>

@@ -40,8 +40,8 @@ public class AgendamentoService {
 
         agendamentoRepository.save(agendamentoEntity);
         try{
-            emailService.sendEmailUsuario(clienteEntity.getUsuarioEntity(), TipoEmail.AGENDAMENTO_CRIADO_CLIENTE);
-            emailService.sendEmailUsuario(medicoEntity.getUsuarioEntity(), TipoEmail.AGENDAMENTO_CRIADO_MEDICO);
+            emailService.sendEmailAgendamento(clienteEntity.getUsuarioEntity(), agendamentoEntity, TipoEmail.AGENDAMENTO_CRIADO_CLIENTE);
+            emailService.sendEmailAgendamento(medicoEntity.getUsuarioEntity(), agendamentoEntity, TipoEmail.AGENDAMENTO_CRIADO_MEDICO);
         } catch (MessagingException | TemplateException | IOException e) {
             throw new RegraDeNegocioException("Erro ao enviar o e-mail com as informações do agendamento.");
         }

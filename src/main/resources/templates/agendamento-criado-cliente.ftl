@@ -16,7 +16,7 @@
                     <h2> Olá ${agendamento.getClienteEntity().getUsuarioEntity().getNome()}, </h2>
                     <p>
                         Uma nova consulta foi agendada para você. Segue as informações: <br>
-                        <strong>ID do agendamentoEntity: ${agendamento.getIdAgendamento()}</strong><br>
+                        <strong>ID do agendamento: ${agendamento.getIdAgendamento()}</strong><br>
                         <strong>Data e horário: ${agendamento.getDataHorario()} <strong>
                         Médico que lhe atenderá: ${agendamento.getMedicoEntity().getUsuarioEntity().getNome()} <br>
                         Qualquer dúvida é só contatar o suporte pelo e-mail ${email}<br>
