@@ -1,4 +1,4 @@
-package br.com.dbc.vemser.trabalhofinal.dto;
+package br.com.dbc.vemser.trabalhofinal.dto.usuario;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

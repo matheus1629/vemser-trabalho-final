@@ -1,7 +1,7 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
-import br.com.dbc.vemser.trabalhofinal.dto.ConvenioCreateDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.ConvenioDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.convenio.ConvenioCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.convenio.ConvenioDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.ConvenioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;

@@ -29,7 +29,7 @@ public class MedicoEntity {
     private String crm;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "id_especialidade", referencedColumnName = "id_especialidade")
     private EspecialidadeEntity especialidadeEntity;
 

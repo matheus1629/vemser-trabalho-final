@@ -1,4 +1,4 @@
-package br.com.dbc.vemser.trabalhofinal.dto;
+package br.com.dbc.vemser.trabalhofinal.dto.agendamento;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

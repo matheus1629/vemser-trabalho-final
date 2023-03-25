@@ -1,5 +1,6 @@
-package br.com.dbc.vemser.trabalhofinal.dto;
+package br.com.dbc.vemser.trabalhofinal.dto.agendamento;
 
+import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AgendamentoMedicoRelatorioDTO extends MedicoCompletoDTO{
+public class AgendamentoMedicoRelatorioDTO extends MedicoCompletoDTO {
 
     private Integer idMedico;
     private String crm;

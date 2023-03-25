@@ -1,8 +1,8 @@
 package br.com.dbc.vemser.trabalhofinal.controller.documentacao;
 
-import br.com.dbc.vemser.trabalhofinal.dto.ClienteCreateDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.MedicoCompletoDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.MedicoCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoListaDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoUpdateDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -24,6 +24,16 @@ public interface DocumentacaoMedico<MedicoCompletoDTO> {
     @GetMapping
     ResponseEntity<MedicoCompletoDTO> recuperarCliente() throws RegraDeNegocioException;
 
+    @Operation(summary = "Recuperar os Agendamentos do Medico", description = "Lista os Agendamentos de acordo com o Medico logado")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Os Agendamentos foram lsitados com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @GetMapping("/agendamentos")
+    ResponseEntity<AgendamentoListaDTO> getClienteAgentamentos() throws RegraDeNegocioException;
 
     @Operation(summary = "Atualizar Medico", description = "Atualiza um Medico passando o id")
     @ApiResponses(
@@ -33,6 +43,6 @@ public interface DocumentacaoMedico<MedicoCompletoDTO> {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @PutMapping("/{id}")
-    ResponseEntity<br.com.dbc.vemser.trabalhofinal.dto.MedicoCompletoDTO> update(Integer id, MedicoCreateDTO medico) throws RegraDeNegocioException;
+    @PutMapping()
+    ResponseEntity<MedicoCompletoDTO> update(MedicoUpdateDTO medico) throws RegraDeNegocioException;
 }

@@ -1,5 +1,6 @@
-package br.com.dbc.vemser.trabalhofinal.dto;
+package br.com.dbc.vemser.trabalhofinal.dto.usuario;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,11 +11,7 @@ import javax.validation.constraints.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClienteCreateDTO {
-
-    @Schema(description = "Id do Convenio",example = "1", required = true)
-    private Integer idConvenio;
-
+public class UsuarioCreateDTO {
     @NotBlank
     @Size(min = 11, max = 11)
     @Schema(description = "CPF", example = "12345678911", required = true)
@@ -43,5 +40,6 @@ public class ClienteCreateDTO {
     @NotNull
     @Schema(description = "Número de telefone ou celular", example = "849261850, 4599765234")
     private String contatos;
-
+    @JsonIgnore
+    private Integer idCargo;
 }

@@ -1,8 +1,9 @@
 package br.com.dbc.vemser.trabalhofinal.controller;
 
 import br.com.dbc.vemser.trabalhofinal.controller.documentacao.DocumentacaoMedico;
-import br.com.dbc.vemser.trabalhofinal.dto.MedicoCompletoDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.MedicoCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoListaDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoUpdateDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.MedicoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,8 +34,13 @@ public class MedicoController implements DocumentacaoMedico<MedicoCompletoDTO> {
     }
 
     @Override
-    public ResponseEntity<MedicoCompletoDTO> update(Integer id, MedicoCreateDTO medico) throws RegraDeNegocioException {
-        MedicoCompletoDTO medicoAtualizado = medicoService.editar(id, medico);
+    public ResponseEntity<AgendamentoListaDTO> getClienteAgentamentos() throws RegraDeNegocioException {
+        return new ResponseEntity<>(medicoService.getMedicoAgentamentos(), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<MedicoCompletoDTO> update(MedicoUpdateDTO medico) throws RegraDeNegocioException {
+        MedicoCompletoDTO medicoAtualizado = medicoService.editar(medico);
         return new ResponseEntity<>(medicoAtualizado, HttpStatus.OK);
     }
 

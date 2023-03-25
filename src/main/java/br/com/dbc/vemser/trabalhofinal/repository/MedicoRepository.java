@@ -1,6 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.repository;
 
-import br.com.dbc.vemser.trabalhofinal.dto.MedicoCompletoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface MedicoRepository extends JpaRepository<MedicoEntity, Integer> {
 
-    @Query("select new br.com.dbc.vemser.trabalhofinal.dto.MedicoCompletoDTO(" +
+    @Query("select new br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO(" +
             " m.idMedico, " +
             " m.crm, " +
             " m.idEspecialidade, " +
@@ -35,7 +35,7 @@ public interface MedicoRepository extends JpaRepository<MedicoEntity, Integer> {
     )
     Optional<MedicoCompletoDTO> getByIdPersonalizado(Integer id);
 
-    @Query("select new br.com.dbc.vemser.trabalhofinal.dto.MedicoCompletoDTO(" +
+    @Query("select new br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO(" +
             " m.idMedico, " +
             " m.crm, " +
             " m.idEspecialidade, " +

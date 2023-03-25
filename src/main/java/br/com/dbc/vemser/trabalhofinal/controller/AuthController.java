@@ -1,8 +1,10 @@
 package br.com.dbc.vemser.trabalhofinal.controller;
 
 import br.com.dbc.vemser.trabalhofinal.dto.*;
-import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
-import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
+import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCompletoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.security.TokenService;
 import br.com.dbc.vemser.trabalhofinal.service.ClienteService;

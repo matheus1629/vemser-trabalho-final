@@ -1,6 +1,14 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.dto.*;
+import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoClienteRelatorioDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoListaDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCompletoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteUpdateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.entity.AgendamentoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.ConvenioEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
@@ -67,13 +75,25 @@ public class ClienteService {
 
     public ClienteCompletoDTO getById(Integer idCliente) throws RegraDeNegocioException {
         Optional<ClienteCompletoDTO> clienteRetornado = clienteRepository.getByIdPersonalizado(idCliente);
-        if(clienteRetornado.isEmpty()){
+        if (clienteRetornado.isEmpty()) {
             throw new RegraDeNegocioException("Usuário não encontrado.");
         }
         return clienteRetornado.get();
     }
 
-    public ClienteCompletoDTO adicionar(ClienteCreateDTO cliente) throws RegraDeNegocioException{
+    public ClienteEntity getCliente(Integer id) throws RegraDeNegocioException {
+        return clienteRepository.findById(id)
+                .orElseThrow(() -> new RegraDeNegocioException("Cliente não existe!"));
+    }
+
+    public AgendamentoListaDTO getClienteAgentamentos() throws RegraDeNegocioException {
+        ClienteCompletoDTO clienteCompletoDTO = recuperarCliente();
+        AgendamentoClienteRelatorioDTO agendamentoClienteRelatorioDTO = agendamentoService.getRelatorioClienteById(clienteCompletoDTO.getIdCliente());
+
+        return objectMapper.convertValue(agendamentoClienteRelatorioDTO, AgendamentoListaDTO.class);
+    }
+
+    public ClienteCompletoDTO adicionar(ClienteCreateDTO cliente) throws RegraDeNegocioException {
         checarSeTemNumero(cliente.getNome());
 
         // Adicionando o Usuario com as informações recebidas no ClienteCreateDTO
@@ -104,7 +124,6 @@ public class ClienteService {
 
     public ClienteCompletoDTO editar(ClienteUpdateDTO cliente) throws RegraDeNegocioException {
         ClienteEntity clienteEntity = objectMapper.convertValue(recuperarCliente(), ClienteEntity.class);
-//        cliente.setIdUsuario(clienteEntity.getIdUsuario());
 
         clienteEntity.setConvenioEntity(convenioService.getConvenio(cliente.getIdConvenio()));
         clienteEntity.setUsuarioEntity(usuarioService.getUsuario(clienteEntity.getIdUsuario()));
@@ -112,7 +131,6 @@ public class ClienteService {
         checarSeTemNumero(cliente.getNome());
 
         UsuarioCreateDTO usuarioCreateDTO = objectMapper.convertValue(cliente, UsuarioCreateDTO.class);
-//        usuarioCreateDTO.setIdCargo(3);
 
         usuarioService.validarUsuarioEditado(usuarioCreateDTO, clienteEntity.getIdUsuario());
         usuarioService.editar(usuarioCreateDTO, clienteEntity.getIdUsuario());
@@ -127,15 +145,11 @@ public class ClienteService {
         agendamentoService.removerPorClienteDesativado(getCliente(id));
     }
 
-    public ClienteEntity getCliente(Integer id) throws RegraDeNegocioException {
-        return clienteRepository.findById(id)
-                .orElseThrow(() -> new RegraDeNegocioException("Cliente não existe!"));
-    }
-
     public void checarSeTemNumero(String string) throws RegraDeNegocioException {
         if (string.matches(".*[0-9].*")) { // checa se tem número no nome
             throw new RegraDeNegocioException("O nome da especialidade não pode conter número");
         }
     }
+
 
 }

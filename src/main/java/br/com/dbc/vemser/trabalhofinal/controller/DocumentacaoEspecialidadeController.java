@@ -2,8 +2,8 @@ package br.com.dbc.vemser.trabalhofinal.controller;
 
 
 import br.com.dbc.vemser.trabalhofinal.controller.documentacao.DocumentacaoEspecialidadeConvenio;
-import br.com.dbc.vemser.trabalhofinal.dto.EspecialidadeCreateDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.EspecialidadeDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.especialidade.EspecialidadeCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.especialidade.EspecialidadeDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.EspecialidadeService;

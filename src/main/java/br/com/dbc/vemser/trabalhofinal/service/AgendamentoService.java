@@ -1,6 +1,10 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.dto.*;
+import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoClienteRelatorioDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoMedicoRelatorioDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.AgendamentoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
@@ -36,7 +40,8 @@ public class AgendamentoService {
 
         agendamentoEntity.setClienteEntity(clienteEntity);
         agendamentoEntity.setMedicoEntity(medicoEntity);
-        agendamentoEntity.setValorAgendamento(medicoEntity.getEspecialidadeEntity().getValor() * (clienteEntity.getConvenioEntity().getTaxaAbatimento()/100));
+        agendamentoEntity.setValorAgendamento((medicoEntity.getEspecialidadeEntity().getValor()) -
+                medicoEntity.getEspecialidadeEntity().getValor() * (clienteEntity.getConvenioEntity().getTaxaAbatimento()/100));
 
         agendamentoRepository.save(agendamentoEntity);
         try{

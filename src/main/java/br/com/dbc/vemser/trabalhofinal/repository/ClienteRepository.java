@@ -1,8 +1,7 @@
 package br.com.dbc.vemser.trabalhofinal.repository;
 
-import br.com.dbc.vemser.trabalhofinal.dto.ClienteCompletoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
-import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface ClienteRepository extends JpaRepository<ClienteEntity, Integer> {
 
-    @Query("select new br.com.dbc.vemser.trabalhofinal.dto.ClienteCompletoDTO(" +
+    @Query("select new br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCompletoDTO(" +
             "c.idCliente, " +
             "c.idConvenio, " +
             "c.idUsuario, " +
@@ -35,7 +34,7 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity, Integer>
     )
     Optional<ClienteCompletoDTO> getByIdPersonalizado(Integer id);
 
-    @Query("select new br.com.dbc.vemser.trabalhofinal.dto.ClienteCompletoDTO(" +
+    @Query("select new br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCompletoDTO(" +
             "c.idCliente, " +
             "c.idConvenio, " +
             "c.idUsuario, " +

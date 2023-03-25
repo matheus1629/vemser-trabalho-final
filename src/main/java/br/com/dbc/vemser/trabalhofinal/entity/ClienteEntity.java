@@ -27,7 +27,7 @@ public class ClienteEntity {
 
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne( cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_convenio", referencedColumnName = "id_convenio")
     private ConvenioEntity convenioEntity;
 

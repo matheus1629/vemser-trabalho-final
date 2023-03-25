@@ -2,12 +2,12 @@ package br.com.dbc.vemser.trabalhofinal.controller;
 
 import br.com.dbc.vemser.trabalhofinal.controller.documentacao.DocumentacaoAgendamento;
 import br.com.dbc.vemser.trabalhofinal.dto.*;
+import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoClienteRelatorioDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoMedicoRelatorioDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.AgendamentoService;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
