@@ -1,7 +1,7 @@
 package br.com.dbc.vemser.trabalhofinal.controller;
 
 
-import br.com.dbc.vemser.trabalhofinal.controller.documentacao.InterfaceDocumentacao;
+import br.com.dbc.vemser.trabalhofinal.controller.documentacao.DocumentacaoEspecialidadeConvenio;
 import br.com.dbc.vemser.trabalhofinal.dto.EspecialidadeCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.EspecialidadeDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/especialidade")
-public class EspecialidadeController implements InterfaceDocumentacao<EspecialidadeDTO, EspecialidadeCreateDTO, Integer, Integer> {
+public class DocumentacaoEspecialidadeController implements DocumentacaoEspecialidadeConvenio<EspecialidadeDTO, EspecialidadeCreateDTO, Integer, Integer> {
 
     private final EspecialidadeService especialidadeService;
 

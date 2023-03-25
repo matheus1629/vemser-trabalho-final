@@ -1,7 +1,7 @@
 package br.com.dbc.vemser.trabalhofinal.controller;
 
 
-import br.com.dbc.vemser.trabalhofinal.controller.documentacao.InterfaceDocumentacao;
+import br.com.dbc.vemser.trabalhofinal.controller.documentacao.DocumentacaoEspecialidadeConvenio;
 import br.com.dbc.vemser.trabalhofinal.dto.ConvenioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ConvenioDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/convenio")
-public class ConvenioController implements InterfaceDocumentacao<ConvenioDTO, ConvenioCreateDTO, Integer, Integer> {
+public class ConvenioControllerDocumentacao implements DocumentacaoEspecialidadeConvenio<ConvenioDTO, ConvenioCreateDTO, Integer, Integer> {
 
     private final ConvenioService convenioService;
 
