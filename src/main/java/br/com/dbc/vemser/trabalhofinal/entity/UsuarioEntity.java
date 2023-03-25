@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.trabalhofinal.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +20,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity(name = "Usuario")
 public class UsuarioEntity implements UserDetails {
     @Id
