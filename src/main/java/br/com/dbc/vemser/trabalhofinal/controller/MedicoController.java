@@ -1,10 +1,8 @@
 package br.com.dbc.vemser.trabalhofinal.controller;
 
-import br.com.dbc.vemser.trabalhofinal.controller.documentacao.InterfaceDocumentacao;
-import br.com.dbc.vemser.trabalhofinal.dto.ClienteCompletoDTO;
+import br.com.dbc.vemser.trabalhofinal.controller.documentacao.DocumentacaoMedico;
 import br.com.dbc.vemser.trabalhofinal.dto.MedicoCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.MedicoCreateDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.MedicoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,30 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/medico")
 @RestController
 @RequiredArgsConstructor
-public class MedicoController implements InterfaceDocumentacao<MedicoCompletoDTO, MedicoCreateDTO, Integer, Integer> {
+public class MedicoController implements DocumentacaoMedico<MedicoCompletoDTO> {
 
     private final MedicoService medicoService;
 
 
     @Override
-    public ResponseEntity<PageDTO<MedicoCompletoDTO>> list(Integer pagina, Integer tamanho) {
-        return new ResponseEntity<>(medicoService.list(pagina, tamanho), HttpStatus.OK);
-    }
-
     @GetMapping("/verificar-info")
     public ResponseEntity<MedicoCompletoDTO> recuperarCliente() throws RegraDeNegocioException {
         return new ResponseEntity<>(medicoService.recuperarMedico(), HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<MedicoCompletoDTO> getById(Integer id) throws RegraDeNegocioException {
-        return new ResponseEntity<>(medicoService.getById(id), HttpStatus.OK);
-    }
-
-
-    @Override     //TODO retirar o create do Medico e Cliente
-    public ResponseEntity<MedicoCompletoDTO> create(MedicoCreateDTO medico) throws RegraDeNegocioException {
-        return new ResponseEntity<>(medicoService.adicionar(medico), HttpStatus.OK);
     }
 
     @Override
@@ -55,10 +38,5 @@ public class MedicoController implements InterfaceDocumentacao<MedicoCompletoDTO
         return new ResponseEntity<>(medicoAtualizado, HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<Void> delete(Integer id) throws RegraDeNegocioException {
-        medicoService.remover(id);
-        return ResponseEntity.ok().build();
-    }
 
 }

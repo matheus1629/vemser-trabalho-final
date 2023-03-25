@@ -1,41 +1,37 @@
 package br.com.dbc.vemser.trabalhofinal.controller.documentacao;
 
-import br.com.dbc.vemser.trabalhofinal.dto.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.ClienteCreateDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.MedicoCompletoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.MedicoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PutMapping;
 
-import javax.validation.Valid;
+public interface DocumentacaoMedico<MedicoCompletoDTO> {
 
-public interface DocumentacaoCliente<ClienteCompletoDTO> {
-
-    @Operation(summary = "Atualizar Cliente", description = "Recuperar as informações de Cliente pelo respectivo token")
+    @Operation(summary = "Atualizar Medico", description = "Recuperar as informações de Medico pelo respectivo token")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Cliente recuperado com sucesso"),
+                    @ApiResponse(responseCode = "200", description = "Medico recuperado com sucesso"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
     @PutMapping("/verificar-info")
-    ResponseEntity<ClienteCompletoDTO> recuperarCliente() throws RegraDeNegocioException;
+    ResponseEntity<MedicoCompletoDTO> recuperarCliente() throws RegraDeNegocioException;
 
 
-    @Operation(summary = "Atualizar Cliente", description = "Atualiza um Cliente passando o id")
+    @Operation(summary = "Atualizar Medico", description = "Atualiza um Medico passando o id")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Cliente atualizado com sucesso"),
+                    @ApiResponse(responseCode = "200", description = "Medico atualizado com sucesso"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
     @PutMapping("/{id}")
-    ResponseEntity<ClienteCompletoDTO> update(Integer id, ClienteCreateDTO cliente) throws RegraDeNegocioException;
-
-
+    ResponseEntity<br.com.dbc.vemser.trabalhofinal.dto.MedicoCompletoDTO> update(Integer id, MedicoCreateDTO medico) throws RegraDeNegocioException;
 }
