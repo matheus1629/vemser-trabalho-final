@@ -49,8 +49,8 @@ public class SecurityConfiguration {
                 "/auth",
                 "/auth/cadastro-cliente",
                 "/auth/cadastro-medico",
-                "/auth/solicitar-redefinicao",
-                "/auth/redefinirSenha"
+                "/auth/esqueci-minha-senha",
+                "/auth/redefinir-senha"
         );
     }
 

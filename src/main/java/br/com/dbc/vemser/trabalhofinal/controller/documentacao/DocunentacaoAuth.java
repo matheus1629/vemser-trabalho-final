@@ -29,7 +29,7 @@ public interface DocunentacaoAuth {
             }
     )
     @PostMapping
-    public String auth(@RequestBody @Valid LoginDTO loginDTO) throws RegraDeNegocioException;
+    String auth(@RequestBody @Valid LoginDTO loginDTO) throws RegraDeNegocioException;
 
     @Operation(summary = "Adicionar Cliente", description = "Cria um novo cadastro de cliente")
     @ApiResponses(
@@ -40,7 +40,7 @@ public interface DocunentacaoAuth {
             }
     )
     @PostMapping("/cadastro-cliente")
-    public ClienteCompletoDTO adicionarCliente(@RequestBody @Valid ClienteCreateDTO cliente) throws RegraDeNegocioException;
+    ClienteCompletoDTO adicionarCliente(@RequestBody @Valid ClienteCreateDTO cliente) throws RegraDeNegocioException;
 
     @Operation(summary = "Adiciona Cliente", description = "Cria um novo cadastro de medico")
     @ApiResponses(
@@ -51,7 +51,7 @@ public interface DocunentacaoAuth {
             }
     )
     @PostMapping("/cadastro-medico")
-    public MedicoCompletoDTO adicionarMedico(@RequestBody @Valid MedicoCreateDTO medico) throws RegraDeNegocioException;
+    MedicoCompletoDTO adicionarMedico(@RequestBody @Valid MedicoCreateDTO medico) throws RegraDeNegocioException;
 
     @Operation(summary = "Trocar senha logado", description = "Permite a troca de senha logado")
     @ApiResponses(
@@ -62,7 +62,7 @@ public interface DocunentacaoAuth {
             }
     )
     @PostMapping("/alterar-senha-logado")
-    public ResponseEntity<Void> trocarSenha(@RequestBody @Valid TrocaSenhaDTO trocaSenhaDTO) throws RegraDeNegocioException;
+    ResponseEntity<Void> trocarSenha(@RequestBody @Valid TrocaSenhaDTO trocaSenhaDTO) throws RegraDeNegocioException;
 
     @Operation(summary = "Solicitar Troca de Senha", description = "Envia um email com um codigo que permite a troca de senha")
     @ApiResponses(
@@ -73,7 +73,7 @@ public interface DocunentacaoAuth {
             }
     )
     @PostMapping("/esqueci-minha-senha")
-    public ResponseEntity<Void> solicitarRedefinicao(@RequestParam(name="email") @NotNull String email) throws RegraDeNegocioException;
+    ResponseEntity<Void> solicitarRedefinicao(@RequestParam(name="email") @NotNull String email) throws RegraDeNegocioException;
 
     @Operation(summary = "Redefinir Senha", description = "Redefini a senha do usuario a partir de um codigo enviado para seu email")
     @ApiResponses(
@@ -84,5 +84,5 @@ public interface DocunentacaoAuth {
             }
     )
     @PostMapping("/redefinir-senha")
-    public ResponseEntity<Void> redefinir(@RequestBody @Valid RedefinicaoSenhaDTO redefinicaoSenhaDTO) throws RegraDeNegocioException;
+    ResponseEntity<Void> redefinir(@RequestBody @Valid RedefinicaoSenhaDTO redefinicaoSenhaDTO) throws RegraDeNegocioException;
 }
