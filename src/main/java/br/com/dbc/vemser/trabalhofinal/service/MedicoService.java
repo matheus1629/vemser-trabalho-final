@@ -51,18 +51,7 @@ public class MedicoService {
         this.enderecoClient = enderecoClient;
     }
 
-    public PageDTO<MedicoCompletoDTO> list(Integer pagina, Integer tamanho){
-        Pageable solicitacaoPagina = PageRequest.of(pagina,tamanho);
-        Page<MedicoCompletoDTO> medico = medicoRepository.listarFull(solicitacaoPagina);
-        List<MedicoCompletoDTO> medicoDTO = medico.getContent().stream()
-                .toList();
 
-        return new PageDTO<>(medico.getTotalElements(),
-                medico.getTotalPages(),
-                pagina,
-                tamanho,
-                medicoDTO);
-    }
 
     public MedicoCompletoDTO recuperarMedico() throws RegraDeNegocioException {
         MedicoEntity medicoEntity = medicoRepository.getMedicoEntityByIdUsuario(usuarioService.getIdLoggedUser());

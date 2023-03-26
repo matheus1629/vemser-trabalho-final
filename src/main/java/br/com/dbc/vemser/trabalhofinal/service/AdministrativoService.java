@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.client.EnderecoClient;
+import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioCreateDTO;
@@ -8,10 +9,15 @@ import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioUpdateDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
+import br.com.dbc.vemser.trabalhofinal.repository.ClienteRepository;
+import br.com.dbc.vemser.trabalhofinal.repository.MedicoRepository;
 import br.com.dbc.vemser.trabalhofinal.repository.UsuarioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -30,7 +36,9 @@ public class AdministrativoService {
     private final EmailService emailService;
     private final ClienteService clienteService;
     private final MedicoService medicoService;
-    private final EnderecoClient enderecoClient;
+    private final MedicoRepository medicoRepository;
+
+    private final ClienteRepository clienteRepository;
 
     public UsuarioDTO reativarUsuario(Integer idUsuario) throws RegraDeNegocioException {
         return usuarioService.reativarUsuario(idUsuario);
@@ -109,5 +117,31 @@ public class AdministrativoService {
 
     public void removerCliente(Integer id) throws RegraDeNegocioException {
         clienteService.remover(id);
+    }
+
+    public PageDTO<MedicoCompletoDTO> listMedico(Integer pagina, Integer tamanho){
+        Pageable solicitacaoPagina = PageRequest.of(pagina,tamanho);
+        Page<MedicoCompletoDTO> medico = medicoRepository.listarFull(solicitacaoPagina);
+        List<MedicoCompletoDTO> medicoDTO = medico.getContent().stream()
+                .toList();
+
+        return new PageDTO<>(medico.getTotalElements(),
+                medico.getTotalPages(),
+                pagina,
+                tamanho,
+                medicoDTO);
+    }
+
+    public PageDTO<ClienteCompletoDTO> listCliente(Integer pagina, Integer tamanho) {
+        Pageable solicitacaoPagina = PageRequest.of(pagina,tamanho);
+        Page<ClienteCompletoDTO> cliente = clienteRepository.listarFull(solicitacaoPagina);
+        List<ClienteCompletoDTO> clienteDTO = cliente.getContent().stream()
+                .toList();
+
+        return new PageDTO<>(cliente.getTotalElements(),
+                cliente.getTotalPages(),
+                pagina,
+                tamanho,
+                clienteDTO);
     }
 }
