@@ -60,6 +60,10 @@ public class UsuarioEntity implements UserDetails {
     @JoinColumn(name = "id_cargo", referencedColumnName = "id_cargo",insertable = false, updatable=false)
     private CargoEntity cargoEntity;
 
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "usuarioEntity", cascade = CascadeType.ALL)
+    private RegistroTemporarioEntity registroTemporarioEntity;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.entity.AgendamentoEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.RegistroTemporarioEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -33,9 +34,14 @@ public class EmailService {
 
     // USUÁRIO
 
-    public void sendEmailUsuario(UsuarioEntity usuario, TipoEmail tipoEmail) throws MessagingException, TemplateException, IOException {
+    public void sendEmailUsuario(UsuarioEntity usuario, TipoEmail tipoEmail, Integer codigo) throws MessagingException, TemplateException, IOException {
         MimeMessageHelper mimeMessageHelper = buildEmailUsuario(usuario.getEmail(), tipoEmail);
-        mimeMessageHelper.setText(getUsuarioTemplate(usuario, tipoEmail), true);
+        if(tipoEmail == TipoEmail.USUARIO_REDEFINIR_SENHA){
+            mimeMessageHelper.setText(getUsuarioTemplateRedefinicao(usuario, codigo), true);
+        }else{
+            mimeMessageHelper.setText(getUsuarioTemplate(usuario, tipoEmail), true);
+        }
+
 
         emailSender.send(mimeMessageHelper.getMimeMessage());
     }
@@ -54,11 +60,29 @@ public class EmailService {
         Map<String, Object> dados = new HashMap<>();
         dados.put("email", from);
         dados.put("usuario", usuario);
-        Template template = fmConfiguration.getTemplate("usuario-cadastro.ftl");
+        Template template;
+
+        switch(tipo){
+            case USUARIO_CADASTRO ->
+                    template = fmConfiguration.getTemplate("usuario-cadastro.ftl");
+            case USUARIO_REDEFINIR_SENHA ->
+                template = fmConfiguration.getTemplate("usuario-senha-redefinida.ftl");
+            default ->
+                    template = fmConfiguration.getTemplate("usuario-cadastro.ftl");
+        }
 
         return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
     }
 
+    public String getUsuarioTemplateRedefinicao(UsuarioEntity usuario, Integer codigo) throws IOException, TemplateException {
+        Map<String, Object> dados = new HashMap<>();
+        dados.put("email", from);
+        dados.put("usuario", usuario);
+        dados.put("codigo", codigo);
+        Template template= fmConfiguration.getTemplate("usuario-redefinir-senha.ftl");
+
+        return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
+    }
 
     // AGENDAMENTO
 
@@ -80,7 +104,7 @@ public class EmailService {
     }
 
     public String getAgendamentoTemplate(AgendamentoEntity agendamento, TipoEmail tipo) throws IOException, TemplateException {
-        Template template = null;
+        Template template;
         Map<String, Object> dados = new HashMap<>();
         dados.put("agendamento", agendamento);
         dados.put("email", from);

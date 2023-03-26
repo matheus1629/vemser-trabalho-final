@@ -102,7 +102,7 @@ public class ClienteService {
 
         clienteRepository.save(clienteEntity);
         try{
-            emailService.sendEmailUsuario(clienteEntity.getUsuarioEntity(), TipoEmail.USUARIO_CADASTRO);
+            emailService.sendEmailUsuario(clienteEntity.getUsuarioEntity(), TipoEmail.USUARIO_CADASTRO, null);
         } catch (MessagingException | TemplateException | IOException e) {
             usuarioService.hardDelete(clienteEntity.getUsuarioEntity().getIdUsuario());
             throw new RegraDeNegocioException("Erro ao enviar o e-mail. Cadastro não realizado.");

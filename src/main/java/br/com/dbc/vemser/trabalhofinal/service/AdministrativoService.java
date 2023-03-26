@@ -45,16 +45,17 @@ public class AdministrativoService {
     }
 
     public List<UsuarioDTO> listar(){
-        return usuarioRepository.findAll()
+        List<UsuarioDTO> usuarioDTOS = usuarioRepository.findAll()
                 .stream()
                 .filter(usuarioEntity -> usuarioEntity.getIdCargo().equals(1))
                 .map(adm -> objectMapper.convertValue(adm, UsuarioDTO.class))
                 .collect(Collectors.toList());
 
-//        usuarioDTOS.stream()
-//                .map(usuarioDTO -> new UsuarioDTO((usuarioDTO).setEnderecoDTO();))
-////                .map(usuarioDTO -> usuarioDTO.setEnderecoDTO(enderecoClient.getEndereco(usuarioDTO.getCep())))
-//                .collect(Collectors.toList());
+        for (UsuarioDTO usuarioDTO: usuarioDTOS) {
+            usuarioDTO.setEnderecoDTO(enderecoClient.getEndereco(usuarioDTO.getCep()));
+        }
+
+        return usuarioDTOS;
     }
 
     public UsuarioDTO adicionar(UsuarioCreateDTO usuario) throws RegraDeNegocioException{
@@ -68,7 +69,7 @@ public class AdministrativoService {
         usuarioRepository.save(usuarioEntity);
 
         try{
-            emailService.sendEmailUsuario(usuarioEntity, TipoEmail.USUARIO_CADASTRO);
+            emailService.sendEmailUsuario(usuarioEntity, TipoEmail.USUARIO_CADASTRO, null);
         } catch (MessagingException | TemplateException | IOException e) {
             usuarioService.hardDelete(usuarioEntity.getIdUsuario());
             throw new RegraDeNegocioException("Erro ao enviar o e-mail. Cadastro não realizado.");

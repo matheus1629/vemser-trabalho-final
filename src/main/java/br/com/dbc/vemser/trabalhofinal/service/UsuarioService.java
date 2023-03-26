@@ -1,14 +1,17 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
+import br.com.dbc.vemser.trabalhofinal.client.EnderecoClient;
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.RedefinicaoSenhaDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.TrocaSenhaDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioDTO;
+import br.com.dbc.vemser.trabalhofinal.entity.RegistroTemporarioEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.UsuarioRepository;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,11 +19,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 
 @RequiredArgsConstructor
 @Service
@@ -29,6 +34,10 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final ObjectMapper objectMapper;
     private final PasswordEncoder passwordEncoder;
+    private final RegistroTemporarioService registroTemporarioService;
+    private final EmailService emailService;
+    private final EnderecoClient enderecoClient;
+
 
     public void adicionar(UsuarioEntity usuario) throws RegraDeNegocioException {
         usuario.setAtivo(1);
@@ -114,7 +123,9 @@ public class UsuarioService {
     }
 
     public UsuarioDTO getById(Integer id) throws RegraDeNegocioException {
-        return objectMapper.convertValue(getUsuario(id), UsuarioDTO.class);
+        UsuarioDTO usuarioDTO = objectMapper.convertValue(getUsuario(id), UsuarioDTO.class);
+        usuarioDTO.setEnderecoDTO(enderecoClient.getEndereco(usuarioDTO.getCep()));
+        return usuarioDTO;
     }
 
     // Verifica a disponilidade do id_usuario
@@ -165,5 +176,50 @@ public class UsuarioService {
 
     }
 
+    public void solicitarRedefinirSenha(String email) throws RegraDeNegocioException{
+
+        Optional<UsuarioEntity> usuario = findByEmail(email);
+        if(usuario.isEmpty()){
+            throw new RegraDeNegocioException("Usuário não encontrado.");
+        }else{
+            Optional<RegistroTemporarioEntity> registroTemporarioEntity = registroTemporarioService.findByIdUsuario(usuario.get().getIdUsuario());
+            RegistroTemporarioEntity novoRegistro  = new RegistroTemporarioEntity();
+            novoRegistro.setUsuarioEntity(usuario.get());
+            Random random = new Random();
+            Integer codigoGerado = random.nextInt(8);
+            novoRegistro.setCodigo(passwordEncoder.encode(codigoGerado.toString()));
+            novoRegistro.setDataGeracao(LocalDateTime.now());
+            registroTemporarioService.create(novoRegistro);
+
+            try{
+                emailService.sendEmailUsuario(usuario.get(), TipoEmail.USUARIO_REDEFINIR_SENHA, codigoGerado);
+            } catch (MessagingException | TemplateException | IOException e) {
+                throw new RegraDeNegocioException("Erro ao enviar o e-mail com código de redefinição.");
+            }
+
+        }
+
+    }
+
+    public void redefinirSenha(RedefinicaoSenhaDTO redefinicaoSenhaDTO) throws RegraDeNegocioException{
+
+        Optional<UsuarioEntity> usuario = findByEmail(redefinicaoSenhaDTO.getEmail());
+        if(usuario.isEmpty()){
+            throw new RegraDeNegocioException("Usuário não encontrado.");
+        }else{
+            Optional<RegistroTemporarioEntity> registroTemporarioEntity = registroTemporarioService.findByIdUsuario(usuario.get().getIdUsuario());
+            if(registroTemporarioEntity.isEmpty()){
+                throw new RegraDeNegocioException("Registro de redefinição não encontrado ou expirado, solicite o código antes.");
+            }else{
+                if(passwordEncoder.matches(redefinicaoSenhaDTO.getCodigoConfirmacao().toString(), registroTemporarioEntity.get().getCodigo())){
+                    usuario.get().setSenha(passwordEncoder.encode(redefinicaoSenhaDTO.getSenhaNova()));
+                }else{
+                    throw new RegraDeNegocioException("O código inválido.");
+                }
+            }
+
+        }
+
+    }
 
 }
