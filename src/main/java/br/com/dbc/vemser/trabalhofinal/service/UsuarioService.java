@@ -157,7 +157,7 @@ public class UsuarioService {
         usuarioEntity.setAtivo(1);
         usuarioRepository.save(usuarioEntity);
 
-        return objectMapper.convertValue(usuarioEntity, UsuarioDTO.class);
+        return getById(usuarioEntity.getIdUsuario());
     }
 
     public Integer getIdLoggedUser() {

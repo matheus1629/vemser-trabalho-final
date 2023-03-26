@@ -123,26 +123,34 @@ public class AdministrativoService {
     public PageDTO<MedicoCompletoDTO> listMedico(Integer pagina, Integer tamanho){
         Pageable solicitacaoPagina = PageRequest.of(pagina,tamanho);
         Page<MedicoCompletoDTO> medico = medicoRepository.listarFull(solicitacaoPagina);
-        List<MedicoCompletoDTO> medicoDTO = medico.getContent().stream()
+        List<MedicoCompletoDTO> medicoCompletoDTOS = medico.getContent().stream()
                 .toList();
+
+        for (MedicoCompletoDTO medicoCompletoDTO: medicoCompletoDTOS) {
+            medicoCompletoDTO.setEnderecoDTO(enderecoClient.getEndereco(medicoCompletoDTO.getCep()));
+        }
 
         return new PageDTO<>(medico.getTotalElements(),
                 medico.getTotalPages(),
                 pagina,
                 tamanho,
-                medicoDTO);
+                medicoCompletoDTOS);
     }
 
     public PageDTO<ClienteCompletoDTO> listCliente(Integer pagina, Integer tamanho) {
         Pageable solicitacaoPagina = PageRequest.of(pagina,tamanho);
         Page<ClienteCompletoDTO> cliente = clienteRepository.listarFull(solicitacaoPagina);
-        List<ClienteCompletoDTO> clienteDTO = cliente.getContent().stream()
+        List<ClienteCompletoDTO> clienteCompletoDTOS = cliente.getContent().stream()
                 .toList();
+
+        for (ClienteCompletoDTO clienteCompletoDTO: clienteCompletoDTOS) {
+            clienteCompletoDTO.setEnderecoDTO(enderecoClient.getEndereco(clienteCompletoDTO.getCep()));
+        }
 
         return new PageDTO<>(cliente.getTotalElements(),
                 cliente.getTotalPages(),
                 pagina,
                 tamanho,
-                clienteDTO);
+                clienteCompletoDTOS);
     }
 }
