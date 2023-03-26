@@ -31,4 +31,8 @@ public class RegistroTemporarioService {
         registroTemporarioRepository.save(registroTemporarioEntity);
     }
 
+    public void delete(Integer id){
+        registroTemporarioRepository.deleteById(id);
+    }
+
 }
