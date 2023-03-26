@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.controller;
 
+import br.com.dbc.vemser.trabalhofinal.controller.documentacao.DocunentacaoAuth;
 import br.com.dbc.vemser.trabalhofinal.dto.*;
 import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCreateDTO;
@@ -12,7 +13,6 @@ import br.com.dbc.vemser.trabalhofinal.service.MedicoService;
 import br.com.dbc.vemser.trabalhofinal.service.UsuarioService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,41 +25,39 @@ import javax.validation.constraints.NotNull;
 @RequestMapping("/auth")
 @Validated
 @RequiredArgsConstructor
-public class AuthController {
-
+public class AuthController implements DocunentacaoAuth {
     private final TokenService tokenService;
     private final ClienteService clienteService;
     private final MedicoService medicoService;
-
     private final UsuarioService usuarioService;
 
-    @PostMapping
+    @Override
     public String auth(@RequestBody @Valid LoginDTO loginDTO) throws RegraDeNegocioException {
         return tokenService.autenticar(loginDTO);
     }
-    @PostMapping("/cadastro-cliente")
+    @Override
     public ClienteCompletoDTO adicionarCliente(@RequestBody @Valid ClienteCreateDTO cliente) throws RegraDeNegocioException {
         return clienteService.adicionar(cliente);
     }
-    @PostMapping("/cadastro-medico")
+    @Override
     public MedicoCompletoDTO adicionarMedico(@RequestBody @Valid MedicoCreateDTO medico) throws RegraDeNegocioException {
         return medicoService.adicionar(medico);
     }
 
-    @PostMapping("/alterar-senha-logado")
+    @Override
     public ResponseEntity<Void> trocarSenha(@RequestBody @Valid TrocaSenhaDTO trocaSenhaDTO) throws RegraDeNegocioException {
         usuarioService.trocarSenha(trocaSenhaDTO);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/solicitar-redefinicao")
+    @Override
     public ResponseEntity<Void> solicitarRedefinicao(@RequestParam(name="email") @NotNull String email) throws RegraDeNegocioException {
         usuarioService.solicitarRedefinirSenha(email);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/redefinirSenha")
-    public ResponseEntity<Void> solicitarRedefinicao(@RequestBody @Valid RedefinicaoSenhaDTO redefinicaoSenhaDTO) throws RegraDeNegocioException {
+    @Override
+    public ResponseEntity<Void> redefinir(@RequestBody @Valid RedefinicaoSenhaDTO redefinicaoSenhaDTO) throws RegraDeNegocioException {
         usuarioService.redefinirSenha(redefinicaoSenhaDTO);
         return ResponseEntity.ok().build();
     }
