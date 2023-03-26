@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.TrocaSenhaDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -150,4 +152,18 @@ public class UsuarioService {
     public Integer getIdLoggedUser() {
         return Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
     }
+
+    public void trocarSenha(TrocaSenhaDTO trocaSenhaDTO) throws RegraDeNegocioException {
+
+        UsuarioEntity usuarioAcessado = getUsuario(getIdLoggedUser());
+        if(passwordEncoder.matches(trocaSenhaDTO.getSenhaAntiga(), usuarioAcessado.getSenha()) && !passwordEncoder.matches(trocaSenhaDTO.getSenhaNova(), usuarioAcessado.getSenha())){
+            usuarioAcessado.setSenha(passwordEncoder.encode(trocaSenhaDTO.getSenhaNova()));
+            usuarioRepository.save(usuarioAcessado);
+        }else{
+            throw new RegraDeNegocioException("Senha inválida.");
+        }
+
+    }
+
+
 }

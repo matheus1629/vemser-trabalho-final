@@ -56,7 +56,7 @@ public class AdministrativoController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/criar-admin/{id}")
+    @PostMapping("/criar-admin")
     public ResponseEntity<UsuarioDTO> create(UsuarioCreateDTO usuario) throws RegraDeNegocioException {
         return new ResponseEntity<>(administrativoService.adicionar(usuario), HttpStatus.OK);
     }

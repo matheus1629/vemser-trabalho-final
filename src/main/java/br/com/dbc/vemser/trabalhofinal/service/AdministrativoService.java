@@ -9,9 +9,12 @@ import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.UsuarioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,6 +52,13 @@ public class AdministrativoService {
         usuarioService.adicionar(usuarioEntity);
 
         usuarioRepository.save(usuarioEntity);
+
+        try{
+            emailService.sendEmailUsuario(usuarioEntity, TipoEmail.USUARIO_CADASTRO);
+        } catch (MessagingException | TemplateException | IOException e) {
+            usuarioService.hardDelete(usuarioEntity.getIdUsuario());
+            throw new RegraDeNegocioException("Erro ao enviar o e-mail. Cadastro não realizado.");
+        }
 
         return usuarioService.getById(usuarioEntity.getIdUsuario());
     }
