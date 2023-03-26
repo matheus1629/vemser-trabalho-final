@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
+import br.com.dbc.vemser.trabalhofinal.client.EnderecoClient;
 import br.com.dbc.vemser.trabalhofinal.dto.*;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoClienteRelatorioDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoDTO;
@@ -40,19 +41,16 @@ public class ClienteService {
     private final ConvenioService convenioService;
     private final AgendamentoService agendamentoService;
     private final EmailService emailService;
+    private final EnderecoClient enderecoClient;
 
-    public ClienteService(ClienteRepository clienteRepository,
-                          ObjectMapper objectMapper,
-                          UsuarioService usuarioService,
-                          ConvenioService convenioService,
-                          @Lazy AgendamentoService agendamentoService,
-                          EmailService emailService) {
+    public ClienteService(ClienteRepository clienteRepository, ObjectMapper objectMapper, UsuarioService usuarioService, ConvenioService convenioService, @Lazy AgendamentoService agendamentoService, EmailService emailService, EnderecoClient enderecoClient) {
         this.clienteRepository = clienteRepository;
         this.objectMapper = objectMapper;
         this.usuarioService = usuarioService;
         this.convenioService = convenioService;
         this.agendamentoService = agendamentoService;
         this.emailService = emailService;
+        this.enderecoClient = enderecoClient;
     }
 
     public PageDTO<ClienteCompletoDTO> list(Integer pagina, Integer tamanho) {
@@ -70,7 +68,9 @@ public class ClienteService {
 
     public ClienteCompletoDTO recuperarCliente() throws RegraDeNegocioException {
         ClienteEntity clienteEntity = clienteRepository.getClienteEntityByIdUsuario(usuarioService.getIdLoggedUser());
-        return getById(clienteEntity.getIdCliente());
+        ClienteCompletoDTO clienteCompletoDTO = getById(clienteEntity.getIdCliente());
+        clienteCompletoDTO.setEnderecoDTO(enderecoClient.getEndereco(clienteCompletoDTO.getCep()));
+        return clienteCompletoDTO;
     }
 
     public ClienteCompletoDTO getById(Integer idCliente) throws RegraDeNegocioException {
