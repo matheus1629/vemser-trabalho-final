@@ -183,10 +183,13 @@ public class UsuarioService {
             throw new RegraDeNegocioException("Usuário não encontrado.");
         }else{
             Optional<RegistroTemporarioEntity> registroTemporarioEntity = registroTemporarioService.findByIdUsuario(usuario.get().getIdUsuario());
+            if(registroTemporarioEntity.isPresent()){
+                registroTemporarioService.delete(registroTemporarioEntity.get().getIdRegistro());
+            }
             RegistroTemporarioEntity novoRegistro  = new RegistroTemporarioEntity();
             novoRegistro.setUsuarioEntity(usuario.get());
             Random random = new Random();
-            Integer codigoGerado = random.nextInt(8);
+            Integer codigoGerado = random.nextInt(100000, 999999);
             novoRegistro.setCodigo(passwordEncoder.encode(codigoGerado.toString()));
             novoRegistro.setDataGeracao(LocalDateTime.now());
             registroTemporarioService.create(novoRegistro);

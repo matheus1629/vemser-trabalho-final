@@ -16,7 +16,7 @@
                     <h2> Olá ${usuario.getNome()}, </h2>
                     <p>
                         Segue o código para redefinir a senha: <br>
-                        <strong> ${codigo}! </strong> <br> <br>
+                        <strong> ${codigo} </strong> <br> <br>
                         <strong>Atenção:</strong> o código expira em 15 minutos. Após isso, será necessário solicitar um novo. <br>
                         Qualquer dúvida é só contatar o suporte pelo e-mail ${email}<br>
                         Att,<br>
