@@ -42,13 +42,13 @@ public class SecurityConfiguration {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().antMatchers("/v3/api-docs",
-                "http://localhost:8080/**",
                 "/v3/api-docs/**",
                 "/swagger-resources/**",
                 "/swagger-ui/**",
                 "/auth",
                 "/auth/cadastro-cliente" ,
-                "/auth/cadastro-medico"
+                "/auth/cadastro-medico",
+                "/"
         );
     }
 
