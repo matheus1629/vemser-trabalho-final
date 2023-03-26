@@ -42,7 +42,7 @@ public class AdministrativoService {
                 .filter(usuarioEntity -> usuarioEntity.getIdCargo().equals(1))
                 .map(adm -> objectMapper.convertValue(adm, UsuarioDTO.class))
                 .collect(Collectors.toList());
-
+        System.out.println();
         for (UsuarioDTO usuarioDTO: usuarioDTOS) {
             usuarioDTO.setEnderecoDTO(enderecoClient.getEndereco(usuarioDTO.getCep()));
         }
