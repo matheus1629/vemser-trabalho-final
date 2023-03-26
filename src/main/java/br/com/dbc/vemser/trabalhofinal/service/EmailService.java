@@ -65,7 +65,7 @@ public class EmailService {
         switch(tipo){
             case USUARIO_CADASTRO ->
                     template = fmConfiguration.getTemplate("usuario-cadastro.ftl");
-            case USUARIO_REDEFINIR_SENHA ->
+            case USUARIO_SENHA_REDEFINIDA ->
                 template = fmConfiguration.getTemplate("usuario-senha-redefinida.ftl");
             default ->
                     template = fmConfiguration.getTemplate("usuario-cadastro.ftl");

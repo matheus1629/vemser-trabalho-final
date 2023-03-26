@@ -9,7 +9,6 @@ import java.util.Optional;
 public interface RegistroTemporarioRepository extends JpaRepository<RegistroTemporarioEntity, Integer> {
 
     Optional<RegistroTemporarioEntity> findByIdUsuario(Integer id);
-    void deleteByDataGeracaoBefore(LocalDateTime tempoLimite);
 
 
 }

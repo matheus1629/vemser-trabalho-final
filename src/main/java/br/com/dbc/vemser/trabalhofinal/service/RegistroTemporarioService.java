@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.entity.RegistroTemporarioEntity;
+import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.RegistroTemporarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,11 +17,19 @@ public class RegistroTemporarioService {
     private final RegistroTemporarioRepository registroTemporarioRepository;
     private static final Integer TEMPO_LIMITE = 15;
 
-    @Scheduled(fixedRate = 300000)
-    public void removerRegistrosExcedidos(){
+    public boolean removerRegistroExcedido(Integer id) throws RegraDeNegocioException {
+        RegistroTemporarioEntity registro = findById(id);
         LocalDateTime tempoAtual = LocalDateTime.now();
         LocalDateTime tempoLimite = tempoAtual.minusMinutes(TEMPO_LIMITE);
-        registroTemporarioRepository.deleteByDataGeracaoBefore(tempoLimite);
+        if(tempoLimite.isAfter(registro.getDataGeracao())){
+            registroTemporarioRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    public RegistroTemporarioEntity findById(Integer id) throws RegraDeNegocioException {
+        return registroTemporarioRepository.findById(id).orElseThrow(()-> new RegraDeNegocioException("Registro não encontrado."));
     }
 
     public Optional<RegistroTemporarioEntity> findByIdUsuario(Integer id){
@@ -31,7 +40,7 @@ public class RegistroTemporarioService {
         registroTemporarioRepository.save(registroTemporarioEntity);
     }
 
-    public void delete(Integer id){
+    public void deleteById(Integer id){
         registroTemporarioRepository.deleteById(id);
     }
 
