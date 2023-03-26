@@ -28,9 +28,9 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeHttpRequests((authz) -> authz
 //                        .antMatchers("/auth/**").permitAll()
-                        .antMatchers("/administrativo/**","/agendamento/**","/convenio/**", "/especialidade/**").hasRole("ADM")
-                        .antMatchers("/cliente/**").hasRole("CLIENTE")
-                        .antMatchers("/medico/**").hasRole("MEDICO")
+                                .antMatchers("/administrativo/**", "/agendamento/**", "/convenio/**", "/especialidade/**").hasRole("ADM")
+                                .antMatchers("/cliente/**").hasRole("CLIENTE")
+                                .antMatchers("/medico/**").hasRole("MEDICO")
                         .anyRequest().authenticated()
                 );
 
@@ -47,8 +47,10 @@ public class SecurityConfiguration {
                 "/swagger-resources/**",
                 "/swagger-ui/**",
                 "/auth",
-                "/auth/cadastro-cliente" ,
-                "/auth/cadastro-medico"
+                "/auth/cadastro-cliente",
+                "/auth/cadastro-medico",
+                "/auth/solicitar-redefinicao",
+                "/auth/redefinirSenha"
         );
     }
 
@@ -64,13 +66,11 @@ public class SecurityConfiguration {
         };
     }
 
-    // FIXME adicionar Bean authenticationManager
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    // FIXME adicionar Bean PasswordEncoder
     @Bean
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();

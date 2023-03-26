@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -42,6 +43,10 @@ public class RegistroTemporarioService {
 
     public void deleteById(Integer id){
         registroTemporarioRepository.deleteById(id);
+    }
+
+    public List<RegistroTemporarioEntity> findAll() {
+        return registroTemporarioRepository.findAll();
     }
 
 }
