@@ -157,7 +157,7 @@ public class UsuarioService {
         usuarioEntity.setAtivo(1);
         usuarioRepository.save(usuarioEntity);
 
-        return objectMapper.convertValue(usuarioEntity, UsuarioDTO.class);
+        return getById(usuarioEntity.getIdUsuario());
     }
 
     public Integer getIdLoggedUser() {
@@ -182,9 +182,9 @@ public class UsuarioService {
         if(usuario.isEmpty()){
             throw new RegraDeNegocioException("Usuário não encontrado.");
         }else{
-            Optional<RegistroTemporarioEntity> registroTemporarioEntity = registroTemporarioService.findByIdUsuario(usuario.get().getIdUsuario());
-            if(registroTemporarioEntity.isPresent()){
-                registroTemporarioService.delete(registroTemporarioEntity.get().getIdRegistro());
+            RegistroTemporarioEntity registroTemporarioEntity = usuario.get().getRegistroTemporarioEntity();
+            if(registroTemporarioEntity != null){
+                registroTemporarioService.deleteById(registroTemporarioEntity.getIdRegistro());
             }
             RegistroTemporarioEntity novoRegistro  = new RegistroTemporarioEntity();
             novoRegistro.setUsuarioEntity(usuario.get());
@@ -214,10 +214,20 @@ public class UsuarioService {
             if(registroTemporarioEntity.isEmpty()){
                 throw new RegraDeNegocioException("Registro de redefinição não encontrado ou expirado, solicite o código antes.");
             }else{
-                if(passwordEncoder.matches(redefinicaoSenhaDTO.getCodigoConfirmacao().toString(), registroTemporarioEntity.get().getCodigo())){
-                    usuario.get().setSenha(passwordEncoder.encode(redefinicaoSenhaDTO.getSenhaNova()));
+                if(registroTemporarioService.removerRegistroExcedido(registroTemporarioEntity.get().getIdRegistro())){
+                    throw new RegraDeNegocioException("Código expirado. Gere um novo.");
                 }else{
-                    throw new RegraDeNegocioException("O código inválido.");
+                    if(passwordEncoder.matches(redefinicaoSenhaDTO.getCodigoConfirmacao().toString(), registroTemporarioEntity.get().getCodigo())){
+                        usuario.get().setSenha(passwordEncoder.encode(redefinicaoSenhaDTO.getSenhaNova()));
+                        usuarioRepository.save(usuario.get());
+                        try{
+                            emailService.sendEmailUsuario(usuario.get(), TipoEmail.USUARIO_SENHA_REDEFINIDA, null);
+                        } catch (MessagingException | TemplateException | IOException e) {
+                            throw new RegraDeNegocioException("Erro ao enviar o e-mail de confirmação da senha alterada.");
+                        }
+                    }else{
+                        throw new RegraDeNegocioException("O código inválido.");
+                    }
                 }
             }
 
