@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.MailSendException;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -50,7 +51,7 @@ public class AgendamentoService {
         } catch (MessagingException | TemplateException | IOException e) {
             throw new RegraDeNegocioException("Erro ao enviar o e-mail com as informações do agendamento.");
         }
-
+    // <todo está criando no banco de dados o agendamento mesmo quando da uma exception de destinatário inválido
         return objectMapper.convertValue(agendamentoEntity, AgendamentoDTO.class);
     }
 

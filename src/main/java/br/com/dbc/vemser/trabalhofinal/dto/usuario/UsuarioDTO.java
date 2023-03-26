@@ -1,5 +1,7 @@
 package br.com.dbc.vemser.trabalhofinal.dto.usuario;
 
+import br.com.dbc.vemser.trabalhofinal.dto.EnderecoDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +19,7 @@ public class UsuarioDTO {
     private String email;
     @Schema(description = "Nome", example = "Fulano da Silva")
     private String nome;
+
     @Schema(description = "Cep do endereço", example = "12345678")
     private String cep;
     @Schema(description = "Número do endereço", example = "44545454")
@@ -25,4 +28,7 @@ public class UsuarioDTO {
     private String contatos;
     @Schema(description = "Indentificar se o usuário é um médico ou um cliente", example = "1")
     private Integer idCargo;
+
+
+
 }

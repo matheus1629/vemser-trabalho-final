@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.trabalhofinal.dto.cliente;
 
 import br.com.dbc.vemser.trabalhofinal.dto.EnderecoDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ public class ClienteCompletoDTO {
     private String nome;
     private String nomeCargo;
     private String contatos;
+    @JsonIgnore
     private String cep;
     private Integer numero;
     private EnderecoDTO enderecoDTO;
@@ -38,4 +40,5 @@ public class ClienteCompletoDTO {
         this.cep = cep;
         this.numero = numero;
     }
+
 }

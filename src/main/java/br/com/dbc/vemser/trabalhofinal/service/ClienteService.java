@@ -31,6 +31,7 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -68,9 +69,7 @@ public class ClienteService {
 
     public ClienteCompletoDTO recuperarCliente() throws RegraDeNegocioException {
         ClienteEntity clienteEntity = clienteRepository.getClienteEntityByIdUsuario(usuarioService.getIdLoggedUser());
-        ClienteCompletoDTO clienteCompletoDTO = getById(clienteEntity.getIdCliente());
-        clienteCompletoDTO.setEnderecoDTO(enderecoClient.getEndereco(clienteCompletoDTO.getCep()));
-        return clienteCompletoDTO;
+        return getById(clienteEntity.getIdCliente());
     }
 
     public ClienteCompletoDTO getById(Integer idCliente) throws RegraDeNegocioException {
@@ -78,6 +77,7 @@ public class ClienteService {
         if (clienteRetornado.isEmpty()) {
             throw new RegraDeNegocioException("Usuário não encontrado.");
         }
+        clienteRetornado.get().setEnderecoDTO(enderecoClient.getEndereco(clienteRetornado.get().getCep()));
         return clienteRetornado.get();
     }
 

@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
+import br.com.dbc.vemser.trabalhofinal.client.EnderecoClient;
 import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioCreateDTO;
@@ -29,7 +30,7 @@ public class AdministrativoService {
     private final EmailService emailService;
     private final ClienteService clienteService;
     private final MedicoService medicoService;
-
+    private final EnderecoClient enderecoClient;
 
     public UsuarioDTO reativarUsuario(Integer idUsuario) throws RegraDeNegocioException {
         return usuarioService.reativarUsuario(idUsuario);
@@ -41,6 +42,11 @@ public class AdministrativoService {
                 .filter(usuarioEntity -> usuarioEntity.getIdCargo().equals(1))
                 .map(adm -> objectMapper.convertValue(adm, UsuarioDTO.class))
                 .collect(Collectors.toList());
+
+//        usuarioDTOS.stream()
+//                .map(usuarioDTO -> new UsuarioDTO((usuarioDTO).setEnderecoDTO();))
+////                .map(usuarioDTO -> usuarioDTO.setEnderecoDTO(enderecoClient.getEndereco(usuarioDTO.getCep())))
+//                .collect(Collectors.toList());
     }
 
     public UsuarioDTO adicionar(UsuarioCreateDTO usuario) throws RegraDeNegocioException{

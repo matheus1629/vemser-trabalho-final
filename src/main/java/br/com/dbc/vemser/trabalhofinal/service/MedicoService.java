@@ -1,10 +1,9 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
+import br.com.dbc.vemser.trabalhofinal.client.EnderecoClient;
 import br.com.dbc.vemser.trabalhofinal.dto.*;
-import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoClienteRelatorioDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoListaDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoMedicoRelatorioDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoUpdateDTO;
@@ -35,19 +34,21 @@ public class MedicoService {
     private final EspecialidadeService especialidadeService;
     private final AgendamentoService agendamentoService;
     private final EmailService emailService;
+    private final EnderecoClient enderecoClient;
 
     public MedicoService(MedicoRepository medicoRepository,
                          ObjectMapper objectMapper,
                          UsuarioService usuarioService,
                          EspecialidadeService especialidadeService,
                          @Lazy AgendamentoService agendamentoService,
-                         EmailService emailService) {
+                         EmailService emailService, EnderecoClient enderecoClient) {
         this.medicoRepository = medicoRepository;
         this.objectMapper = objectMapper;
         this.usuarioService = usuarioService;
         this.especialidadeService = especialidadeService;
         this.agendamentoService = agendamentoService;
         this.emailService = emailService;
+        this.enderecoClient = enderecoClient;
     }
 
     public PageDTO<MedicoCompletoDTO> list(Integer pagina, Integer tamanho){
@@ -73,6 +74,7 @@ public class MedicoService {
         if (medicoRetornado.isEmpty()) {
             throw new RegraDeNegocioException("Usuário não encontrado.");
         }
+        medicoRetornado.get().setEnderecoDTO(enderecoClient.getEndereco(medicoRetornado.get().getCep()));
         return medicoRetornado.get();
     }
 
