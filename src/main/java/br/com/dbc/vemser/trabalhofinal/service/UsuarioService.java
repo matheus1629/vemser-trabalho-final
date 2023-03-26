@@ -6,6 +6,7 @@ import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.UsuarioRepository;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +36,9 @@ public class UsuarioService {
 
     public void remover(Integer id) throws RegraDeNegocioException {
         UsuarioEntity usuario = getUsuario(id);
+        if (usuario.getAtivo().equals(0)){
+            throw new RegraDeNegocioException("Este usuário já está desativado!");
+        }
         usuario.setAtivo(0);
         usuarioRepository.save(usuario);
     }
@@ -101,11 +106,9 @@ public class UsuarioService {
     }
 
     public UsuarioEntity getUsuario(Integer id) throws RegraDeNegocioException {
-        Optional<UsuarioEntity> usuarioEntity = usuarioRepository.findById(id);
-        if (usuarioEntity.isEmpty()) {
-            throw new RegraDeNegocioException("Usuário não encontrado!");
-        }
-         return usuarioEntity.get();
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado!"));
+
     }
 
     public UsuarioDTO getById(Integer id) throws RegraDeNegocioException {
@@ -138,7 +141,8 @@ public class UsuarioService {
         if (usuarioEntity.getAtivo() == 1) {
             throw new RegraDeNegocioException("Este usuário já está ativo!");
         }
-        usuarioRepository.reativarUsuario(usuarioEntity.getIdUsuario());
+        usuarioEntity.setAtivo(1);
+        usuarioRepository.save(usuarioEntity);
 
         return objectMapper.convertValue(usuarioEntity, UsuarioDTO.class);
     }

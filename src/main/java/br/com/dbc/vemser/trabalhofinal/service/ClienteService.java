@@ -24,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
@@ -32,7 +33,6 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-
 public class ClienteService {
     private final ClienteRepository clienteRepository;
     private final ObjectMapper objectMapper;
@@ -140,9 +140,11 @@ public class ClienteService {
         return getById(clienteEditado.getIdCliente());
     }
 
+    @Transactional
     public void remover(Integer id) throws RegraDeNegocioException {
-        usuarioService.remover(getCliente(id).getIdUsuario());
-        agendamentoService.removerPorClienteDesativado(getCliente(id));
+        ClienteEntity clienteEntity = getCliente(id);
+        usuarioService.remover(clienteEntity.getIdUsuario());
+        agendamentoService.removerPorClienteDesativado(clienteEntity);
     }
 
     public void checarSeTemNumero(String string) throws RegraDeNegocioException {

@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
@@ -144,9 +145,11 @@ public class MedicoService {
         return getById(medicoEditado.getIdMedico());
     }
 
+    @Transactional
     public void remover(Integer id) throws RegraDeNegocioException {
-        usuarioService.remover(getMedico(id).getIdUsuario());
-        agendamentoService.removerPorMedicoDesativado(getMedico(id));
+        MedicoEntity medicoEntity = getMedico(id);
+        usuarioService.remover(medicoEntity.getIdUsuario());
+        agendamentoService.removerPorMedicoDesativado(medicoEntity);
     }
 
     public void checarSeTemNumero(String string) throws RegraDeNegocioException {
