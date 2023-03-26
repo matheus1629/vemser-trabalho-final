@@ -27,10 +27,10 @@ public class SecurityConfiguration {
                 .cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests((authz) -> authz
-//                        .antMatchers("/auth/**").permitAll()
-                        .antMatchers("/administrativo/**","/agendamento/**","/convenio/**", "/especialidade/**").hasRole("ADM")
-                        .antMatchers("/cliente/**").hasRole("CLIENTE")
-                        .antMatchers("/medico/**").hasRole("MEDICO")
+                        .antMatchers("/auth/**").permitAll()
+//                        .antMatchers("/administrativo/**","/agendamento/**","/convenio/**", "/especialidade/**").hasRole("ADM")
+//                        .antMatchers("/cliente/**").hasRole("CLIENTE")
+//                        .antMatchers("/medico/**").hasRole("MEDICO")
                         .anyRequest().authenticated()
                 );
 
@@ -42,6 +42,7 @@ public class SecurityConfiguration {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().antMatchers("/v3/api-docs",
+                "http://localhost:8080/**",
                 "/v3/api-docs/**",
                 "/swagger-resources/**",
                 "/swagger-ui/**",
