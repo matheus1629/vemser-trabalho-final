@@ -37,8 +37,8 @@ public class AdministrativoService {
     private final ClienteService clienteService;
     private final MedicoService medicoService;
     private final MedicoRepository medicoRepository;
-
     private final ClienteRepository clienteRepository;
+    private final EnderecoClient enderecoClient;
 
     public UsuarioDTO reativarUsuario(Integer idUsuario) throws RegraDeNegocioException {
         return usuarioService.reativarUsuario(idUsuario);
