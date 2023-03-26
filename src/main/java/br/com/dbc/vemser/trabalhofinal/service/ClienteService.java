@@ -54,18 +54,7 @@ public class ClienteService {
         this.enderecoClient = enderecoClient;
     }
 
-    public PageDTO<ClienteCompletoDTO> list(Integer pagina, Integer tamanho) {
-        Pageable solicitacaoPagina = PageRequest.of(pagina,tamanho);
-        Page<ClienteCompletoDTO> cliente = clienteRepository.listarFull(solicitacaoPagina);
-        List<ClienteCompletoDTO> clienteDTO = cliente.getContent().stream()
-                .toList();
 
-        return new PageDTO<>(cliente.getTotalElements(),
-                cliente.getTotalPages(),
-                pagina,
-                tamanho,
-                clienteDTO);
-    }
 
     public ClienteCompletoDTO recuperarCliente() throws RegraDeNegocioException {
         ClienteEntity clienteEntity = clienteRepository.getClienteEntityByIdUsuario(usuarioService.getIdLoggedUser());

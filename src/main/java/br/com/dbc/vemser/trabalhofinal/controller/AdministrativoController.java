@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.controller;
 
+import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioCreateDTO;
@@ -72,5 +73,14 @@ public class AdministrativoController {
     public ResponseEntity<Void> remove(Integer id) throws RegraDeNegocioException {
         administrativoService.remover(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/paginado-medico/")
+    public ResponseEntity<PageDTO<MedicoCompletoDTO>> paginadoMedico(Integer pagina, Integer tamanho){
+        return new ResponseEntity<>(administrativoService.listMedico(pagina,tamanho),HttpStatus.OK);
+    }
+    @GetMapping("/paginado-cliente/")
+    public ResponseEntity<PageDTO<ClienteCompletoDTO>> paginadoCliente(Integer pagina, Integer tamanho){
+        return new ResponseEntity<>(administrativoService.listCliente(pagina,tamanho),HttpStatus.OK);
     }
 }
