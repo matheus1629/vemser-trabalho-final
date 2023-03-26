@@ -27,10 +27,10 @@ public class SecurityConfiguration {
                 .cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests((authz) -> authz
-                        .antMatchers("/").permitAll()
-//                        .antMatchers("/administrativo/**","/agendamento/**","/convenio/**", "/especialidade/**").hasRole("ROLE_ADM")
-//                        .antMatchers("/cliente/**").hasRole("ROLE_CLIENTE")
-//                        .antMatchers("/medico/**").hasRole("ROLE_MEDICO")
+//                        .antMatchers("/auth/**").permitAll()
+                        .antMatchers("/administrativo/**","/agendamento/**","/convenio/**", "/especialidade/**").hasRole("ADM")
+                        .antMatchers("/cliente/**").hasRole("CLIENTE")
+                        .antMatchers("/medico/**").hasRole("MEDICO")
                         .anyRequest().authenticated()
                 );
 
