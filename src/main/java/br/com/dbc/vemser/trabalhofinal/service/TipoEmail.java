@@ -3,6 +3,8 @@ package br.com.dbc.vemser.trabalhofinal.service;
 public enum TipoEmail {
 
     USUARIO_CADASTRO("Cadastro no sistema"),
+    USUARIO_REDEFINIR_SENHA("Redefinição de senha"),
+    USUARIO_SENHA_REDEFINIDA("Senha redefinida"),
     AGENDAMENTO_CRIADO_CLIENTE("Novo agendamento"),
     AGENDAMENTO_EDITADO_CLIENTE("Agendamento alterado"),
     AGENDAMENTO_CANCELADO_CLIENTE("Agendamento removido"),

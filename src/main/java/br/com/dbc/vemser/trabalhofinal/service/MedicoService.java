@@ -109,7 +109,7 @@ public class MedicoService {
 
         medicoRepository.save(medicoEntity);
         try {
-            emailService.sendEmailUsuario(medicoEntity.getUsuarioEntity(), TipoEmail.USUARIO_CADASTRO);
+            emailService.sendEmailUsuario(medicoEntity.getUsuarioEntity(), TipoEmail.USUARIO_CADASTRO, null);
         } catch (MessagingException | TemplateException | IOException e) {
             usuarioService.hardDelete(medicoEntity.getUsuarioEntity().getIdUsuario());
             throw new RegraDeNegocioException("Erro ao enviar o e-mail. Cadastro não realizado.");

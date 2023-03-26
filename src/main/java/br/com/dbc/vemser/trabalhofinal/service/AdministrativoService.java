@@ -61,7 +61,7 @@ public class AdministrativoService {
         usuarioRepository.save(usuarioEntity);
 
         try{
-            emailService.sendEmailUsuario(usuarioEntity, TipoEmail.USUARIO_CADASTRO);
+            emailService.sendEmailUsuario(usuarioEntity, TipoEmail.USUARIO_CADASTRO, null);
         } catch (MessagingException | TemplateException | IOException e) {
             usuarioService.hardDelete(usuarioEntity.getIdUsuario());
             throw new RegraDeNegocioException("Erro ao enviar o e-mail. Cadastro não realizado.");

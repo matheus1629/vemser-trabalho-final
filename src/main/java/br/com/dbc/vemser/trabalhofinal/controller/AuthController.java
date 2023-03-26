@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @Tag(name="Autenticação")
 @RestController
@@ -48,6 +49,18 @@ public class AuthController {
     @PostMapping("/alterar-senha-logado")
     public ResponseEntity<Void> trocarSenha(@RequestBody @Valid TrocaSenhaDTO trocaSenhaDTO) throws RegraDeNegocioException {
         usuarioService.trocarSenha(trocaSenhaDTO);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/solicitar-redefinicao")
+    public ResponseEntity<Void> solicitarRedefinicao(@RequestParam(name="email") @NotNull String email) throws RegraDeNegocioException {
+        usuarioService.solicitarRedefinirSenha(email);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/redefinirSenha")
+    public ResponseEntity<Void> solicitarRedefinicao(@RequestBody @Valid RedefinicaoSenhaDTO redefinicaoSenhaDTO) throws RegraDeNegocioException {
+        usuarioService.redefinirSenha(redefinicaoSenhaDTO);
         return ResponseEntity.ok().build();
     }
 
