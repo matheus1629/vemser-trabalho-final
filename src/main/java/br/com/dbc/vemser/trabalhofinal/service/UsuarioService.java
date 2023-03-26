@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
+import br.com.dbc.vemser.trabalhofinal.client.EnderecoClient;
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.RedefinicaoSenhaDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.TrocaSenhaDTO;
@@ -35,6 +36,8 @@ public class UsuarioService {
     private final PasswordEncoder passwordEncoder;
     private final RegistroTemporarioService registroTemporarioService;
     private final EmailService emailService;
+    private final EnderecoClient enderecoClient;
+
 
     public void adicionar(UsuarioEntity usuario) throws RegraDeNegocioException {
         usuario.setAtivo(1);
@@ -120,7 +123,9 @@ public class UsuarioService {
     }
 
     public UsuarioDTO getById(Integer id) throws RegraDeNegocioException {
-        return objectMapper.convertValue(getUsuario(id), UsuarioDTO.class);
+        UsuarioDTO usuarioDTO = objectMapper.convertValue(getUsuario(id), UsuarioDTO.class);
+        usuarioDTO.setEnderecoDTO(enderecoClient.getEndereco(usuarioDTO.getCep()));
+        return usuarioDTO;
     }
 
     // Verifica a disponilidade do id_usuario
