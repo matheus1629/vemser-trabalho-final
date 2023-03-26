@@ -67,14 +67,11 @@ public class AdministrativoController {
         UsuarioDTO usuarioAtualizado = administrativoService.editar(id,admin);
         return new ResponseEntity<>(usuarioAtualizado, HttpStatus.OK);
     }
-
-
     @DeleteMapping("/desativar-admin/{id}")
     public ResponseEntity<Void> remove(Integer id) throws RegraDeNegocioException {
         administrativoService.remover(id);
         return ResponseEntity.ok().build();
     }
-
     @GetMapping("/paginado-medico/")
     public ResponseEntity<PageDTO<MedicoCompletoDTO>> paginadoMedico(Integer pagina, Integer tamanho){
         return new ResponseEntity<>(administrativoService.listMedico(pagina,tamanho),HttpStatus.OK);
