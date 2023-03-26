@@ -42,18 +42,15 @@ public class AdministrativoController implements DocumentacaoAdministracao {
         return new ResponseEntity<>(administrativoService.listar(),HttpStatus.OK);
     }
 
-
     public ResponseEntity<Void> deleteMedico(Integer id) throws RegraDeNegocioException {
         administrativoService.removerMedico(id);
         return ResponseEntity.ok().build();
     }
 
-
     public ResponseEntity<Void> deleteCliente(Integer id) throws RegraDeNegocioException {
         administrativoService.removerCliente(id);
         return ResponseEntity.ok().build();
     }
-
 
     public ResponseEntity<UsuarioDTO> create(UsuarioCreateDTO usuario) throws RegraDeNegocioException {
         return new ResponseEntity<>(administrativoService.adicionar(usuario), HttpStatus.OK);
@@ -63,7 +60,6 @@ public class AdministrativoController implements DocumentacaoAdministracao {
         UsuarioDTO usuarioAtualizado = administrativoService.editar(id,admin);
         return new ResponseEntity<>(usuarioAtualizado, HttpStatus.OK);
     }
-
 
     public ResponseEntity<Void> remove(Integer id) throws RegraDeNegocioException {
         administrativoService.remover(id);
