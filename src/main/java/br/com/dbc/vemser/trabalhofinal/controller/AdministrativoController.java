@@ -65,6 +65,7 @@ public class AdministrativoController implements DocumentacaoAdministracao {
         UsuarioDTO usuarioAtualizado = administrativoService.editar(id,admin);
         return new ResponseEntity<>(usuarioAtualizado, HttpStatus.OK);
     }
+
     @Override
     public ResponseEntity<Void> remove(Integer id) throws RegraDeNegocioException {
         administrativoService.remover(id);
