@@ -50,7 +50,8 @@ public class SecurityConfiguration {
                 "/auth/cadastro-cliente",
                 "/auth/cadastro-medico",
                 "/auth/esqueci-minha-senha",
-                "/auth/redefinir-senha"
+                "/auth/redefinir-senha",
+                "/"
         );
     }
 
