@@ -62,7 +62,7 @@
 
 #### Vem Ser - Trabalho final do Módulo 3.3
 ## Trello da divisão de tarefas:
-<p>https://trello.com/b/pY4BMcN8/trabalho-final-spring-data</p>
+<p>https://trello.com/b/Vy0EW2Vk/spring-security</p>
 
 <hr>
 <h2>Autores</h2> 
