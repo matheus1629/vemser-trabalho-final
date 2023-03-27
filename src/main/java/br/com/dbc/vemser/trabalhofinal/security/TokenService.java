@@ -3,6 +3,7 @@ package br.com.dbc.vemser.trabalhofinal.security;
 import br.com.dbc.vemser.trabalhofinal.dto.LoginDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
+import br.com.dbc.vemser.trabalhofinal.service.UsuarioService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -22,9 +23,11 @@ import java.util.List;
 @Service
 public class TokenService {
     private AuthenticationManager authenticationManager;
+    private final UsuarioService usuarioService;
 
-    private TokenService(@Lazy AuthenticationManager authenticationManager) {
+    private TokenService(@Lazy AuthenticationManager authenticationManager, @Lazy UsuarioService usuarioService) {
         this.authenticationManager = authenticationManager;
+        this.usuarioService = usuarioService;
     }
 
     // FIXME RECUPERAR O TEMPO DE EXPIRAÇÃO DOS PROPERTIES
@@ -72,9 +75,10 @@ public class TokenService {
                             .map(authority -> new SimpleGrantedAuthority(authority))
                             .toList();
 
+                    usuarioService.getUsuario(Integer.parseInt(user));
                     return new UsernamePasswordAuthenticationToken(user, null, cargosDoMeuUsuario);
                 }
-            } catch (SignatureException e) {
+            } catch (SignatureException | RegraDeNegocioException e) {
                 return null;
             }
         }

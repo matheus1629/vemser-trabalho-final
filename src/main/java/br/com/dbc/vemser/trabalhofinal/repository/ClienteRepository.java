@@ -30,7 +30,8 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity, Integer>
             " left join c.usuarioEntity u " +
             " left join c.convenioEntity con " +
             " left join c.usuarioEntity.cargoEntity ca" +
-            " where c.idCliente = :id"
+            " where c.idCliente = :id" +
+            " and c.usuarioEntity.ativo = 1"
     )
     Optional<ClienteCompletoDTO> getByIdPersonalizado(Integer id);
 
@@ -50,7 +51,8 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity, Integer>
             "from Cliente c" +
             " left join c.usuarioEntity u " +
             " left join c.usuarioEntity.cargoEntity ca" +
-            " left join c.convenioEntity con "
+            " left join c.convenioEntity con " +
+            " where c.usuarioEntity.ativo = 1"
     )
     Page<ClienteCompletoDTO> listarFull(Pageable pageable);
 

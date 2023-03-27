@@ -65,6 +65,7 @@ public class MedicoService {
 
     public MedicoEntity getMedico(Integer id) throws RegraDeNegocioException {
         return medicoRepository.findById(id)
+                .filter(medicoEntity -> medicoEntity.getUsuarioEntity().getAtivo().equals(1))
                 .orElseThrow(() -> new RegraDeNegocioException("Médico não existe!"));
     }
 

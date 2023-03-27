@@ -31,7 +31,8 @@ public interface MedicoRepository extends JpaRepository<MedicoEntity, Integer> {
             " left join m.usuarioEntity u" +
             " left join m.especialidadeEntity es" +
             " left join u.cargoEntity ca" +
-            " where m.idMedico = :id"
+            " where m.idMedico = :id" +
+            " and m.usuarioEntity.ativo = 1"
     )
     Optional<MedicoCompletoDTO> getByIdPersonalizado(Integer id);
 
@@ -52,7 +53,8 @@ public interface MedicoRepository extends JpaRepository<MedicoEntity, Integer> {
             " from Medico m" +
             " left join m.usuarioEntity u" +
             " left join u.cargoEntity ca" +
-            " left join m.especialidadeEntity es"
+            " left join m.especialidadeEntity es" +
+            " where m.usuarioEntity.ativo = 1"
     )
     Page<MedicoCompletoDTO> listarFull(Pageable pageable);
 

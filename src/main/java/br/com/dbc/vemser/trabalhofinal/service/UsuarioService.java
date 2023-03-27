@@ -66,10 +66,6 @@ public class UsuarioService {
         usuarioRepository.save(usuarioRecuperado);
     }
 
-    public List<UsuarioDTO> listar() throws RegraDeNegocioException {
-        return usuarioRepository.findAll().stream().map(usuario -> objectMapper.convertValue(usuario, UsuarioDTO.class)).toList();
-    }
-
     public void validarUsuarioAdicionado(UsuarioEntity usuarioEntity) throws RegraDeNegocioException {
 
         List<UsuarioEntity> usuarioEntities = usuarioRepository.findAll();
@@ -113,6 +109,7 @@ public class UsuarioService {
 
     public UsuarioEntity getUsuario(Integer id) throws RegraDeNegocioException {
         return usuarioRepository.findById(id)
+                .filter(usuarioEntity -> usuarioEntity.getAtivo().equals(1))
                 .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado!"));
 
     }
@@ -123,25 +120,9 @@ public class UsuarioService {
         return usuarioDTO;
     }
 
-    // Verifica a disponilidade do id_usuario
-
-
-    public PageDTO<UsuarioDTO> listAll(Integer pagina,Integer tamanho ) {
-        Pageable solicitacaoPagina = PageRequest.of(pagina,tamanho);
-        Page<UsuarioEntity> usuario = usuarioRepository.findAll(solicitacaoPagina);
-        List<UsuarioDTO> usuarioDTO = usuario.getContent().stream()
-                .map(x -> objectMapper.convertValue(x, UsuarioDTO.class))
-                .toList();
-
-        return new PageDTO<>(usuario.getTotalElements(),
-                usuario.getTotalPages(),
-                pagina,
-                tamanho,
-                usuarioDTO);
-    }
-
     public Optional<UsuarioEntity> findByEmail(String email) {
-        return usuarioRepository.findByEmail(email);
+        return usuarioRepository.findByEmail(email)
+                .filter(usuarioEntity -> usuarioEntity.getAtivo().equals(1));
     }
 
     public UsuarioDTO reativarUsuario(Integer idUsuario) throws RegraDeNegocioException {
