@@ -37,6 +37,7 @@ public class AdministrativoController implements DocumentacaoAdministracao {
     public ResponseEntity<ClienteCompletoDTO> getByIdCliente(Integer id) throws RegraDeNegocioException {
         return new ResponseEntity<>(administrativoService.getClienteById(id), HttpStatus.OK);
     }
+
     @Override
     public ResponseEntity<MedicoCompletoDTO> getByIdMedico(Integer id) throws RegraDeNegocioException {
         return new ResponseEntity<>(administrativoService.getMedicoById(id), HttpStatus.OK);
