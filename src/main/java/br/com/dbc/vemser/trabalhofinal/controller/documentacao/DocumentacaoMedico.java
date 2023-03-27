@@ -1,7 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.controller.documentacao;
 
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoListaDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoUpdateDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import io.swagger.v3.oas.annotations.Operation;

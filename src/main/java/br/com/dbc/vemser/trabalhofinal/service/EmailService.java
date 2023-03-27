@@ -1,7 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.entity.AgendamentoEntity;
-import br.com.dbc.vemser.trabalhofinal.entity.RegistroTemporarioEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
