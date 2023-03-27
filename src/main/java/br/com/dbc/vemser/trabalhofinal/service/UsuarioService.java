@@ -1,7 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.client.EnderecoClient;
-import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.RedefinicaoSenhaDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.TrocaSenhaDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioCreateDTO;
@@ -12,9 +11,6 @@ import br.com.dbc.vemser.trabalhofinal.repository.UsuarioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
