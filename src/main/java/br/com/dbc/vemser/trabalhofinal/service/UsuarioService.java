@@ -142,6 +142,11 @@ public class UsuarioService {
         if(passwordEncoder.matches(trocaSenhaDTO.getSenhaAntiga(), usuarioAcessado.getSenha()) && !passwordEncoder.matches(trocaSenhaDTO.getSenhaNova(), usuarioAcessado.getSenha())){
             usuarioAcessado.setSenha(passwordEncoder.encode(trocaSenhaDTO.getSenhaNova()));
             usuarioRepository.save(usuarioAcessado);
+            try {
+                emailService.sendEmailUsuario(usuarioAcessado, TipoEmail.USUARIO_SENHA_REDEFINIDA, null);
+            } catch (MessagingException | TemplateException | IOException e) {
+                throw new RegraDeNegocioException("Erro ao enviar o e-mail com código de redefinição.");
+            }
         }else{
             throw new RegraDeNegocioException("Senha inválida.");
         }
