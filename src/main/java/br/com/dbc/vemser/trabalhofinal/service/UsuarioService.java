@@ -187,6 +187,12 @@ public class UsuarioService {
             usuarioRepository.save(usuarioEntity);
 
             codigoTrocaSenha.getTokenBD().remove(redefinicaoSenhaDTO.getEmail());
+
+            try {
+                emailService.sendEmailUsuario(usuarioEntity, TipoEmail.USUARIO_SENHA_REDEFINIDA, null);
+            } catch (MessagingException | TemplateException | IOException e) {
+                throw new RegraDeNegocioException("Erro ao enviar o e-mail com código de redefinição.");
+            }
         }
 
     }
