@@ -48,6 +48,7 @@ public class AdministrativoService {
         List<UsuarioDTO> usuarioDTOS = usuarioRepository.findAll()
                 .stream()
                 .filter(usuarioEntity -> usuarioEntity.getIdCargo().equals(1))
+                .filter(usuario -> usuario.getAtivo().equals(1))
                 .map(adm -> objectMapper.convertValue(adm, UsuarioDTO.class))
                 .collect(Collectors.toList());
         System.out.println();
@@ -101,6 +102,7 @@ public class AdministrativoService {
 
     public UsuarioEntity getAdm(Integer id) throws RegraDeNegocioException {
         return usuarioRepository.findById(id)
+                .filter(usuario -> usuario.getAtivo().equals(1))
                 .orElseThrow(() -> new RegraDeNegocioException("Administrador não existe!"));
     }
 
