@@ -179,10 +179,10 @@ public class UsuarioService {
         Random random = new Random();
         Integer codigoGerado = random.nextInt(100000, 999999);
 
-        Map<String, Integer> map = new HashMap<>();
-        map.put(usuario.getEmail(), codigoGerado);
+        Map<String, Integer> codigoSenha = new HashMap<>();
+        codigoSenha.put(usuario.getEmail(), codigoGerado);
 
-        codigoTrocaSenha.setTokenBD(map);
+        codigoTrocaSenha.setTokenBD(codigoSenha);
 
         try {
             emailService.sendEmailUsuario(usuario, TipoEmail.USUARIO_REDEFINIR_SENHA, codigoGerado);
@@ -206,7 +206,7 @@ public class UsuarioService {
         if (codigo == null || !codigo.equals(redefinicaoSenhaDTO.getCodigoConfirmacao())) {
             throw new RegraDeNegocioException("Código de alteração de senha inválido!");
         } else {
-            usuarioEntity.setSenha(passwordEncoder.encode(usuarioEntity.getSenha()));
+            usuarioEntity.setSenha(passwordEncoder.encode(redefinicaoSenhaDTO.getSenhaNova()));
             usuarioRepository.save(usuarioEntity);
 
             codigoTrocaSenha.getTokenBD().remove(redefinicaoSenhaDTO.getEmail());

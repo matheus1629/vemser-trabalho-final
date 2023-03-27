@@ -98,6 +98,10 @@ public class TokenService {
             Object principal = authentication.getPrincipal();
             UsuarioEntity usuarioEntity = (UsuarioEntity) principal;
 
+            if (usuarioEntity.getAtivo().equals(0)) {
+                throw new RegraDeNegocioException("Este usuário está desativado, não é possível se autenticar!");
+            }
+
             return generateToken(usuarioEntity);
         } catch (BadCredentialsException ex) {
             ex.printStackTrace();
