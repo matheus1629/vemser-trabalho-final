@@ -1,11 +1,11 @@
 INSERT INTO CARGO (id_cargo, nome)
-     VALUES (seq_cargo.nextval, 'administração');
+     VALUES (seq_cargo.nextval, 'ROLE_ADM');
 
 INSERT INTO CARGO (id_cargo, nome)
-     VALUES (seq_cargo.nextval, 'medico');
+     VALUES (seq_cargo.nextval, 'ROLE_MEDICO');
 
 INSERT INTO CARGO (id_cargo, nome)
-     VALUES (seq_cargo.nextval, 'cliente');
+     VALUES (seq_cargo.nextval, 'ROLE_CLIENTE');
     
 INSERT INTO USUARIO (id_usuario, id_cargo, cpf, email, nome, senha, contatos, cep, numero, ativo) 
 	 VALUES (seq_usuario.nextval, 1, '74812465977', 'carlos_alberto@gmail.com', 'Carlos Paulo Alberto', 'carlospalb417', '(34) 99974-8841', '41567041', '72', 1);
@@ -28,10 +28,11 @@ INSERT INTO ESPECIALIDADE (id_especialidade, nome, valor)
 INSERT INTO MEDICO (id_medico, id_usuario, id_especialidade, crm) 
 	 VALUES (seq_medico.nextval, 2, 1, 'CRM-ES123456');
 
-INSERT INTO AGENDAMENTO (id_agendamento, id_medico, id_cliente, data_horario) 
-	 VALUES (seq_agendamento.nextval, 1, 1, TO_DATE('2023-02-28 15:00','yyyy/mm/dd hh24:mi'));
+INSERT INTO AGENDAMENTO (id_agendamento, id_medico, id_cliente, data_horario, valor) 
+	 VALUES (seq_agendamento.nextval, 1, 1, TO_DATE('2023-02-28 15:00','yyyy/mm/dd hh24:mi', 474.00));
 
 -- Supondo que foi consultado:
 UPDATE AGENDAMENTO 
 	SET exame = 'Sangue', tratamento = 'Dipirona' 
 	WHERE id_agendamento = 1;
+
