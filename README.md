@@ -22,7 +22,14 @@
         <li>Um Administrador faz operações de CRUD (create, read, update e delete) em qualquer classe, especialmente: Convênio, Especialidade e Agendamento. Ou seja, somente ele faz agendamentos.</li>
         <li>Um Cliente e um Médico podem somente: atualizar suas informações de cadastro, verificar suas informações e verificar seus agendamentos.</li>
     </ul>
-   </p>
+    Destaques desta versão:
+    <ul>
+        <li>Sistema de autenticação e segurança, bem como diferenciação de acessos e sistema para login (com criptografia de senhas e recursos para recuperação de acesso).</li>
+        <li>Valor da consulta é calculado e incluído no agendamento, com base na especialidade do médico e desconto de convênio do cliente.</li>
+        <li>Envio de e-mails nos casos em que: se cria um usuário, se inlui, altera ou exclui um Agendamento (enviado tanto ao médico quanto ao Cliente), se solicita um código para redefinir senha e ao ter alterado a senha.</li>
+        <li>Retorno de informações adicionais do endereço coletadas através da pesquisa de CEP por uma comunicação com a API pública do site <i>viacep.com.br</i>.</li>
+    </ul>
+</p>
 <hr>
 
 ### 🛠 Tecnologias e padrões de projeto
