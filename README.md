@@ -8,13 +8,19 @@
 <hr>
 <p>
     <strong> ⛺ Estrutura principal:</strong>
-    <br>Pode-se criar, editar, excluir, consultar e listar:
     <ul>
-        <li>Cliente - <i>possui informações pessoais básicas e de login, esse pode ter algum Convênio.</i></li>
-        <li>Convênio - <i>para o cadastro no Cliente, podendo ter algum abatimento no valor da consulta.</i></li>
-        <li>Médico - <i>possui informações pessoais básicas e de login, deve ter necessariamente alguma Especialidade.</i></li>
-        <li>Especialidade - <i>para registrar a atuação e variante do valor de consulta dos médicos.</i></li>
-        <li>Agendamento - <i>é usado para registrar uma consulta de um paciente (Cliente) com um médico.</i></li>
+        <li><u>Usuário Administrativo</u> - <i>tem acesso a todas funcionalidades do sistema.</i></li>
+        <li><u>Cliente</u> - <i>possui informações pessoais básicas e de login, esse pode ter algum Convênio. </i></li>
+        <li><u>Convênio</u> - <i>para o cadastro no Cliente, podendo ter algum abatimento no valor da consulta.</i></li>
+        <li><u>Médico</u> - <i>possui informações pessoais básicas e de login, deve ter necessariamente alguma Especialidade.</i></li>
+        <li><u>Especialidade</u> - <i>para registrar a atuação e variante do valor de consulta dos médicos.</i></li>
+        <li><u>Agendamento</u> - <i>é usado para registrar uma consulta de um paciente (Cliente) com um médico.</i></li>
+    </ul>
+    Diferenças de permissões:
+    <ul>
+        <li>Qualquer pessoa consegue: criar um login, se autenticar, trocar sua senha (estando logado), redefinir sua senha (sem estar logado), se cadastrar como médico ou cliente.</li>
+        <li>Um Administrador faz operações de CRUD (create, read, update e delete) em qualquer classe, especialmente: Convênio, Especialidade e Agendamento. Ou seja, somente ele faz agendamentos.</li>
+        <li>Um Cliente e um Médico podem somente: atualizar suas informações de cadastro, verificar suas informações e verificar seus agendamentos.</li>
     </ul>
    </p>
 <hr>
@@ -23,9 +29,12 @@
 <ul>
     <li>Java 17</li>
     <li>Spring Boot</li>
+    <li>Spring Security</li>
     <li>Spring Data</li>
     <li>Banco de dados Oracle</li>
     <li>Swagger</li>
+    <li>JavaMail com templates FreeMarker</li>
+    <li>Feign Client</li>
     <li>Jenkins</li>
     <li>Abordagem MVC</li>
     <li>Padrão de projeto DTO</li>
@@ -44,7 +53,7 @@
 
 <hr>
 
-#### Vem Ser - Trabalho final do Módulo 3.2
+#### Vem Ser - Trabalho final do Módulo 3.3
 ## Trello da divisão de tarefas:
 <p>https://trello.com/b/pY4BMcN8/trabalho-final-spring-data</p>
 
@@ -59,4 +68,3 @@
 </table>
 
 <hr>
-<p>Este projeto foi baseado no seguinte repositório: https://github.com/Gabriel-Gomes-Meira/trabalho_final_spring</p>
