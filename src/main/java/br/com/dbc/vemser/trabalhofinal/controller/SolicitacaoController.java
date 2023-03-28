@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @Tag(name="Solicitação")
 @Slf4j
 @Validated
-@RequestMapping("/solicitar")
+@RequestMapping("/solicitacao")
 @RestController
 @RequiredArgsConstructor
 public class SolicitacaoController {

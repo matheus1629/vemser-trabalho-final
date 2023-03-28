@@ -5,9 +5,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
@@ -22,7 +24,7 @@ public class SolicitacaoCreateDTO {
     @NotBlank
     private String especialidade;
     @Schema(description = "Data que deseja ser atendido", example = "15/04/2023 15:30", required = true)
-    @NotBlank
+    @NotNull
     @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataHora;
     @JsonIgnore
