@@ -2,6 +2,7 @@ package br.com.dbc.vemser.trabalhofinal.controller;
 
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.SolicitacaoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.SolicitacaoDTO;
+import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.SolicitacaoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class SolicitacaoController {
 
     private final SolicitacaoService solicitacaoService;
     @PostMapping("/agendamento")
-    public ResponseEntity<SolicitacaoDTO> solicitacao(@RequestBody @Valid SolicitacaoCreateDTO solicitacaoCreateDTO) {
-        return new ResponseEntity<>(solicitacaoService.adicionar(solicitacaoCreateDTO), HttpStatus.OK);
+    public ResponseEntity<SolicitacaoDTO> solicitacao(@RequestBody @Valid SolicitacaoCreateDTO solicitacaoCreateDTO) throws RegraDeNegocioException {
+        return new ResponseEntity<>(solicitacaoService.create(solicitacaoCreateDTO), HttpStatus.OK);
     }
 }
