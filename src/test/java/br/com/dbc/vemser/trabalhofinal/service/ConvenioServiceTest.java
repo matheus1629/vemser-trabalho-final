@@ -5,22 +5,38 @@ import br.com.dbc.vemser.trabalhofinal.dto.convenio.ConvenioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.convenio.ConvenioDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.ConvenioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
-import br.com.dbc.vemser.trabalhofinal.repository.ConvenioRepository;
+import br.com.dbc.vemser.trabalhofinal.repository.ClienteRepository;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
+import org.springframework.test.util.ReflectionTestUtils;
+import org.junit.Before;
 import java.util.List;
 
 
-@Service
-@RequiredArgsConstructor
-public class ConvenioService {
-    private final ConvenioRepository convenioRepository;
-    private final ObjectMapper objectMapper;
+@RunWith(MockitoJUnitRunner.class)
+public class ConvenioServiceTest {
+    @InjectMocks
+    private ConvenioService convenioService;
+    private ObjectMapper objectMapper = new ObjectMapper();
+    @Mock
+    private ClienteRepository clienteRepository;
+
+    @Before
+    public void init() {
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        ReflectionTestUtils.setField(convenioService, "objectMapper", objectMapper);
+    }
 
     public PageDTO<ConvenioDTO> list(Integer pagina, Integer tamanho) {
         Pageable solicitacaoPagina = PageRequest.of(pagina,tamanho);
