@@ -9,25 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-@Service
-@RequiredArgsConstructor
+
 public class SolicitacaoService {
-    private final SolicitacaoReposiroty solicitacaoReposiroty;
-    private final ClienteService clienteService;
 
-    public SolicitacaoDTO create(SolicitacaoCreateDTO solicitacaoCreateDTO) throws RegraDeNegocioException {
-        solicitacaoCreateDTO.setIdCliente(clienteService.recuperarCliente().getIdCliente());
-
-        var solicitacaoEntity = new SolicitacaoEntity();
-        BeanUtils.copyProperties(solicitacaoCreateDTO, solicitacaoEntity);
-
-        solicitacaoReposiroty.save(solicitacaoEntity);
-
-        var solicitacaoDTO = new SolicitacaoDTO();
-        BeanUtils.copyProperties(solicitacaoEntity, solicitacaoDTO);
-
-        return solicitacaoDTO;
-
-    }
 
 }
