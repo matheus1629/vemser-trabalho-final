@@ -13,10 +13,9 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class SolicitacaoService {
-
     private final SolicitacaoReposiroty solicitacaoReposiroty;
     private final ClienteService clienteService;
-    private final ObjectMapper objectMapper;
+
     public SolicitacaoDTO create(SolicitacaoCreateDTO solicitacaoCreateDTO) throws RegraDeNegocioException {
         solicitacaoCreateDTO.setIdCliente(clienteService.recuperarCliente().getIdCliente());
 
