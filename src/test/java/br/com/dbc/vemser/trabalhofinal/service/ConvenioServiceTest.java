@@ -5,6 +5,7 @@ import br.com.dbc.vemser.trabalhofinal.dto.convenio.ConvenioDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.ConvenioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.ClienteRepository;
+import br.com.dbc.vemser.trabalhofinal.repository.ConvenioRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -31,7 +32,7 @@ public class ConvenioServiceTest {
     private ConvenioService convenioService;
     private ObjectMapper objectMapper = new ObjectMapper();
     @Mock
-    private ClienteRepository clienteRepository;
+    private ConvenioRepository convenioRepository;
 
     @Before
     public void init() {
@@ -44,22 +45,21 @@ public class ConvenioServiceTest {
     @Test // deveCriarComSucesso
     public void deveCriarComSucesso() throws RegraDeNegocioException {
         // declaração de variaveis (SETUP)
-        ConvenioCreateDTO convenio = new ConvenioCreateDTO();
         ConvenioEntity convenioMockadaDoBanco = getConvenioEntityMock();
         ConvenioDTO convenioDTO = new ConvenioDTO();
         convenioDTO.setIdConvenio(1);
         convenioDTO.setTaxaAbatimento(50.0);
         convenioDTO.setCadastroOrgaoRegulador("Exemplo A");
 
-        when(clienteRepository.save(any())).thenReturn(convenioMockadaDoBanco);
+        when(convenioRepository.save(any())).thenReturn(convenioMockadaDoBanco);
         // ação (ACT)
 //        PessoaService pessoaService = new PessoaService();
-        ConvenioDTO convenioRetornado = convenioService.adicionar(convenio);
+        ConvenioDTO convenioRetornado = convenioService.adicionar(convenioDTO);
 
         // verificar se deu certo / afirmativa  (ASSERT)
         assertNotNull(convenioRetornado);
-        assertEquals(convenio.getTaxaAbatimento(), convenioRetornado.getTaxaAbatimento());
-        assertEquals(convenio.getCadastroOrgaoRegulador(), convenioRetornado.getCadastroOrgaoRegulador());
+        assertEquals(convenioMockadaDoBanco.getTaxaAbatimento(), convenioRetornado.getTaxaAbatimento());
+        assertEquals(convenioMockadaDoBanco.getCadastroOrgaoRegulador(), convenioRetornado.getCadastroOrgaoRegulador());
         assertEquals(1,convenioRetornado.getIdConvenio());
     }
 
