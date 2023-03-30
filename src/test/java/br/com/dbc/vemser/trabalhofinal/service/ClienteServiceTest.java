@@ -34,9 +34,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ClienteServiceTest {
@@ -216,6 +214,18 @@ public class ClienteServiceTest {
         assertEquals(clienteCompletoDTOMock, clienteEditado);
     }
 
+    @Test
+    public void deveRemover() throws RegraDeNegocioException {
+        //SETUP
+        ClienteEntity clienteEntityMock = getClienteEntityMock();
+        doReturn(clienteEntityMock).when(clienteService).getCliente(any());
+        //ACT
+        clienteService.remover(clienteEntityMock.getIdCliente());
+        //ASSERT
+        verify(usuarioService, times(1)).remover(clienteEntityMock.getIdUsuario());
+        verify(agendamentoService, times(1)).removerPorClienteDesativado(clienteEntityMock);
+    }
+
     private static ClienteUpdateDTO getclienteUpdateDTOMock(){
         ClienteUpdateDTO clienteUpdateDTO = new ClienteUpdateDTO();
         clienteUpdateDTO.setCep("12345678");
@@ -250,7 +260,6 @@ public class ClienteServiceTest {
         clienteEntity.setUsuarioEntity(getUsuarioEntityMock());
         clienteEntity.setConvenioEntity(getConvenioEntityMock());
         return clienteEntity;
-
     }
 
     private static UsuarioEntity getUsuarioEntityMock() {
