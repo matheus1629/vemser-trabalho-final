@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
 
+import br.com.dbc.vemser.trabalhofinal.client.EnderecoClient;
 import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteUpdateDTO;
@@ -43,6 +44,16 @@ public class MedicoServiceTest {
     private ObjectMapper objectMapper = new ObjectMapper();
     @Mock
     private MedicoRepository medicoRepository;
+    @Mock
+    private EspecialidadeService especialidadeService;
+    @Mock
+    private  UsuarioService usuarioService;
+    @Mock
+    private EmailService emailService;
+    @Mock
+    private EnderecoClient enderecoClient;
+    @Mock
+    private AgendamentoService agendamentoService;
 
     @Before
     public void init() {
@@ -66,7 +77,6 @@ public class MedicoServiceTest {
         medicoCreateDTOMock.setSenha("123");
         medicoCreateDTOMock.setIdEspecialidade(1);
 
-
         MedicoCompletoDTO medicoCompletoDTOMock = getMedicoCompletoDTOMock();
         doReturn(medicoCompletoDTOMock).when(medicoService).getById(any());
         // ação (ACT)
@@ -89,6 +99,26 @@ public class MedicoServiceTest {
         assertEquals(medicoEntityMock.getIdMedico(),medicoRecuperado.getIdMedico());
         assertEquals(medicoEntityMock.getUsuarioEntity(),medicoRecuperado.getUsuarioEntity());
         assertEquals(medicoEntityMock.getEspecialidadeEntity(),medicoRecuperado.getEspecialidadeEntity());
+    }
+
+    @Test
+    public void deveEditarMedico() throws RegraDeNegocioException {
+        //SETUP
+        MedicoUpdateDTO medicoUpdateDTO = getMedicoUpdate();
+        MedicoEntity medicoEntityMock = getMedicoEntityMock();
+        MedicoCompletoDTO medicoCompletoDTOMock = getMedicoCompletoDTOMock();
+
+        doReturn(medicoCompletoDTOMock).when(medicoService).recuperarMedico();
+        doReturn(medicoCompletoDTOMock).when(medicoService).getById(any());
+        when(medicoRepository.save(any())).thenReturn(medicoEntityMock);
+
+
+        // ACT
+        MedicoCompletoDTO medicoEditado = medicoService.editar(medicoUpdateDTO);
+
+        //ASSERT
+        assertNotNull(medicoEditado);
+        assertEquals(medicoCompletoDTOMock, medicoEditado);
     }
 
     @NotNull
