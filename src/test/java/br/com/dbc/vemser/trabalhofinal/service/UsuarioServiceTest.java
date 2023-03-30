@@ -130,7 +130,6 @@ public class UsuarioServiceTest {
     @Test
     public void deveRetornarUsuarioDTOPeloId() throws RegraDeNegocioException{
         //SETUP
-        UsuarioDTO usuarioDTOMock = getUsuarioDTOMock();
         UsuarioEntity usuarioEntityMockDoBanco = getUsuarioEntityMockDoBanco();
         when(usuarioRepository.findById(anyInt())).thenReturn(Optional.of(usuarioEntityMockDoBanco));
 
@@ -148,6 +147,20 @@ public class UsuarioServiceTest {
         assertEquals(usuarioEntityMockDoBanco.getContatos(), usuarioDTORetornadoMock.getContatos());
 
     }
+
+    @Test
+    public void deveRetornarUsuarioEntityPeloEmail() {
+        //SETUP
+        UsuarioEntity usuarioEntityMockDoBanco = getUsuarioEntityMockDoBanco();
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntityMockDoBanco));
+
+        //ACT
+        Optional<UsuarioEntity> usuarioEntityEncontradoMock = usuarioService.findByEmail("rogerio.santos@gmail.com");
+        //ASSERT
+        assertNotNull(usuarioEntityEncontradoMock);
+        assertEquals(usuarioEntityMockDoBanco.getEmail(), usuarioEntityEncontradoMock.get().getEmail());
+    }
+
 
     // ABSTRAÇÃO DE MÉTODOS
 
