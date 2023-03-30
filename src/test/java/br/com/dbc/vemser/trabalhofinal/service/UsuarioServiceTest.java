@@ -18,6 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -33,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @RunWith(MockitoJUnitRunner.class)
 public class UsuarioServiceTest {
 
+    @Spy
     @InjectMocks
     private UsuarioService usuarioService;
     @Mock
@@ -152,13 +154,30 @@ public class UsuarioServiceTest {
     public void deveRetornarUsuarioEntityPeloEmail() {
         //SETUP
         UsuarioEntity usuarioEntityMockDoBanco = getUsuarioEntityMockDoBanco();
-        when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntityMockDoBanco));
+        when(usuarioRepository.findById(anyInt())).thenReturn(Optional.of(usuarioEntityMockDoBanco));
 
         //ACT
         Optional<UsuarioEntity> usuarioEntityEncontradoMock = usuarioService.findByEmail("rogerio.santos@gmail.com");
         //ASSERT
         assertNotNull(usuarioEntityEncontradoMock);
         assertEquals(usuarioEntityMockDoBanco.getEmail(), usuarioEntityEncontradoMock.get().getEmail());
+    }
+
+    @Test
+    public void deveReativarUsuario() throws RegraDeNegocioException {
+        //SETUP
+        UsuarioEntity usuarioEntityDesativadoMockDoBanco = getUsuarioEntityDesativadoMockDoBanco();
+        doReturn(usuarioEntityDesativadoMockDoBanco).when(usuarioService).getUsuario(any());
+        UsuarioDTO usuarioDTOMock = getUsuarioDTOMock();
+        doReturn(usuarioDTOMock).when(usuarioService).getById(any());
+
+        //ACT
+        UsuarioDTO usuarioDTOReativadoMock = usuarioService.reativarUsuario(1);
+
+        //ASSERT
+        assertNotNull(usuarioDTOReativadoMock);
+        assertEquals(1, usuarioEntityDesativadoMockDoBanco.getAtivo());
+        assertEquals(usuarioDTOMock, usuarioDTOReativadoMock);
     }
 
 
@@ -199,6 +218,13 @@ public class UsuarioServiceTest {
     private static UsuarioEntity getUsuarioEntityMockDoBanco(){
         UsuarioEntity usuarioEntityMockDoBanco = getUsuarioEntityMock();
         usuarioEntityMockDoBanco.setAtivo(1);
+        return usuarioEntityMockDoBanco;
+    }
+
+    @NotNull
+    private static UsuarioEntity getUsuarioEntityDesativadoMockDoBanco(){
+        UsuarioEntity usuarioEntityMockDoBanco = getUsuarioEntityMock();
+        usuarioEntityMockDoBanco.setAtivo(0);
         return usuarioEntityMockDoBanco;
     }
 
