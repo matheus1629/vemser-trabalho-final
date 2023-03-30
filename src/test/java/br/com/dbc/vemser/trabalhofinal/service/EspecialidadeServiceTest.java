@@ -69,19 +69,19 @@ public class EspecialidadeServiceTest {
 //
 //    }
 
-//    @Test
-//    public void deveRecuperarPeloId() throws RegraDeNegocioException {
-//        //SETUP
-//        EspecialidadeEntity especialidadeEntityMock = getEspecialidadeEntityMock();
-//        EspecialidadeDTO especialidadeDTOMock = getEspecialidadeDTOMock();
-//        doReturn(especialidadeEntityMock).when(especialidadeService).getEspecialidade(any());
-//
-//        //ACT
-//        EspecialidadeDTO especialidadeRecuperada = especialidadeService.getById(any());
-//        //ASSERT
-//        assertNotNull(especialidadeRecuperada);
-//        assertEquals(especialidadeDTOMock, especialidadeRecuperada);
-//    }
+    @Test
+    public void deveRecuperarPeloId() throws RegraDeNegocioException {
+        //SETUP
+        EspecialidadeEntity especialidadeEntityMock = getEspecialidadeEntityMock();
+        EspecialidadeDTO especialidadeDTOMock = getEspecialidadeDTOMock();
+        doReturn(especialidadeEntityMock).when(especialidadeService).getEspecialidade(any());
+
+        //ACT
+        EspecialidadeDTO especialidadeRecuperada = especialidadeService.getById(any());
+        //ASSERT
+        assertNotNull(especialidadeRecuperada);
+        assertEquals(especialidadeDTOMock, especialidadeRecuperada);
+    }
 
     @Test
     public void deveAdicionarEspecialidade() throws RegraDeNegocioException {
