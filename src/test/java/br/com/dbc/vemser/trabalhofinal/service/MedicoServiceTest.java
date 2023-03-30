@@ -33,8 +33,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MedicoServiceTest {
@@ -119,6 +119,18 @@ public class MedicoServiceTest {
         //ASSERT
         assertNotNull(medicoEditado);
         assertEquals(medicoCompletoDTOMock, medicoEditado);
+    }
+
+    @Test
+    public void deveRemover() throws RegraDeNegocioException {
+        //SETUP
+        MedicoEntity medicoEntityMock = getMedicoEntityMock();
+        doReturn(medicoEntityMock).when(medicoService).getMedico(any());
+        //ACT
+        medicoService.remover(medicoEntityMock.getIdMedico());
+        //ASSERT
+        verify(usuarioService, times(1)).remover(medicoEntityMock.getIdUsuario());
+        verify(agendamentoService, times(1)).removerPorMedicoDesativado(medicoEntityMock);
     }
 
     @NotNull
