@@ -189,11 +189,11 @@ public class ClienteServiceTest {
         doReturn(clienteCompletoDTOMock).when(clienteService).getById(any());
 
         // ACT
-        ClienteCompletoDTO ClienteAdicionado = clienteService.adicionar(clienteCreateDTOMock);
+        ClienteCompletoDTO clienteAdicionado = clienteService.adicionar(clienteCreateDTOMock);
 
         //ASSERT
-        assertNotNull(ClienteAdicionado);
-        assertEquals(clienteCompletoDTOMock, ClienteAdicionado);
+        assertNotNull(clienteAdicionado);
+        assertEquals(clienteCompletoDTOMock, clienteAdicionado);
     }
 
     @Test

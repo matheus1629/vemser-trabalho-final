@@ -1,10 +1,14 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
 
+import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCompletoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteUpdateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.convenio.ConvenioDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoUpdateDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.*;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.ConvenioRepository;
@@ -28,6 +32,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -50,33 +55,40 @@ public class MedicoServiceTest {
     @Test // deveCriarComSucesso
     public void deveCriarComSucesso() throws RegraDeNegocioException {
         // declaração de variaveis (SETUP)
-        MedicoEntity medicoEntity = getMedicoEntityMock();
-        MedicoCreateDTO medicoDTO = medicoCreateDTO();
+        MedicoCreateDTO medicoCreateDTOMock = new MedicoCreateDTO();
+        medicoCreateDTOMock.setCep("12345678");
+        medicoCreateDTOMock.setCrm("123456");
+        medicoCreateDTOMock.setNome("Alan");
+        medicoCreateDTOMock.setCpf("12345678910");
+        medicoCreateDTOMock.setEmail("Alan@gmail.com");
+        medicoCreateDTOMock.setContatos("12345678");
+        medicoCreateDTOMock.setNumero(145);
+        medicoCreateDTOMock.setSenha("123");
+        medicoCreateDTOMock.setIdEspecialidade(1);
 
-        when(medicoRepository.save(any())).thenReturn(medicoEntity);
+
+        MedicoCompletoDTO medicoCompletoDTOMock = getMedicoCompletoDTOMock();
+        doReturn(medicoCompletoDTOMock).when(medicoService).getById(any());
         // ação (ACT)
-//        PessoaService pessoaService = new PessoaService();
-        MedicoCompletoDTO medicoRetornado = medicoService.adicionar(medicoDTO);
+        MedicoCompletoDTO medicoAdicionado = medicoService.adicionar(medicoCreateDTOMock);
 
         // verificar se deu certo / afirmativa  (ASSERT)
-        assertNotNull(medicoRetornado);
-//        assertEquals(medicoEntity.getTaxaAbatimento(), convenioRetornado.getTaxaAbatimento());
-//        assertEquals(medicoEntity.getCadastroOrgaoRegulador(), convenioRetornado.getCadastroOrgaoRegulador());
-//        assertEquals(1,convenioRetornado.getIdConvenio());
+        assertNotNull(medicoAdicionado);
+        assertEquals(medicoCompletoDTOMock,medicoAdicionado);
     }
 
     @Test
     public void deveRetornarMedicoPorId() throws RegraDeNegocioException {
         // declaração de variaveis (SETUP)
-        MedicoEntity medicoEntity = getMedicoEntityMock();
-        MedicoCompletoDTO medicoCompletoDTO = getMedicoEntityMockDTO();
-        when(medicoRepository.findById(any())).thenReturn(Optional.of(medicoEntity));
-//        Mockito.doReturn(convenioMockadaDoBanco).when(convenioService).getConvenio(anyInt());
+        MedicoEntity medicoEntityMock = getMedicoEntityMock();
+        when(medicoRepository.findById(any())).thenReturn(Optional.of(medicoEntityMock));
         // ACT
-        MedicoCompletoDTO resultado = medicoService.getById(1);
+        MedicoEntity medicoRecuperado = medicoService.getMedico(1);
         // Assert
-        assertNotNull(resultado);
-        assertEquals(medicoCompletoDTO,resultado);
+        assertNotNull(medicoRecuperado);
+        assertEquals(medicoEntityMock.getIdMedico(),medicoRecuperado.getIdMedico());
+        assertEquals(medicoEntityMock.getUsuarioEntity(),medicoRecuperado.getUsuarioEntity());
+        assertEquals(medicoEntityMock.getEspecialidadeEntity(),medicoRecuperado.getEspecialidadeEntity());
     }
 
     @NotNull
@@ -89,20 +101,29 @@ public class MedicoServiceTest {
         return medicoMockadaDoBanco;
     }
 
-    @NotNull
-    private static MedicoCompletoDTO getMedicoEntityMockDTO() {
-        MedicoCompletoDTO medicoMockadaDoBancoDTO = new MedicoCompletoDTO();
-        medicoMockadaDoBancoDTO.setIdMedico(1);
-        medicoMockadaDoBancoDTO.setCrm("123456");
-        medicoMockadaDoBancoDTO.setCep("49042140");
-        return medicoMockadaDoBancoDTO;
+    private static MedicoUpdateDTO getMedicoUpdate(){
+        MedicoUpdateDTO medicoUpdateDTO = new MedicoUpdateDTO();
+        medicoUpdateDTO.setCep("12345678");
+        medicoUpdateDTO.setNome("Carlos");
+        medicoUpdateDTO.setCpf("12345678910");
+        medicoUpdateDTO.setNumero(123);
+        medicoUpdateDTO.setContatos("12345678");
+        medicoUpdateDTO.setIdUsuario(1);
+        medicoUpdateDTO.setIdEspecialidade(1);
+        return medicoUpdateDTO;
     }
 
     @NotNull
-    private static MedicoCreateDTO medicoCreateDTO() {
-        MedicoCreateDTO medicoMockadaDoBancoDTO = new MedicoCreateDTO();
+    private static MedicoCompletoDTO getMedicoCompletoDTOMock() {
+        MedicoCompletoDTO medicoMockadaDoBancoDTO = new MedicoCompletoDTO();
+        medicoMockadaDoBancoDTO.setCep("12345678");
         medicoMockadaDoBancoDTO.setCrm("123456");
-        medicoMockadaDoBancoDTO.setCep("49042140");
+        medicoMockadaDoBancoDTO.setNome("Alan");
+        medicoMockadaDoBancoDTO.setCpf("12345678910");
+        medicoMockadaDoBancoDTO.setEmail("Alan@gmail.com");
+        medicoMockadaDoBancoDTO.setContatos("12345678");
+        medicoMockadaDoBancoDTO.setNumero(145);
+        medicoMockadaDoBancoDTO.setIdEspecialidade(1);
         return medicoMockadaDoBancoDTO;
     }
 
