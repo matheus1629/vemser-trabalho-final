@@ -206,7 +206,6 @@ public class ClienteServiceTest {
         clienteCompletoDTO.setEmail("Carlos@gmail.com");
         clienteCompletoDTO.setNomeCargo("ROLE_CLIENTE");
         return clienteCompletoDTO;
-
     }
 
     private static ClienteEntity getClienteEntityMock() {
