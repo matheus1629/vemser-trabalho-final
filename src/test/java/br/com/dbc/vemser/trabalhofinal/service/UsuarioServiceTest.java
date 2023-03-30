@@ -2,6 +2,7 @@ package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.client.EnderecoClient;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.CargoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.ConvenioEntity;
@@ -126,6 +127,28 @@ public class UsuarioServiceTest {
         
     }
 
+    @Test
+    public void deveRetornarUsuarioDTOPeloId() throws RegraDeNegocioException{
+        //SETUP
+        UsuarioDTO usuarioDTOMock = getUsuarioDTOMock();
+        UsuarioEntity usuarioEntityMockDoBanco = getUsuarioEntityMockDoBanco();
+        when(usuarioRepository.findById(anyInt())).thenReturn(Optional.of(usuarioEntityMockDoBanco));
+
+        //ACT
+        UsuarioDTO usuarioDTORetornadoMock = usuarioService.getById(1);
+        //ASSERT
+        assertNotNull(usuarioDTORetornadoMock);
+        assertEquals(usuarioEntityMockDoBanco.getIdUsuario(), usuarioDTORetornadoMock.getIdUsuario());
+        assertEquals(usuarioEntityMockDoBanco.getIdCargo(), usuarioDTORetornadoMock.getIdCargo());
+        assertEquals(usuarioEntityMockDoBanco.getCpf(), usuarioDTORetornadoMock.getCpf());
+        assertEquals(usuarioEntityMockDoBanco.getEmail(), usuarioDTORetornadoMock.getEmail());
+        assertEquals(usuarioEntityMockDoBanco.getNome(), usuarioDTORetornadoMock.getNome());
+        assertEquals(usuarioEntityMockDoBanco.getCep(), usuarioDTORetornadoMock.getCep());
+        assertEquals(usuarioEntityMockDoBanco.getNumero(), usuarioDTORetornadoMock.getNumero());
+        assertEquals(usuarioEntityMockDoBanco.getContatos(), usuarioDTORetornadoMock.getContatos());
+
+    }
+
     // ABSTRAÇÃO DE MÉTODOS
 
     @NotNull
@@ -142,6 +165,21 @@ public class UsuarioServiceTest {
         usuarioEntityMockado.setContatos("34999748512, 34999658741");
         usuarioEntityMockado.setIdCargo(1);
         return usuarioEntityMockado;
+    }
+
+    @NotNull
+    private static UsuarioDTO getUsuarioDTOMock(){
+        UsuarioDTO usuarioDTOMockado = new UsuarioDTO();
+        usuarioDTOMockado.setIdUsuario(1);
+        usuarioDTOMockado.setIdCargo(1);
+        usuarioDTOMockado.setCpf("14574198422");
+        usuarioDTOMockado.setEmail("rogerio.santos@gmail.com");
+        usuarioDTOMockado.setNome("Rogério Santos");
+        usuarioDTOMockado.setCep("01010904");
+        usuarioDTOMockado.setNumero(15);
+        usuarioDTOMockado.setContatos("34999748512, 34999658741");
+        usuarioDTOMockado.setIdCargo(1);
+        return usuarioDTOMockado;
     }
 
     @NotNull
