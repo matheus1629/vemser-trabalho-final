@@ -6,6 +6,7 @@ import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoListaDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteUpdateDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.CargoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.ConvenioEntity;
@@ -16,27 +17,15 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import io.jsonwebtoken.JwsHeader;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,13 +34,14 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ClienteServiceTest {
 
+    @Spy
     @InjectMocks
     private ClienteService clienteService;
     @Mock
@@ -182,13 +172,60 @@ public class ClienteServiceTest {
     }
 
     @Test
-    public void deveAdicionarUmCliente() {
+    public void deveCriarUmCliente() throws RegraDeNegocioException { //<todo> testar o envio de email
         //SETUP
-//        ClienteCreateDTO clienteCompletoDTOMock = new ClienteCreateDTO();
-//        clienteCompletoDTOMock.se
-//        // ACT
-//        clienteService.adicionar(clienteCompletoDTOMock);
+        ClienteCreateDTO clienteCreateDTOMock = new ClienteCreateDTO();
+        clienteCreateDTOMock.setCep("12345678");
+        clienteCreateDTOMock.setNome("Carlos");
+        clienteCreateDTOMock.setEmail("Carlos@gmail.com");
+        clienteCreateDTOMock.setCpf("12345678910");
+        clienteCreateDTOMock.setNumero(123);
+        clienteCreateDTOMock.setContatos("12345678");
+        clienteCreateDTOMock.setSenha("123");
+        clienteCreateDTOMock.setIdConvenio(1);
+
+        ClienteCompletoDTO clienteCompletoDTOMock = getClienteCompletoDTOMock();
+
+        doReturn(clienteCompletoDTOMock).when(clienteService).getById(any());
+
+        // ACT
+        ClienteCompletoDTO ClienteAdicionado = clienteService.adicionar(clienteCreateDTOMock);
+
         //ASSERT
+        assertNotNull(ClienteAdicionado);
+        assertEquals(clienteCompletoDTOMock, ClienteAdicionado);
+    }
+
+    @Test
+    public void deveEditarCliente() throws RegraDeNegocioException {
+        //SETUP
+        ClienteUpdateDTO clienteUpdateDTO = getclienteUpdateDTOMock();
+        ClienteEntity clienteEntityMock = getClienteEntityMock();
+        ClienteCompletoDTO clienteCompletoDTOMock = getClienteCompletoDTOMock();
+
+        doReturn(clienteCompletoDTOMock).when(clienteService).recuperarCliente();
+        doReturn(clienteCompletoDTOMock).when(clienteService).getById(any());
+        when(clienteRepository.save(any())).thenReturn(clienteEntityMock);
+
+
+        // ACT
+        ClienteCompletoDTO clienteEditado = clienteService.editar(clienteUpdateDTO);
+
+        //ASSERT
+        assertNotNull(clienteEditado);
+        assertEquals(clienteCompletoDTOMock, clienteEditado);
+    }
+
+    private static ClienteUpdateDTO getclienteUpdateDTOMock(){
+        ClienteUpdateDTO clienteUpdateDTO = new ClienteUpdateDTO();
+        clienteUpdateDTO.setCep("12345678");
+        clienteUpdateDTO.setNome("Carlos");
+        clienteUpdateDTO.setCpf("12345678910");
+        clienteUpdateDTO.setNumero(123);
+        clienteUpdateDTO.setContatos("12345678");
+        clienteUpdateDTO.setIdUsuario(1);
+        clienteUpdateDTO.setIdConvenio(1);
+        return clienteUpdateDTO;
     }
 
     private static ClienteCompletoDTO getClienteCompletoDTOMock() {
