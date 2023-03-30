@@ -133,6 +133,24 @@ public class MedicoServiceTest {
         verify(agendamentoService, times(1)).removerPorMedicoDesativado(medicoEntityMock);
     }
 
+    @Test
+    public void deveRecuperarMedicoLogadoPorId() throws RegraDeNegocioException {
+        //SETUP
+        MedicoEntity medicoEntityMock = getMedicoEntityMock();
+        MedicoCompletoDTO medicoCompletoDTOMock = getMedicoCompletoDTOMock();
+
+        when(usuarioService.getIdLoggedUser()).thenReturn(1);
+        when(medicoRepository.getMedicoEntityByIdUsuario(any())).thenReturn(medicoEntityMock);
+        when(medicoRepository.getByIdPersonalizado(any())).thenReturn(Optional.of(medicoCompletoDTOMock));
+
+        //ACT
+        MedicoCompletoDTO medicoRecuperado = medicoService.recuperarMedico();
+
+        //ASSERT
+        assertNotNull(medicoRecuperado);
+        assertEquals(medicoRecuperado, medicoCompletoDTOMock);
+    }
+
     @NotNull
     private static MedicoEntity getMedicoEntityMock() {
         MedicoEntity medicoMockadaDoBanco = new MedicoEntity();
