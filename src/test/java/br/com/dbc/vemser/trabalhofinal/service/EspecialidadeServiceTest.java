@@ -2,13 +2,16 @@ package br.com.dbc.vemser.trabalhofinal.service;
 
 
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.especialidade.EspecialidadeCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.especialidade.EspecialidadeDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.EspecialidadeEntity;
+import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.EspecialidadeRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Tag;
@@ -25,8 +28,11 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EspecialidadeServiceTest {
@@ -63,8 +69,56 @@ public class EspecialidadeServiceTest {
 //
 //    }
 
+//    @Test
+//    public void deveRecuperarPeloId() throws RegraDeNegocioException {
+//        //SETUP
+//        EspecialidadeEntity especialidadeEntityMock = getEspecialidadeEntityMock();
+//        EspecialidadeDTO especialidadeDTOMock = getEspecialidadeDTOMock();
+//        doReturn(especialidadeEntityMock).when(especialidadeService).getEspecialidade(any());
+//
+//        //ACT
+//        EspecialidadeDTO especialidadeRecuperada = especialidadeService.getById(any());
+//        //ASSERT
+//        assertNotNull(especialidadeRecuperada);
+//        assertEquals(especialidadeDTOMock, especialidadeRecuperada);
+//    }
+
     @Test
-    public void deveRecuperarPeloId() {
+    public void deveAdicionarEspecialidade() throws RegraDeNegocioException {
+        //SETUP
+        EspecialidadeCreateDTO especialidadeCreateDTOMock = getEspecialidadeCreateDTOMock();
+        EspecialidadeEntity especialidadeEntityMock = getEspecialidadeEntityMock();
+        EspecialidadeDTO especialidadeDTOMock = getEspecialidadeDTOMock();
+
+        when(especialidadeRepository.save(any())).thenReturn(especialidadeEntityMock);
         //ACT
+        EspecialidadeDTO especialidadeCriada = especialidadeService.adicionar(especialidadeCreateDTOMock);
+        //ASSERT
+//        verify(especialidadeRepository, times(1)).save(especialidadeEntityMock);
+        assertNotNull(especialidadeCriada);
+        assertEquals(especialidadeDTOMock, especialidadeEntityMock);
+    }
+
+    private static EspecialidadeEntity getEspecialidadeEntityMock() {
+        EspecialidadeEntity especialidadeEntity = new EspecialidadeEntity();
+        especialidadeEntity.setIdEspecialidade(1);
+        especialidadeEntity.setValor(100.0);
+        especialidadeEntity.setNomeEspecialidade("Cardiologista");
+        return especialidadeEntity;
+    }
+
+    public static EspecialidadeDTO getEspecialidadeDTOMock() {
+        EspecialidadeDTO especialidadeDTO = new EspecialidadeDTO();
+        especialidadeDTO.setIdEspecialidade(1);
+        especialidadeDTO.setNomeEspecialidade("Cardiologista");
+        especialidadeDTO.setValor(100.0);
+        return especialidadeDTO;
+    }
+
+    public static EspecialidadeCreateDTO getEspecialidadeCreateDTOMock() {
+        EspecialidadeCreateDTO especialidadeCreateDTO = new EspecialidadeDTO();
+        especialidadeCreateDTO.setNomeEspecialidade("Cardiologista");
+        especialidadeCreateDTO.setValor(100.0);
+        return especialidadeCreateDTO;
     }
 }
