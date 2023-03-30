@@ -152,7 +152,7 @@ public class MedicoServiceTest {
     }
 
     @NotNull
-    private static MedicoEntity getMedicoEntityMock() {
+    static MedicoEntity getMedicoEntityMock() {
         MedicoEntity medicoMockadaDoBanco = new MedicoEntity();
         medicoMockadaDoBanco.setIdMedico(1);
         medicoMockadaDoBanco.setCrm("123456");
