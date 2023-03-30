@@ -260,7 +260,6 @@ public class ClienteServiceTest {
         clienteEntity.setUsuarioEntity(getUsuarioEntityMock());
         clienteEntity.setConvenioEntity(getConvenioEntityMock());
         return clienteEntity;
-
     }
 
     private static UsuarioEntity getUsuarioEntityMock() {
