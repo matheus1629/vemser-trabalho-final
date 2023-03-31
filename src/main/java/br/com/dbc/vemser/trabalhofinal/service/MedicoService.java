@@ -145,6 +145,4 @@ public class MedicoService {
             throw new RegraDeNegocioException("O nome da especialidade não pode conter número");
         }
     }
-
-
 }
