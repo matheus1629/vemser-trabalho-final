@@ -68,22 +68,6 @@ public class MedicoServiceTest {
         ReflectionTestUtils.setField(medicoService, "objectMapper", objectMapper);
     }
 
-
-
-//    @Test
-//    public void deveRetornarMedicoPorId() throws RegraDeNegocioException {
-//        // declaração de variaveis (SETUP)
-//        MedicoEntity medicoEntityMock = getMedicoEntityMock();
-//        when(medicoRepository.findById(any())).thenReturn(Optional.of(medicoEntityMock));
-//        // ACT
-//        MedicoEntity medicoRecuperado = medicoService.getMedico(1);
-//        // Assert
-//        assertNotNull(medicoRecuperado);
-//        assertEquals(medicoEntityMock.getIdMedico(),medicoRecuperado.getIdMedico());
-//        assertEquals(medicoEntityMock.getUsuarioEntity(),medicoRecuperado.getUsuarioEntity());
-//        assertEquals(medicoEntityMock.getEspecialidadeEntity(),medicoRecuperado.getEspecialidadeEntity());
-//    }
-
     @Test
     public void deveRecuperarMedicoLogadoPorId() throws RegraDeNegocioException {
         //SETUP
