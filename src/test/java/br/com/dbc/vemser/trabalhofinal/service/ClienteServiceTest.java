@@ -255,14 +255,16 @@ public class ClienteServiceTest {
         return clienteCompletoDTO;
     }
 
-    private static ClienteEntity getClienteEntityMock() {
+    static ClienteEntity getClienteEntityMock() {
         ClienteEntity clienteEntity = new ClienteEntity();
         clienteEntity.setUsuarioEntity(getUsuarioEntityMock());
         clienteEntity.setConvenioEntity(getConvenioEntityMock());
+        clienteEntity.setIdCliente(1);
+        clienteEntity.setIdUsuario(1);
         return clienteEntity;
     }
 
-    private static UsuarioEntity getUsuarioEntityMock() {
+     static UsuarioEntity getUsuarioEntityMock() {
         UsuarioEntity usuarioEntity = new UsuarioEntity();
         usuarioEntity.setSenha("123");
         usuarioEntity.setCargoEntity(getCargoEntityMock());
