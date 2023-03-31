@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.entity.AgendamentoEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.TipoEmail;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -40,7 +41,6 @@ public class EmailService {
         }else{
             mimeMessageHelper.setText(getUsuarioTemplate(usuario, tipoEmail), true);
         }
-
 
         emailSender.send(mimeMessageHelper.getMimeMessage());
     }

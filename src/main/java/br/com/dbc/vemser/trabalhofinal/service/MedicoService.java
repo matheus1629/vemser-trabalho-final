@@ -8,6 +8,7 @@ import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoUpdateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.TipoEmail;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.MedicoRepository;
@@ -115,9 +116,7 @@ public class MedicoService {
 
         UsuarioCreateDTO usuarioCreateDTO = objectMapper.convertValue(medico, UsuarioCreateDTO.class);
 
-        List<MedicoEntity> listaMedico = medicoRepository.findAll().stream()
-                .filter(medicoEntity1 -> !medicoEntity1.getCrm().equals(medico.getCrm()))
-                .toList();
+        List<MedicoEntity> listaMedico = medicoRepository.findAll().stream().toList();
 
         for (MedicoEntity medicoVerificarCRM : listaMedico) {
             if (medico.getCrm().equals(medicoVerificarCRM.getCrm())) {
@@ -145,6 +144,4 @@ public class MedicoService {
             throw new RegraDeNegocioException("O nome da especialidade não pode conter número");
         }
     }
-
-
 }

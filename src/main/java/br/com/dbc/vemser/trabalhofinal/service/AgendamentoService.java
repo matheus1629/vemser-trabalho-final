@@ -8,6 +8,7 @@ import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoMedicoRelatori
 import br.com.dbc.vemser.trabalhofinal.entity.AgendamentoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.TipoEmail;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.AgendamentoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -64,7 +65,8 @@ public class AgendamentoService {
         agendamentoEntity.setExame(agendamentoCreateDTO.getExame());
         agendamentoEntity.setTratamento(agendamentoCreateDTO.getTratamento());
         agendamentoEntity.setDataHorario(agendamentoCreateDTO.getDataHorario());
-        agendamentoEntity.setValorAgendamento(medicoEntity.getEspecialidadeEntity().getValor() * (clienteEntity.getConvenioEntity().getTaxaAbatimento()/100));
+        agendamentoEntity.setValorAgendamento((medicoEntity.getEspecialidadeEntity().getValor()) -
+                medicoEntity.getEspecialidadeEntity().getValor() * (clienteEntity.getConvenioEntity().getTaxaAbatimento()/100));
 
         agendamentoRepository.save(agendamentoEntity);
         try{
