@@ -268,7 +268,7 @@ public class ClienteServiceTest {
         return clienteUpdateDTO;
     }
 
-    private static ClienteCompletoDTO getClienteCompletoDTOMock() {
+    static ClienteCompletoDTO getClienteCompletoDTOMock() {
         ClienteCompletoDTO clienteCompletoDTO = new ClienteCompletoDTO();
         clienteCompletoDTO.setIdCliente(1);
         clienteCompletoDTO.setIdUsuario(1);
@@ -304,7 +304,7 @@ public class ClienteServiceTest {
         usuarioEntity.setCep("12345678");
         usuarioEntity.setContatos("12345678");
         usuarioEntity.setIdUsuario(1);
-        usuarioEntity.setEmail("Carlos@gamil.com");
+        usuarioEntity.setEmail("Carlos@gmail.com");
         usuarioEntity.setNumero(123);
         return usuarioEntity;
     }

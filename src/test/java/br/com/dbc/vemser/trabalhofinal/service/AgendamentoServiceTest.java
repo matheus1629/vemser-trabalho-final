@@ -4,6 +4,7 @@ package br.com.dbc.vemser.trabalhofinal.service;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoClienteRelatorioDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.AgendamentoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
@@ -28,6 +29,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static br.com.dbc.vemser.trabalhofinal.service.ClienteServiceTest.getClienteCompletoDTOMock;
 import static br.com.dbc.vemser.trabalhofinal.service.ClienteServiceTest.getClienteEntityMock;
 import static br.com.dbc.vemser.trabalhofinal.service.MedicoServiceTest.getMedicoEntityMock;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -187,18 +189,59 @@ public class AgendamentoServiceTest {
     @Test
     public void deveRetornarRelatorioPersonalizadoDoClientePeloId() throws RegraDeNegocioException {
         //SETUP
-        List<AgendamentoDTO> agendamentoDTOListMock = List.of(getAgendamentoDTOMock(), getAgendamentoDTOMock());
         List<AgendamentoEntity> agendamentoEntityListMock = List.of(getAgendamentoEntityMock(), getAgendamentoEntityMock());
+        ClienteCompletoDTO clienteCompletoDTOMock = getClienteCompletoDTOMock();
+        AgendamentoClienteRelatorioDTO agendamentoClienteRelatorioDTOMock = getAgendamentoClienteRelatorioDTOMock();
+
 
         when(agendamentoRepository.findAllByIdCliente(any())).thenReturn(agendamentoEntityListMock);
+        doReturn(clienteCompletoDTOMock).when(clienteService).getById(any());
+
         //ACT
         AgendamentoClienteRelatorioDTO relatorioClienteByIdRecuperado = agendamentoService.getRelatorioClienteById(1);
         //ASSERT
+
+        assertNotNull(relatorioClienteByIdRecuperado);
+        assertEquals(agendamentoClienteRelatorioDTOMock, relatorioClienteByIdRecuperado);
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveRetornarExceptionClienteNaoExiste() throws RegraDeNegocioException {
+//        //SETUP
+//        List<AgendamentoEntity> agendamentoEntityListMock = List.of(getAgendamentoEntityMock(), getAgendamentoEntityMock());
+//        ClienteCompletoDTO clienteCompletoDTOMock = getClienteCompletoDTOMock();
+//        AgendamentoClienteRelatorioDTO agendamentoClienteRelatorioDTOMock = getAgendamentoClienteRelatorioDTOMock();
+//
+//
+//        when(agendamentoRepository.findAllByIdCliente(any())).thenReturn(List.of(null));
+////        doReturn(clienteCompletoDTOMock).when(clienteService).getById(any());
+//
+//        //ACT
+//        AgendamentoClienteRelatorioDTO relatorioClienteById = agendamentoService.getRelatorioClienteById(2);
+    }
+
+    @Test
+    public void deveRetornarRelatorioPersonalizadoDoMedicoPeloId() throws RegraDeNegocioException {
+        //SETUP
+        List<AgendamentoEntity> agendamentoEntityListMock = List.of(getAgendamentoEntityMock(), getAgendamentoEntityMock());
+        ClienteCompletoDTO clienteCompletoDTOMock = getClienteCompletoDTOMock();
+        AgendamentoClienteRelatorioDTO agendamentoClienteRelatorioDTOMock = getAgendamentoClienteRelatorioDTOMock();
+
+
+        when(agendamentoRepository.findAllByIdCliente(any())).thenReturn(agendamentoEntityListMock);
+        doReturn(clienteCompletoDTOMock).when(clienteService).getById(any());
+
+        //ACT
+        AgendamentoClienteRelatorioDTO relatorioClienteByIdRecuperado = agendamentoService.getRelatorioClienteById(1);
+        //ASSERT
+
+        assertNotNull(relatorioClienteByIdRecuperado);
+        assertEquals(agendamentoClienteRelatorioDTOMock, relatorioClienteByIdRecuperado);
     }
 
     private AgendamentoEntity getAgendamentoEntityMock() {
         AgendamentoEntity agendamentoEntity = new AgendamentoEntity();
-        agendamentoEntity.setValorAgendamento(100.0);
+        agendamentoEntity.setValorAgendamento(450.0);
         agendamentoEntity.setIdAgendamento(1);
         agendamentoEntity.setIdCliente(1);
         agendamentoEntity.setIdMedico(1);
@@ -208,6 +251,23 @@ public class AgendamentoServiceTest {
         agendamentoEntity.setTratamento("Um tratamento");
         agendamentoEntity.setDataHorario(LocalDateTime.of(2023, 05, 12, 20, 15));
         return agendamentoEntity;
+    }
+
+    public static AgendamentoClienteRelatorioDTO getAgendamentoClienteRelatorioDTOMock() {
+        AgendamentoClienteRelatorioDTO agendamentoClienteRelatorioDTO = new AgendamentoClienteRelatorioDTO();
+        agendamentoClienteRelatorioDTO.setNome("Carlos");
+        agendamentoClienteRelatorioDTO.setCpf("12345678910");
+        agendamentoClienteRelatorioDTO.setContatos("12345678");
+        agendamentoClienteRelatorioDTO.setIdUsuario(1);
+        agendamentoClienteRelatorioDTO.setEmail("Carlos@gmail.com");
+        agendamentoClienteRelatorioDTO.setNumero(523);
+        agendamentoClienteRelatorioDTO.setIdCliente(1);
+        agendamentoClienteRelatorioDTO.setIdConvenio(1);
+        agendamentoClienteRelatorioDTO.setCadastroOrgaoRegulador("123456");
+        agendamentoClienteRelatorioDTO.setTaxaAbatimento(20.0);
+        agendamentoClienteRelatorioDTO.setNomeCargo("ROLE_CLIENTE");
+        agendamentoClienteRelatorioDTO.setAgendamentoDTOList(List.of(getAgendamentoDTOMock(), getAgendamentoDTOMock()));
+        return agendamentoClienteRelatorioDTO;
     }
 
     public static AgendamentoCreateDTO getAgendamentoCreateDTOMock() {
