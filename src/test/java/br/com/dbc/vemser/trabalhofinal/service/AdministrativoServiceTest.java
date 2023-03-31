@@ -83,6 +83,12 @@ public class AdministrativoServiceTest {
     }
 
     @Test
+    public void testeListar() {
+        //setup
+        //action
+        //assert
+    }
+    @Test
     public void testarGetClienteById() throws RegraDeNegocioException{
         //setup
         when(clienteService.getById(any())).thenReturn(getClienteCompletoDTOMock());
@@ -97,14 +103,15 @@ public class AdministrativoServiceTest {
         //act
         administrativoService.getMedicoById(getMedicoCompletoDTOMock().getIdMedico());
     }
-    @Test
+
+    @Test // <TODO>
     public void testeRemoverAdm() throws RegraDeNegocioException{
         //setup
         administrativoService.remover(1);
         //        verify(usuarioService, times(1)).remover(medicoEntityMock.getIdUsuario());
         //        verify(agendamentoService, times(1)).removerPorMedicoDesativado(medicoEntityMock);
     }
-    @Test
+    @Test //<TODO>
     public void testeRemoverCliente() throws RegraDeNegocioException{
         //act
         administrativoService.removerCliente(1);
@@ -113,7 +120,7 @@ public class AdministrativoServiceTest {
 
     }
 
-    @Test
+    @Test//<TODO>
     public void testeRemoverMedico() throws RegraDeNegocioException{
         //act
         administrativoService.removerMedico(1);
@@ -121,7 +128,7 @@ public class AdministrativoServiceTest {
         //        verify(agendamentoService, times(1)).removerPorMedicoDesativado(medicoEntityMock);
     }
 
-    @Test
+    @Test   // <TODO>
     public void deveListarComSucessoCliente() {
         //SETUP
         Pageable solicitacao = PageRequest.of(0, 10);
@@ -132,10 +139,27 @@ public class AdministrativoServiceTest {
         doReturn(enderecoDTO).when(enderecoClient).getEndereco(any());
         when(clienteCompletoDTO.getContent().stream().toList()).thenReturn(listaClienteCompletoDTO);
         //ACT
-        PageDTO<ClienteCompletoDTO> convenioDTOPageDTO = administrativoService.listCliente(0, 10);
+        PageDTO<ClienteCompletoDTO> clienteCompletoDTOPageDTO = administrativoService.listCliente(0, 10);
 
         //ASSERT
-        assertNotNull(convenioDTOPageDTO);
+        assertNotNull(clienteCompletoDTOPageDTO);
+    }
+
+    @Test // <TODO>
+    public void deveListarComSucessoMedico() {
+        //SETUP
+        Pageable solicitacao = PageRequest.of(0, 10);
+        PageImpl<ClienteCompletoDTO> clienteCompletoDTO = new PageImpl<>(List.of(), solicitacao, 1);
+        List<ClienteCompletoDTO> listaClienteCompletoDTO = List.of(getClienteCompletoDTOMock(),getClienteCompletoDTOMock());
+        EnderecoDTO enderecoDTO = new EnderecoDTO();
+        when(clienteRepository.listarFull(solicitacao)).thenReturn(clienteCompletoDTO);
+        doReturn(enderecoDTO).when(enderecoClient).getEndereco(any());
+        when(clienteCompletoDTO.getContent().stream().toList()).thenReturn(listaClienteCompletoDTO);
+        //ACT
+        PageDTO<MedicoCompletoDTO> medicoCompletoDTOPageDTO = administrativoService.listMedico(0, 10);
+
+        //ASSERT
+        assertNotNull(medicoCompletoDTOPageDTO);
     }
 
     @NotNull
