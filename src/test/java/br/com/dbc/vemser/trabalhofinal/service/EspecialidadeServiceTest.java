@@ -1,11 +1,9 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
-
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.especialidade.EspecialidadeCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.especialidade.EspecialidadeDTO;
-import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.EspecialidadeEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
@@ -35,7 +33,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EspecialidadeServiceTest {

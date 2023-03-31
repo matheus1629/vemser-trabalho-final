@@ -41,7 +41,6 @@ public class EmailService {
             mimeMessageHelper.setText(getUsuarioTemplate(usuario, tipoEmail), true);
         }
 
-
         emailSender.send(mimeMessageHelper.getMimeMessage());
     }
 

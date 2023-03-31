@@ -2,32 +2,37 @@ package br.com.dbc.vemser.trabalhofinal.service;
 
 
 import br.com.dbc.vemser.trabalhofinal.client.EnderecoClient;
-import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCompletoDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCreateDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteUpdateDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.convenio.ConvenioDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.EnderecoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoListaDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoMedicoRelatorioDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCreateDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoUpdateDTO;
-import br.com.dbc.vemser.trabalhofinal.entity.*;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
-import br.com.dbc.vemser.trabalhofinal.repository.ConvenioRepository;
 import br.com.dbc.vemser.trabalhofinal.repository.MedicoRepository;
+import br.com.dbc.vemser.trabalhofinal.entity.CargoEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.EspecialidadeEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import freemarker.template.TemplateException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.mail.MessagingException;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -63,6 +68,80 @@ public class MedicoServiceTest {
         ReflectionTestUtils.setField(medicoService, "objectMapper", objectMapper);
     }
 
+
+
+//    @Test
+//    public void deveRetornarMedicoPorId() throws RegraDeNegocioException {
+//        // declaração de variaveis (SETUP)
+//        MedicoEntity medicoEntityMock = getMedicoEntityMock();
+//        when(medicoRepository.findById(any())).thenReturn(Optional.of(medicoEntityMock));
+//        // ACT
+//        MedicoEntity medicoRecuperado = medicoService.getMedico(1);
+//        // Assert
+//        assertNotNull(medicoRecuperado);
+//        assertEquals(medicoEntityMock.getIdMedico(),medicoRecuperado.getIdMedico());
+//        assertEquals(medicoEntityMock.getUsuarioEntity(),medicoRecuperado.getUsuarioEntity());
+//        assertEquals(medicoEntityMock.getEspecialidadeEntity(),medicoRecuperado.getEspecialidadeEntity());
+//    }
+
+    @Test
+    public void deveRecuperarMedicoLogadoPorId() throws RegraDeNegocioException {
+        //SETUP
+        MedicoEntity medicoEntityMock = getMedicoEntityMock();
+        MedicoCompletoDTO medicoCompletoDTOMock = getMedicoCompletoDTOMock();
+
+        when(usuarioService.getIdLoggedUser()).thenReturn(1);
+        when(medicoRepository.getMedicoEntityByIdUsuario(any())).thenReturn(medicoEntityMock);
+        when(medicoRepository.getByIdPersonalizado(any())).thenReturn(Optional.of(medicoCompletoDTOMock));
+
+        //ACT
+        MedicoCompletoDTO medicoRecuperado = medicoService.recuperarMedico();
+
+        //ASSERT
+        assertNotNull(medicoRecuperado);
+        assertEquals(medicoRecuperado, medicoCompletoDTOMock);
+    }
+
+    @Test
+    public void testarGetById() throws RegraDeNegocioException {
+        //setup
+        Mockito.when(medicoRepository.getByIdPersonalizado(Mockito.anyInt())).thenReturn(Optional.of(getMedicoCompletoDTOMock()));
+        Mockito.when(enderecoClient.getEndereco(Mockito.anyString())).thenReturn(new EnderecoDTO());
+        //act
+        MedicoCompletoDTO medicoCompletoDTO = medicoService.getById(1);
+        //assert
+        assertNotNull(medicoCompletoDTO);
+        assertNotNull(medicoCompletoDTO.getEnderecoDTO());
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void testarGetByIdFalha() throws RegraDeNegocioException {
+        //setup
+        //act
+        MedicoCompletoDTO medicoCompletoDTO = medicoService.getById(1);
+        //assert
+    }
+
+    @Test
+    public void testarGetMedico() throws RegraDeNegocioException{
+        //setup
+        Mockito.when(medicoRepository.findById(anyInt())).thenReturn(Optional.of(getMedicoEntityMock()));
+        //act
+        MedicoEntity medicoEntity = medicoService.getMedico(1);
+        //assert
+        assertNotNull(medicoEntity);
+    }
+
+    @Test
+    public void testarGetMedicoAgendamentos() throws RegraDeNegocioException{
+        //setup
+        Mockito.doReturn(getMedicoCompletoDTOMock()).when(medicoService).recuperarMedico();
+        Mockito.when(agendamentoService.getRelatorioMedicoById(any())).thenReturn(new AgendamentoMedicoRelatorioDTO());
+        //act
+        AgendamentoListaDTO agendamentoListaDTO = medicoService.getMedicoAgentamentos();
+        //assert
+        assertNotNull(agendamentoListaDTO);
+    }
     @Test // deveCriarComSucesso
     public void deveCriarComSucesso() throws RegraDeNegocioException {
         // declaração de variaveis (SETUP)
@@ -87,31 +166,39 @@ public class MedicoServiceTest {
         assertEquals(medicoCompletoDTOMock,medicoAdicionado);
     }
 
-    @Test
-    public void deveRetornarMedicoPorId() throws RegraDeNegocioException {
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveCriarComFalha() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         // declaração de variaveis (SETUP)
-        MedicoEntity medicoEntityMock = getMedicoEntityMock();
-        when(medicoRepository.findById(any())).thenReturn(Optional.of(medicoEntityMock));
-        // ACT
-        MedicoEntity medicoRecuperado = medicoService.getMedico(1);
-        // Assert
-        assertNotNull(medicoRecuperado);
-        assertEquals(medicoEntityMock.getIdMedico(),medicoRecuperado.getIdMedico());
-        assertEquals(medicoEntityMock.getUsuarioEntity(),medicoRecuperado.getUsuarioEntity());
-        assertEquals(medicoEntityMock.getEspecialidadeEntity(),medicoRecuperado.getEspecialidadeEntity());
-    }
+        MedicoCreateDTO medicoCreateDTOMock = new MedicoCreateDTO();
+        medicoCreateDTOMock.setCep("12345678");
+        medicoCreateDTOMock.setCrm("123456");
+        medicoCreateDTOMock.setNome("Alan");
+        medicoCreateDTOMock.setCpf("12345678910");
+        medicoCreateDTOMock.setEmail("Alan@gmail.com");
+        medicoCreateDTOMock.setContatos("12345678");
+        medicoCreateDTOMock.setNumero(145);
+        medicoCreateDTOMock.setSenha("123");
+        medicoCreateDTOMock.setIdEspecialidade(1);
 
+        Mockito.doThrow(new MessagingException("Erro ao enviar o e-mail. Cadastro não realizado.")).when(emailService).sendEmailUsuario(any(),any(),any());
+        MedicoCompletoDTO medicoCompletoDTOMock = getMedicoCompletoDTOMock();
+        doReturn(medicoCompletoDTOMock).when(medicoService).getById(any());
+        // ação (ACT)
+        medicoService.adicionar(medicoCreateDTOMock);
+    }
     @Test
     public void deveEditarMedico() throws RegraDeNegocioException {
         //SETUP
         MedicoUpdateDTO medicoUpdateDTO = getMedicoUpdate();
         MedicoEntity medicoEntityMock = getMedicoEntityMock();
+        medicoEntityMock.setCrm("123");
         MedicoCompletoDTO medicoCompletoDTOMock = getMedicoCompletoDTOMock();
+        List<MedicoEntity> medicoEntityList = List.of(medicoEntityMock);
 
         doReturn(medicoCompletoDTOMock).when(medicoService).recuperarMedico();
         doReturn(medicoCompletoDTOMock).when(medicoService).getById(any());
         when(medicoRepository.save(any())).thenReturn(medicoEntityMock);
-
+        doReturn(medicoEntityList).when(medicoRepository).findAll();
 
         // ACT
         MedicoCompletoDTO medicoEditado = medicoService.editar(medicoUpdateDTO);
@@ -119,6 +206,23 @@ public class MedicoServiceTest {
         //ASSERT
         assertNotNull(medicoEditado);
         assertEquals(medicoCompletoDTOMock, medicoEditado);
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveEditarMedicoFalha() throws RegraDeNegocioException {
+        //SETUP
+
+        MedicoUpdateDTO medicoUpdateDTO = getMedicoUpdate();
+        MedicoEntity medicoEntityMock = getMedicoEntityMock();
+        MedicoCompletoDTO medicoCompletoDTOMock = getMedicoCompletoDTOMock();
+        List<MedicoEntity> medicoEntityList = List.of(medicoEntityMock);
+
+        doReturn(medicoCompletoDTOMock).when(medicoService).recuperarMedico();
+        doReturn(medicoCompletoDTOMock).when(medicoService).getById(any());
+        doReturn(medicoEntityList).when(medicoRepository).findAll();
+        when(medicoRepository.save(any())).thenReturn(medicoEntityMock);
+        // ACT
+        medicoService.editar(medicoUpdateDTO);
     }
 
     @Test
@@ -133,23 +237,14 @@ public class MedicoServiceTest {
         verify(agendamentoService, times(1)).removerPorMedicoDesativado(medicoEntityMock);
     }
 
-    @Test
-    public void deveRecuperarMedicoLogadoPorId() throws RegraDeNegocioException {
-        //SETUP
-        MedicoEntity medicoEntityMock = getMedicoEntityMock();
-        MedicoCompletoDTO medicoCompletoDTOMock = getMedicoCompletoDTOMock();
-
-        when(usuarioService.getIdLoggedUser()).thenReturn(1);
-        when(medicoRepository.getMedicoEntityByIdUsuario(any())).thenReturn(medicoEntityMock);
-        when(medicoRepository.getByIdPersonalizado(any())).thenReturn(Optional.of(medicoCompletoDTOMock));
-
-        //ACT
-        MedicoCompletoDTO medicoRecuperado = medicoService.recuperarMedico();
-
-        //ASSERT
-        assertNotNull(medicoRecuperado);
-        assertEquals(medicoRecuperado, medicoCompletoDTOMock);
+    @Test(expected = RegraDeNegocioException.class)
+    public void testChecarSeTemNumero() throws RegraDeNegocioException {
+        //setup
+        //act
+        medicoService.checarSeTemNumero("thassio123");
+        //asserts
     }
+
 
     @NotNull
     static MedicoEntity getMedicoEntityMock() {
@@ -170,6 +265,7 @@ public class MedicoServiceTest {
         medicoUpdateDTO.setContatos("12345678");
         medicoUpdateDTO.setIdUsuario(1);
         medicoUpdateDTO.setIdEspecialidade(1);
+        medicoUpdateDTO.setCrm("123456");
         return medicoUpdateDTO;
     }
 
@@ -216,4 +312,6 @@ public class MedicoServiceTest {
         especialidadeEntity.setValor(500);
         return especialidadeEntity;
     }
+
+
 }
