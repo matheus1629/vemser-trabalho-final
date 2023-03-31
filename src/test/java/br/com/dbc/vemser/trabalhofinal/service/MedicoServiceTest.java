@@ -32,6 +32,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import javax.mail.MessagingException;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -113,6 +114,24 @@ public class MedicoServiceTest {
         assertNotNull(medicoCompletoDTO.getEnderecoDTO());
     }
 
+    @Test(expected = RegraDeNegocioException.class)
+    public void testarGetByIdFalha() throws RegraDeNegocioException {
+        //setup
+        //act
+        MedicoCompletoDTO medicoCompletoDTO = medicoService.getById(1);
+        //assert
+    }
+
+    @Test
+    public void testarGetMedico() throws RegraDeNegocioException{
+        //setup
+        Mockito.when(medicoRepository.findById(anyInt())).thenReturn(Optional.of(getMedicoEntityMock()));
+        //act
+        MedicoEntity medicoEntity = medicoService.getMedico(1);
+        //assert
+        assertNotNull(medicoEntity);
+    }
+
     @Test
     public void testarGetMedicoAgendamentos() throws RegraDeNegocioException{
         //setup
@@ -172,11 +191,14 @@ public class MedicoServiceTest {
         //SETUP
         MedicoUpdateDTO medicoUpdateDTO = getMedicoUpdate();
         MedicoEntity medicoEntityMock = getMedicoEntityMock();
+        medicoEntityMock.setCrm("123");
         MedicoCompletoDTO medicoCompletoDTOMock = getMedicoCompletoDTOMock();
+        List<MedicoEntity> medicoEntityList = List.of(medicoEntityMock);
 
         doReturn(medicoCompletoDTOMock).when(medicoService).recuperarMedico();
         doReturn(medicoCompletoDTOMock).when(medicoService).getById(any());
         when(medicoRepository.save(any())).thenReturn(medicoEntityMock);
+        doReturn(medicoEntityList).when(medicoRepository).findAll();
 
         // ACT
         MedicoCompletoDTO medicoEditado = medicoService.editar(medicoUpdateDTO);
@@ -184,6 +206,23 @@ public class MedicoServiceTest {
         //ASSERT
         assertNotNull(medicoEditado);
         assertEquals(medicoCompletoDTOMock, medicoEditado);
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveEditarMedicoFalha() throws RegraDeNegocioException {
+        //SETUP
+
+        MedicoUpdateDTO medicoUpdateDTO = getMedicoUpdate();
+        MedicoEntity medicoEntityMock = getMedicoEntityMock();
+        MedicoCompletoDTO medicoCompletoDTOMock = getMedicoCompletoDTOMock();
+        List<MedicoEntity> medicoEntityList = List.of(medicoEntityMock);
+
+        doReturn(medicoCompletoDTOMock).when(medicoService).recuperarMedico();
+        doReturn(medicoCompletoDTOMock).when(medicoService).getById(any());
+        doReturn(medicoEntityList).when(medicoRepository).findAll();
+        when(medicoRepository.save(any())).thenReturn(medicoEntityMock);
+        // ACT
+        medicoService.editar(medicoUpdateDTO);
     }
 
     @Test
@@ -198,9 +237,12 @@ public class MedicoServiceTest {
         verify(agendamentoService, times(1)).removerPorMedicoDesativado(medicoEntityMock);
     }
 
-    @Test
-    public void testChecarSeTemNumero(){
-
+    @Test(expected = RegraDeNegocioException.class)
+    public void testChecarSeTemNumero() throws RegraDeNegocioException {
+        //setup
+        //act
+        medicoService.checarSeTemNumero("thassio123");
+        //asserts
     }
 
 
@@ -223,6 +265,7 @@ public class MedicoServiceTest {
         medicoUpdateDTO.setContatos("12345678");
         medicoUpdateDTO.setIdUsuario(1);
         medicoUpdateDTO.setIdEspecialidade(1);
+        medicoUpdateDTO.setCrm("123456");
         return medicoUpdateDTO;
     }
 
