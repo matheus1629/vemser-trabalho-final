@@ -2,9 +2,13 @@ package br.com.dbc.vemser.trabalhofinal.service;
 
 
 import br.com.dbc.vemser.trabalhofinal.client.EnderecoClient;
+import br.com.dbc.vemser.trabalhofinal.dto.EnderecoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCompletoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.convenio.ConvenioDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioDTO;
+import br.com.dbc.vemser.trabalhofinal.entity.ConvenioEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.ClienteRepository;
@@ -19,17 +23,24 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.validation.constraints.NotNull;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AdministrativoServiceTest {
@@ -87,8 +98,44 @@ public class AdministrativoServiceTest {
         administrativoService.getMedicoById(getMedicoCompletoDTOMock().getIdMedico());
     }
     @Test
+    public void testeRemoverAdm() throws RegraDeNegocioException{
+        //setup
+        administrativoService.remover(1);
+        //        verify(usuarioService, times(1)).remover(medicoEntityMock.getIdUsuario());
+        //        verify(agendamentoService, times(1)).removerPorMedicoDesativado(medicoEntityMock);
+    }
+    @Test
     public void testeRemoverCliente() throws RegraDeNegocioException{
+        //act
+        administrativoService.removerCliente(1);
+        //        verify(usuarioService, times(1)).remover(medicoEntityMock.getIdUsuario());
+        //        verify(agendamentoService, times(1)).removerPorMedicoDesativado(medicoEntityMock);
 
+    }
+
+    @Test
+    public void testeRemoverMedico() throws RegraDeNegocioException{
+        //act
+        administrativoService.removerMedico(1);
+        //        verify(usuarioService, times(1)).remover(medicoEntityMock.getIdUsuario());
+        //        verify(agendamentoService, times(1)).removerPorMedicoDesativado(medicoEntityMock);
+    }
+
+    @Test
+    public void deveListarComSucessoCliente() {
+        //SETUP
+        Pageable solicitacao = PageRequest.of(0, 10);
+        PageImpl<ClienteCompletoDTO> clienteCompletoDTO = new PageImpl<>(List.of(), solicitacao, 1);
+        List<ClienteCompletoDTO> listaClienteCompletoDTO = List.of(getClienteCompletoDTOMock(),getClienteCompletoDTOMock());
+        EnderecoDTO enderecoDTO = new EnderecoDTO();
+        when(clienteRepository.listarFull(solicitacao)).thenReturn(clienteCompletoDTO);
+        doReturn(enderecoDTO).when(enderecoClient).getEndereco(any());
+        when(clienteCompletoDTO.getContent().stream().toList()).thenReturn(listaClienteCompletoDTO);
+        //ACT
+        PageDTO<ClienteCompletoDTO> convenioDTOPageDTO = administrativoService.listCliente(0, 10);
+
+        //ASSERT
+        assertNotNull(convenioDTOPageDTO);
     }
 
     @NotNull
@@ -105,6 +152,7 @@ public class AdministrativoServiceTest {
         usuarioDTOMockado.setIdCargo(1);
         return usuarioDTOMockado;
     }
+
     @NotNull
     private static ClienteCompletoDTO getClienteCompletoDTOMock() {
         ClienteCompletoDTO clienteCompletoDTO = new ClienteCompletoDTO();
