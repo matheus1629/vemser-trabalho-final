@@ -275,7 +275,7 @@ public class MedicoServiceTest {
         usuarioEntity.setCep("12345678");
         usuarioEntity.setContatos("12345678");
         usuarioEntity.setIdUsuario(1);
-        usuarioEntity.setEmail("Carlos@gamil.com");
+        usuarioEntity.setEmail("Carlos@gmail.com");
         usuarioEntity.setNumero(123);
         return usuarioEntity;
     }
