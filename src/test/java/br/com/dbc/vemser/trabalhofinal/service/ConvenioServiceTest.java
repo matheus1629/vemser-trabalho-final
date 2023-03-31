@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -46,6 +47,33 @@ public class ConvenioServiceTest {
         ReflectionTestUtils.setField(convenioService, "objectMapper", objectMapper);
     }
 
+    @Test
+    public void deveListarComSucesso(){
+        // SETUP
+        List<ConvenioEntity> lista = List.of(getConvenioEntityMock(), getConvenioEntityMock(), getConvenioEntityMock());
+        when(convenioRepository.findAll()).thenReturn(lista);
+
+        // ACT
+        PageDTO<ConvenioDTO> list = convenioService.list(1,1);
+
+        // ASSERT
+        assertNotNull(list);
+        assertEquals(3, 3);
+    }
+
+    @Test
+    public void deveRetornarConvenioPorId() throws RegraDeNegocioException{
+        // setup
+        ConvenioEntity convenioMockadaDoBanco = getConvenioEntityMock();
+        ConvenioDTO convenioMockadaDoBancoDTO = getConvenioEntityMockDTO();
+        when(convenioRepository.findById(any())).thenReturn(Optional.of(convenioMockadaDoBanco));
+        // ACT
+        ConvenioDTO resultado = convenioService.getById(1);
+        // Assert
+        assertNotNull(resultado);
+        assertEquals(convenioMockadaDoBancoDTO,resultado);
+    }
+
     @Test // deveCriarComSucesso
     public void deveCriarComSucesso() throws RegraDeNegocioException {
         // declaração de variaveis (SETUP)
@@ -66,45 +94,23 @@ public class ConvenioServiceTest {
         assertEquals(convenioMockadaDoBanco.getCadastroOrgaoRegulador(), convenioRetornado.getCadastroOrgaoRegulador());
         assertEquals(1,convenioRetornado.getIdConvenio());
     }
-    @Test
-    public void deveListarComSucesso(){
-        // SETUP
-        List<ConvenioEntity> lista = List.of(getConvenioEntityMock(), getConvenioEntityMock(), getConvenioEntityMock());
-        when(convenioRepository.findAll()).thenReturn(lista);
-
-        // ACT
-        PageDTO<ConvenioDTO> list = convenioService.list(1,1);
-
-        // ASSERT
-        assertNotNull(list);
-        assertEquals(3, 3);
-    }
-//    public PageDTO<ConvenioDTO> list(Integer pagina, Integer tamanho) {
-//        Pageable solicitacaoPagina = PageRequest.of(pagina,tamanho);
-//        Page<ConvenioEntity> convenio = convenioRepository.findAll(solicitacaoPagina);
-//        List<ConvenioDTO> convenioDTO = convenio.getContent().stream()
-//                .map(x -> objectMapper.convertValue(x, ConvenioDTO.class))
-//                .toList();
-//
-//        return new PageDTO<>(convenio.getTotalElements(),
-//                convenio.getTotalPages(),
-//                pagina,
-//                tamanho,
-//                convenioDTO);
 
     @Test
-    public void deveRetornarConvenioPorId() throws RegraDeNegocioException{
-        // declaração de variaveis (SETUP)
-        ConvenioEntity convenioMockadaDoBanco = getConvenioEntityMock();
-        ConvenioDTO convenioMockadaDoBancoDTO = getConvenioEntityMockDTO();
-        when(convenioRepository.findById(any())).thenReturn(Optional.of(convenioMockadaDoBanco));
-//        Mockito.doReturn(convenioMockadaDoBanco).when(convenioService).getConvenio(anyInt());
-        // ACT
-        ConvenioDTO resultado = convenioService.getById(1);
-        // Assert
-        assertNotNull(resultado);
-        assertEquals(convenioMockadaDoBancoDTO,resultado);
+    public void testarRemover() throws RegraDeNegocioException{
+        //setup
+        Mockito.doReturn(getConvenioEntityMock()).when(convenioService).getConvenio(any());
+        //act
+        convenioService.remover(getConvenioEntityMock().getIdConvenio());
     }
+
+    @Test
+    public void testarEditarConvenio() throws RegraDeNegocioException{
+        //setup
+        //act
+        convenioService.editar();
+        //assert
+    }
+
 
     @NotNull
     private static ConvenioEntity getConvenioEntityMock() {
