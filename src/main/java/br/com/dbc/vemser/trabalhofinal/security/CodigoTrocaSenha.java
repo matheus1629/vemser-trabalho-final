@@ -1,10 +1,10 @@
-package br.com.dbc.vemser.trabalhofinal.service;
+package br.com.dbc.vemser.trabalhofinal.security;
 
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.Map;
 
-@Service //<todo> @Configuration
+@Configuration
 public class CodigoTrocaSenha {
     private static Map<String, Integer> tokenBD;
 
