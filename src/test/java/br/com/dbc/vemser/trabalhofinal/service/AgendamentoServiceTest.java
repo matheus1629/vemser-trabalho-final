@@ -25,6 +25,7 @@ import org.springframework.boot.test.util.ApplicationContextTestUtils;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static br.com.dbc.vemser.trabalhofinal.service.ClienteServiceTest.getClienteEntityMock;
@@ -186,8 +187,10 @@ public class AgendamentoServiceTest {
     @Test
     public void deveRetornarRelatorioPersonalizadoDoClientePeloId() throws RegraDeNegocioException {
         //SETUP
+        List<AgendamentoDTO> agendamentoDTOListMock = List.of(getAgendamentoDTOMock(), getAgendamentoDTOMock());
+        List<AgendamentoEntity> agendamentoEntityListMock = List.of(getAgendamentoEntityMock(), getAgendamentoEntityMock());
 
-
+        when(agendamentoRepository.findAllByIdCliente(any())).thenReturn(agendamentoEntityListMock);
         //ACT
         AgendamentoClienteRelatorioDTO relatorioClienteByIdRecuperado = agendamentoService.getRelatorioClienteById(1);
         //ASSERT
