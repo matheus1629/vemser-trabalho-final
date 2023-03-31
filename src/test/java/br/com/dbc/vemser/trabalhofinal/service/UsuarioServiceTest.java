@@ -38,8 +38,8 @@ public class UsuarioServiceTest {
     private UsuarioService usuarioService;
     @Mock
     private UsuarioRepository usuarioRepository;
-//    @Mock
-//    private PasswordEncoder passwordEncoder;
+    @Mock
+    private PasswordEncoder passwordEncoder;
     @Mock
     private EmailService emailService;
     @Mock
@@ -61,7 +61,7 @@ public class UsuarioServiceTest {
         //SETUP
         UsuarioEntity usuarioEntityMock = getUsuarioEntityMock();
         //ACT
-         usuarioService.adicionar(usuarioEntityMock);
+        usuarioService.adicionar(usuarioEntityMock);
         //ASSERT
         verify(usuarioRepository, times(1)).save(usuarioEntityMock);
     }
