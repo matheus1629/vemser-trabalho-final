@@ -223,10 +223,8 @@ public class MedicoServiceTest {
 
     @Test(expected = RegraDeNegocioException.class)
     public void testChecarSeTemNumero() throws RegraDeNegocioException {
-        //setup
         //act
         medicoService.checarSeTemNumero("thassio123");
-        //asserts
     }
 
 

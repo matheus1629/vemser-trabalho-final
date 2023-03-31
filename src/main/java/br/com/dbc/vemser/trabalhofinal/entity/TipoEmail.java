@@ -1,4 +1,4 @@
-package br.com.dbc.vemser.trabalhofinal.service;
+package br.com.dbc.vemser.trabalhofinal.entity;
 
 public enum TipoEmail {
 

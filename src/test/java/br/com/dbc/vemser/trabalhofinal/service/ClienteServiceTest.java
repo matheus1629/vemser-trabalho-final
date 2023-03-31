@@ -17,16 +17,20 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import freemarker.template.TemplateException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -194,6 +198,25 @@ public class ClienteServiceTest {
         assertEquals(clienteCompletoDTOMock, clienteAdicionado);
     }
 
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveCriarUmClienteComFalha() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+        // declaração de variaveis (SETUP)
+        ClienteCreateDTO clienteCreateDTO = new ClienteCreateDTO();
+        clienteCreateDTO.setCep("12345678");
+        clienteCreateDTO.setNome("Alan");
+        clienteCreateDTO.setCpf("12345678910");
+        clienteCreateDTO.setEmail("Alan@gmail.com");
+        clienteCreateDTO.setContatos("12345678");
+        clienteCreateDTO.setNumero(145);
+        clienteCreateDTO.setSenha("123");
+
+        Mockito.doThrow(new MessagingException("Erro ao enviar o e-mail. Cadastro não realizado.")).when(emailService).sendEmailUsuario(any(),any(),any());
+        ClienteCompletoDTO clienteCompletoDTO = getClienteCompletoDTOMock();
+        doReturn(clienteCompletoDTO).when(clienteService).getById(any());
+        // ação (ACT)
+        clienteService.adicionar(clienteCreateDTO);
+    }
+
     @Test
     public void deveEditarCliente() throws RegraDeNegocioException {
         //SETUP
@@ -225,6 +248,13 @@ public class ClienteServiceTest {
         verify(usuarioService, times(1)).remover(clienteEntityMock.getIdUsuario());
         verify(agendamentoService, times(1)).removerPorClienteDesativado(clienteEntityMock);
     }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void testChecarSeTemNumero() throws RegraDeNegocioException {
+        //act
+        clienteService.checarSeTemNumero("thassio123");
+    }
+
 
     private static ClienteUpdateDTO getclienteUpdateDTOMock(){
         ClienteUpdateDTO clienteUpdateDTO = new ClienteUpdateDTO();

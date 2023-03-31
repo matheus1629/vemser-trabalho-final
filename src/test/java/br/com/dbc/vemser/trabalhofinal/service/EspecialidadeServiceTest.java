@@ -164,6 +164,13 @@ public class EspecialidadeServiceTest {
         especialidadeService.getEspecialidade(1);
     }
 
+    @Test(expected = RegraDeNegocioException.class)
+    public void testChecarSeTemNumero() throws RegraDeNegocioException {
+        //setup
+        //act
+        especialidadeService.checarSeTemNumero("thassio123");
+        //asserts
+    }
 
     private static EspecialidadeEntity getEspecialidadeEntityComMedicoEntitiesMock() {
         Set<MedicoEntity> medicoEntities = Set.of(getMedicoEntityMock(), getMedicoEntityMock());
