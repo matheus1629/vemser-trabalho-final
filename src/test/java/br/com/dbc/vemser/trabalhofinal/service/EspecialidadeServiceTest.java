@@ -2,6 +2,7 @@ package br.com.dbc.vemser.trabalhofinal.service;
 
 
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.especialidade.EspecialidadeCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.especialidade.EspecialidadeDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
@@ -13,22 +14,17 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Tag;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import javax.validation.constraints.NotNull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -62,20 +58,18 @@ public class EspecialidadeServiceTest {
     }
 
     @Test
-    public void deveListarPaginado() {
+    public void deveListarComSucesso() {
         //SETUP
-        Pageable solicitacaoPaginaMock = (Pageable) new org.springdoc.core.converters.models.Pageable(any(), any(), List.of(any()));
-//
-        Page<EspecialidadeEntity> especialidadeMock = new PageImpl<>(any());
-//
-        when(PageRequest.of(any(),any())).thenReturn((PageRequest) solicitacaoPaginaMock);
-        when(especialidadeRepository.findAll(solicitacaoPaginaMock)).thenReturn(especialidadeMock);
+        Pageable solicitacao = PageRequest.of(0, 10);
+        PageImpl<EspecialidadeEntity> especialidadeEntityPage = new PageImpl<>(List.of(), solicitacao, 1);
+
+        Mockito.when(especialidadeRepository.findAll(solicitacao)).thenReturn(especialidadeEntityPage);
 
         //ACT
-        PageDTO<EspecialidadeDTO> listRecuperada = especialidadeService.list(any(), any());
+        PageDTO<EspecialidadeDTO> especialidadeDTOPageDTO = especialidadeService.list(0, 10);
 
         //ASSERT
-
+        assertNotNull(especialidadeDTOPageDTO);
     }
 
     @Test
@@ -142,7 +136,7 @@ public class EspecialidadeServiceTest {
     }
 
     @Test(expected = RegraDeNegocioException.class)
-    public void deveRetornarException() throws RegraDeNegocioException {
+    public void deveRetornarExceptionEspecialidadeNaoPodeSerExcluida() throws RegraDeNegocioException {
         //SETUP
         EspecialidadeEntity especialidadeEntityMock = getEspecialidadeEntityComMedicoEntitiesMock();
 
@@ -166,6 +160,13 @@ public class EspecialidadeServiceTest {
         assertEquals(especialidadeEntityMock, especialidadeRecuperada);
 
     }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveRetornarExceptionEspecialidadeNaoExiste() throws RegraDeNegocioException {
+        //ACT
+        especialidadeService.getEspecialidade(1);
+    }
+
 
     private static EspecialidadeEntity getEspecialidadeEntityComMedicoEntitiesMock() {
         Set<MedicoEntity> medicoEntities = Set.of(getMedicoEntityMock(), getMedicoEntityMock());
