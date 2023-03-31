@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
-@Service
+@Service //<todo> @Configuration
 public class CodigoTrocaSenha {
     private static Map<String, Integer> tokenBD;
 
