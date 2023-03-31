@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.client.EnderecoClient;
+import br.com.dbc.vemser.trabalhofinal.dto.TrocaSenhaDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
@@ -37,15 +38,14 @@ public class UsuarioServiceTest {
     private UsuarioService usuarioService;
     @Mock
     private UsuarioRepository usuarioRepository;
-    @Mock
-    private PasswordEncoder passwordEncoder;
+//    @Mock
+//    private PasswordEncoder passwordEncoder;
     @Mock
     private EmailService emailService;
     @Mock
     private EnderecoClient enderecoClient;
     @Mock
     private CodigoTrocaSenha codigoTrocaSenha;
-
 
     private ObjectMapper objectMapper = new ObjectMapper();
     @Before
@@ -152,7 +152,7 @@ public class UsuarioServiceTest {
     public void deveRetornarUsuarioEntityPeloEmail() {
         //SETUP
         UsuarioEntity usuarioEntityMockDoBanco = getUsuarioEntityMockDoBanco();
-        when(usuarioRepository.findById(anyInt())).thenReturn(Optional.of(usuarioEntityMockDoBanco));
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntityMockDoBanco));
 
         //ACT
         Optional<UsuarioEntity> usuarioEntityEncontradoMock = usuarioService.findByEmail("rogerio.santos@gmail.com");
@@ -177,6 +177,29 @@ public class UsuarioServiceTest {
         assertEquals(1, usuarioEntityDesativadoMockDoBanco.getAtivo());
         assertEquals(usuarioDTOMock, usuarioDTOReativadoMock);
     }
+/*
+    @Test
+    public void deveTrocarSenhaUsuario() throws RegraDeNegocioException{
+        //SETUP
+        TrocaSenhaDTO trocaSenhaDTO = getTrocaSenhaDTOMock();
+        doReturn().when(usuarioService).getUsuario(any());
+
+        //ACT
+
+
+        //ASSERT
+
+    }
+*/
+    @Test
+    public void deveSolicitarRedefinirSenha() throws RegraDeNegocioException{
+        //SETUP
+
+        //ACT
+
+        //ASSERT
+
+    }
 
 
     // ABSTRAÇÃO DE MÉTODOS
@@ -189,7 +212,7 @@ public class UsuarioServiceTest {
         usuarioEntityMockado.setCpf("14574198422");
         usuarioEntityMockado.setEmail("rogerio.santos@gmail.com");
         usuarioEntityMockado.setNome("Rogério Santos");
-        usuarioEntityMockado.setSenha("123rogerio123");
+        usuarioEntityMockado.setSenha("$2a$12$8iOr2M0EsANYEXQtP0MzV.UyhaVk/wc26UcAdOThNBtUSycZz/0gS");
         usuarioEntityMockado.setCep("01010904");
         usuarioEntityMockado.setNumero(15);
         usuarioEntityMockado.setContatos("34999748512, 34999658741");
@@ -237,5 +260,14 @@ public class UsuarioServiceTest {
         return usuarioCreateDTOMock;
     }
 
+    @NotNull
+    private static TrocaSenhaDTO getTrocaSenhaDTOMock(){
+        TrocaSenhaDTO trocaSenhaDTO = new TrocaSenhaDTO();
+
+        trocaSenhaDTO.setSenhaAntiga("123rogerio123");
+        trocaSenhaDTO.setSenhaNova("147");
+
+        return trocaSenhaDTO;
+    }
 
 }
