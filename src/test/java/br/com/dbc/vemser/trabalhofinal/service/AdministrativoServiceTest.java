@@ -7,7 +7,10 @@ import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.convenio.ConvenioDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoUpdateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioUpdateDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.ConvenioEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
@@ -18,6 +21,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import freemarker.template.TemplateException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,17 +30,20 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.mail.MessagingException;
 import javax.validation.constraints.NotNull;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
@@ -79,21 +86,82 @@ public class AdministrativoServiceTest {
         //SETUP
         when(usuarioService.reativarUsuario(any())).thenReturn(getUsuarioDTOMock());
         //acts
-        administrativoService.reativarUsuario(1);
+        UsuarioDTO usuarioDTO = administrativoService.reativarUsuario(1);
+        //assert
+        assertNotNull(usuarioDTO);
     }
 
     @Test
     public void testeListar() {
         //setup
+        when(usuarioRepository.findAll()).thenReturn(List.of(getUsuarioEntityMock()));
         //action
+        List<UsuarioDTO> usuarioDTOS = administrativoService.listar();
         //assert
+        assertNotNull(usuarioDTOS);
     }
+
+    @Test
+    public void testarAdicionarSucesso() throws RegraDeNegocioException {
+        //setup
+        when(usuarioService.getById(any())).thenReturn(getUsuarioDTOMock());
+        //act
+        UsuarioDTO usuarioDTO = administrativoService.adicionar(getUsuarioCreateDTOMock());
+        //assert
+        assertNotNull(usuarioDTO);
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void testarAdicionarFracasso() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+        //setup
+        doThrow(new MessagingException("Erro")).when(emailService).sendEmailUsuario(any(),any(),any());
+        //act
+        administrativoService.adicionar(getUsuarioCreateDTOMock());
+    }
+
+    @Test
+    public void testarEditarSuceso() throws RegraDeNegocioException{
+        //setup
+        UsuarioEntity usuarioEntity = getUsuarioEntityMock();
+        doReturn(usuarioEntity).when(administrativoService).getAdm(any());
+        when(usuarioRepository.save(any())).thenReturn(usuarioEntity);
+        when(usuarioService.getById(any())).thenReturn(getUsuarioDTOMock());
+        //act
+        UsuarioDTO usuarioDTO = administrativoService.editar(1,getUsuarioUpdate());
+        //assert
+        assertNotNull(usuarioDTO);
+        assertNotEquals(usuarioEntity.getCpf(),usuarioDTO.getCpf());
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void testarEditarFracasso() throws RegraDeNegocioException{
+        //setup
+
+        UsuarioEntity usuarioEntity = getUsuarioEntityMock();
+        usuarioEntity.setIdCargo(2);
+        doReturn(usuarioEntity).when(administrativoService).getAdm(any());
+        //act
+        administrativoService.editar(1,getUsuarioUpdate());
+    }
+
+    @Test
+    public void testeGetAdm() throws RegraDeNegocioException{
+        //setup
+        when(usuarioRepository.findById(any())).thenReturn(Optional.of(getUsuarioEntityMock()));
+        //act
+        UsuarioEntity usuario = administrativoService.getAdm(1);
+        //assert
+        assertNotNull(usuario);
+    }
+
     @Test
     public void testarGetClienteById() throws RegraDeNegocioException{
         //setup
         when(clienteService.getById(any())).thenReturn(getClienteCompletoDTOMock());
         //act
-        administrativoService.getClienteById(getClienteCompletoDTOMock().getIdCliente());
+        ClienteCompletoDTO completoDTO = administrativoService.getClienteById(getClienteCompletoDTOMock().getIdCliente());
+        //assert
+        assertNotNull(completoDTO);
     }
 
     @Test
@@ -101,65 +169,68 @@ public class AdministrativoServiceTest {
         //setup
         when(medicoService.getById(any())).thenReturn(getMedicoCompletoDTOMock());
         //act
-        administrativoService.getMedicoById(getMedicoCompletoDTOMock().getIdMedico());
+        MedicoCompletoDTO medicoCompletoDTO = administrativoService.getMedicoById(getMedicoCompletoDTOMock().getIdMedico());
+        //assert
+        assertNotNull(medicoCompletoDTO);
     }
 
-    @Test // <TODO>
+    @Test
     public void testeRemoverAdm() throws RegraDeNegocioException{
         //setup
+        UsuarioEntity usuario = getUsuarioEntityMock();
+        doReturn(usuario).when(administrativoService).getAdm(any());
+        //act
         administrativoService.remover(1);
-        //        verify(usuarioService, times(1)).remover(medicoEntityMock.getIdUsuario());
-        //        verify(agendamentoService, times(1)).removerPorMedicoDesativado(medicoEntityMock);
+        //assert
+        verify(usuarioService,Mockito.times(1)).remover(anyInt());
     }
-    @Test //<TODO>
+    @Test
     public void testeRemoverCliente() throws RegraDeNegocioException{
         //act
         administrativoService.removerCliente(1);
-        //        verify(usuarioService, times(1)).remover(medicoEntityMock.getIdUsuario());
-        //        verify(agendamentoService, times(1)).removerPorMedicoDesativado(medicoEntityMock);
-
+        //assert
+        verify(clienteService,Mockito.times(1)).remover(anyInt());
     }
 
-    @Test//<TODO>
+    @Test
     public void testeRemoverMedico() throws RegraDeNegocioException{
         //act
         administrativoService.removerMedico(1);
-        //        verify(usuarioService, times(1)).remover(medicoEntityMock.getIdUsuario());
-        //        verify(agendamentoService, times(1)).removerPorMedicoDesativado(medicoEntityMock);
+        verify(medicoService,Mockito.times(1)).remover(anyInt());
     }
 
-    @Test   // <TODO>
+    @Test
     public void deveListarComSucessoCliente() {
-        //SETUP
-        Pageable solicitacao = PageRequest.of(0, 10);
-        PageImpl<ClienteCompletoDTO> clienteCompletoDTO = new PageImpl<>(List.of(), solicitacao, 1);
-        List<ClienteCompletoDTO> listaClienteCompletoDTO = List.of(getClienteCompletoDTOMock(),getClienteCompletoDTOMock());
-        EnderecoDTO enderecoDTO = new EnderecoDTO();
-        when(clienteRepository.listarFull(solicitacao)).thenReturn(clienteCompletoDTO);
-        doReturn(enderecoDTO).when(enderecoClient).getEndereco(any());
-        when(clienteCompletoDTO.getContent().stream().toList()).thenReturn(listaClienteCompletoDTO);
-        //ACT
-        PageDTO<ClienteCompletoDTO> clienteCompletoDTOPageDTO = administrativoService.listCliente(0, 10);
-
-        //ASSERT
-        assertNotNull(clienteCompletoDTOPageDTO);
+        //setup
+        Integer pagina = 1, tamanho = 1;
+        Page<ClienteCompletoDTO> clienteCompletoDTO = new PageImpl<>(List.of(getClienteCompletoDTOMock()));
+        when(clienteRepository.listarFull(any(Pageable.class))).thenReturn(clienteCompletoDTO);
+        //act
+        PageDTO<ClienteCompletoDTO> pageClienteCompletoDTO = administrativoService.listCliente(pagina,tamanho);
+        //assert
+        assertNotNull(pageClienteCompletoDTO);
+        assertEquals(clienteCompletoDTO.getTotalElements(),pageClienteCompletoDTO.getTotalElementos());
+        assertEquals(clienteCompletoDTO.getTotalPages(),pageClienteCompletoDTO.getQuantidadePaginas());
+        assertEquals(pageClienteCompletoDTO.getPagina(),pagina);
+        assertEquals(pageClienteCompletoDTO.getTamanho(),tamanho);
+        assertEquals(clienteCompletoDTO.getContent().size(),pageClienteCompletoDTO.getElementos().size());
     }
 
-    @Test // <TODO>
+    @Test
     public void deveListarComSucessoMedico() {
-        //SETUP
-        Pageable solicitacao = PageRequest.of(0, 10);
-        PageImpl<ClienteCompletoDTO> clienteCompletoDTO = new PageImpl<>(List.of(), solicitacao, 1);
-        List<ClienteCompletoDTO> listaClienteCompletoDTO = List.of(getClienteCompletoDTOMock(),getClienteCompletoDTOMock());
-        EnderecoDTO enderecoDTO = new EnderecoDTO();
-        when(clienteRepository.listarFull(solicitacao)).thenReturn(clienteCompletoDTO);
-        doReturn(enderecoDTO).when(enderecoClient).getEndereco(any());
-        when(clienteCompletoDTO.getContent().stream().toList()).thenReturn(listaClienteCompletoDTO);
-        //ACT
-        PageDTO<MedicoCompletoDTO> medicoCompletoDTOPageDTO = administrativoService.listMedico(0, 10);
-
-        //ASSERT
-        assertNotNull(medicoCompletoDTOPageDTO);
+        //setup
+        Integer pagina = 1, tamanho = 1;
+        Page<MedicoCompletoDTO> medicoCompletoDTO = new PageImpl<>(List.of(getMedicoCompletoDTOMock()));
+        when(medicoRepository.listarFull(any(Pageable.class))).thenReturn(medicoCompletoDTO);
+        //act
+        PageDTO<MedicoCompletoDTO> pageMedicoCompletoDTO = administrativoService.listMedico(pagina,tamanho);
+        //assert
+        assertNotNull(pageMedicoCompletoDTO);
+        assertEquals(medicoCompletoDTO.getTotalElements(),pageMedicoCompletoDTO.getTotalElementos());
+        assertEquals(medicoCompletoDTO.getTotalPages(),pageMedicoCompletoDTO.getQuantidadePaginas());
+        assertEquals(pageMedicoCompletoDTO.getPagina(),pagina);
+        assertEquals(pageMedicoCompletoDTO.getTamanho(),tamanho);
+        assertEquals(medicoCompletoDTO.getContent().size(),pageMedicoCompletoDTO.getElementos().size());
     }
 
     @NotNull
@@ -177,6 +248,42 @@ public class AdministrativoServiceTest {
         return usuarioDTOMockado;
     }
 
+    @NotNull
+    private static UsuarioEntity getUsuarioEntityMock(){
+        UsuarioEntity usuarioEntityMockado = new UsuarioEntity();
+        usuarioEntityMockado.setIdUsuario(1);
+        usuarioEntityMockado.setIdCargo(1);
+        usuarioEntityMockado.setCpf("12345678910");
+        usuarioEntityMockado.setEmail("rogerio.santos@gmail.com");
+        usuarioEntityMockado.setNome("Rogério Santos");
+        usuarioEntityMockado.setSenha("$2a$12$8iOr2M0EsANYEXQtP0MzV.UyhaVk/wc26UcAdOThNBtUSycZz/0gS");
+        usuarioEntityMockado.setCep("01010904");
+        usuarioEntityMockado.setNumero(15);
+        usuarioEntityMockado.setContatos("34999748512, 34999658741");
+        usuarioEntityMockado.setAtivo(1);
+        return usuarioEntityMockado;
+    }
+
+    @NotNull
+    private static UsuarioCreateDTO getUsuarioCreateDTOMock(){
+        UsuarioCreateDTO usuarioCreateDTOMock = new UsuarioCreateDTO();
+        usuarioCreateDTOMock.setCpf("14574198422");
+        usuarioCreateDTOMock.setNome("Rogério Santos");
+        usuarioCreateDTOMock.setCep("04650185");
+        usuarioCreateDTOMock.setNumero(15);
+        usuarioCreateDTOMock.setContatos("34999748512, 34999658741");
+        return usuarioCreateDTOMock;
+    }
+
+    private static UsuarioUpdateDTO getUsuarioUpdate(){
+        UsuarioUpdateDTO usuarioUpdateDTO = new UsuarioUpdateDTO();
+        usuarioUpdateDTO.setCep("12345678");
+        usuarioUpdateDTO.setNome("Carlos");
+        usuarioUpdateDTO.setCpf("12345678910");
+        usuarioUpdateDTO.setNumero(123);
+        usuarioUpdateDTO.setContatos("12345678");
+        return usuarioUpdateDTO;
+    }
     @NotNull
     private static ClienteCompletoDTO getClienteCompletoDTOMock() {
         ClienteCompletoDTO clienteCompletoDTO = new ClienteCompletoDTO();
