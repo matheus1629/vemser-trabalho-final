@@ -52,7 +52,7 @@ public class AdministrativoService {
                 .filter(usuario -> usuario.getAtivo().equals(1))
                 .map(adm -> objectMapper.convertValue(adm, UsuarioDTO.class))
                 .collect(Collectors.toList());
-        System.out.println();
+
         for (UsuarioDTO usuarioDTO: usuarioDTOS) {
             usuarioDTO.setEnderecoDTO(enderecoClient.getEndereco(usuarioDTO.getCep()));
         }
