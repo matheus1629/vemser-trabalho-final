@@ -252,7 +252,7 @@ public class MedicoServiceTest {
     }
 
     @NotNull
-    private static MedicoCompletoDTO getMedicoCompletoDTOMock() {
+    static MedicoCompletoDTO getMedicoCompletoDTOMock() {
         MedicoCompletoDTO medicoMockadaDoBancoDTO = new MedicoCompletoDTO();
         medicoMockadaDoBancoDTO.setCep("12345678");
         medicoMockadaDoBancoDTO.setCrm("123456");
@@ -262,6 +262,7 @@ public class MedicoServiceTest {
         medicoMockadaDoBancoDTO.setContatos("12345678");
         medicoMockadaDoBancoDTO.setNumero(145);
         medicoMockadaDoBancoDTO.setIdEspecialidade(1);
+        medicoMockadaDoBancoDTO.setIdMedico(1);
         return medicoMockadaDoBancoDTO;
     }
 
