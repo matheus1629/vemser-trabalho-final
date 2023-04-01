@@ -34,7 +34,7 @@ public interface DocumentacaoCliente<ClienteCompletoDTO> {
     @GetMapping("/agendamentos")
     ResponseEntity<AgendamentoListaDTO> getClienteAgentamentos() throws RegraDeNegocioException;
 
-    @Operation(summary = "Atualizar Cliente", description = "Atualiza um Cliente passando o id")
+    @Operation(summary = "Atualizar Cliente", description = "Atualiza um Cliente Logado")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Cliente atualizado com sucesso"),
