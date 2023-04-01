@@ -19,11 +19,11 @@ public class SolicitacaoPesquisaDTO {
     @Schema(description = "Id do cliente", example = "8")
     private Integer idCliente;
 
-    @Schema(description = "Data início", example = "15/04/2023 15:30", required = true)
+    @Schema(description = "Data início", example = "15/04/2023 15:30")
     @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataHoraInicio;
 
-    @Schema(description = "Data fim", example = "15/04/2023 15:30", required = true)
+    @Schema(description = "Data fim", example = "15/04/2023 15:30")
     @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataHoraFim;
 
