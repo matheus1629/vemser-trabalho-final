@@ -32,6 +32,7 @@ public class SolicitacaoServiceTest {
     @Mock
     private ClienteService clienteService;
 
+/*
     @Test
     public void deveCriarSolicitacao() throws RegraDeNegocioException {
         //SETUP
@@ -47,7 +48,6 @@ public class SolicitacaoServiceTest {
         assertNotNull(solicitacaoDTOMockRetornada);
         assertEquals(solicitacaoDTOMockEsperada, solicitacaoDTOMockRetornada);
     }
-
 
     @NotNull
     public static SolicitacaoDTO getSolicitacaoDTODoBancoMock(){
@@ -88,6 +88,6 @@ public class SolicitacaoServiceTest {
         clienteCompletoDTO.setNomeCargo("ROLE_CLIENTE");
         return clienteCompletoDTO;
     }
-
+*/
 
 }

@@ -36,7 +36,12 @@ public class SolicitacaoService {
 
     }
 
-    public SolicitacaoDTO list(@Valid SolicitacaoPesquisaDTO solicitacaoPesquisaDTO) {
+    public SolicitacaoDTO list(SolicitacaoPesquisaDTO solicitacaoPesquisaDTO) {
+
+        Integer idMedico = solicitacaoPesquisaDTO.getIdMedico();
+        Integer idCliente = solicitacaoPesquisaDTO.getIdCliente();
+        StatusSolicitacao statusSolicitacao = solicitacaoPesquisaDTO.getStatusSolicitacao();
+
         if (solicitacaoPesquisaDTO.getDataHoraInicio() == null) {
             solicitacaoPesquisaDTO.setDataHoraInicio(LocalDateTime.of(2000, 01, 01, 00, 00));
         }
@@ -45,9 +50,18 @@ public class SolicitacaoService {
             solicitacaoPesquisaDTO.setDataHoraFim(LocalDateTime.of(3000, 01, 01, 00, 00));
         }
 
+        LocalDateTime dataHoraInicio = solicitacaoPesquisaDTO.getDataHoraInicio();
+        LocalDateTime dataHoraFim = solicitacaoPesquisaDTO.getDataHoraFim();
+
+        SolicitacaoDTO solicitacaoDTO = solicitacaoReposiroty.findByCustomSearch(idMedico, idCliente, statusSolicitacao, dataHoraInicio, dataHoraFim);
+
+
+        return solicitacaoDTO;
+       /*
         if (solicitacaoPesquisaDTO.getIdMedico() == null && solicitacaoPesquisaDTO.getIdCliente() == null) {
             solicitacaoReposiroty.findIdMedicoIdClienteIsNull(solicitacaoPesquisaDTO);
         }
+        */
     }
 
 

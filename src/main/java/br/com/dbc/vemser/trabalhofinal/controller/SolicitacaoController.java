@@ -30,7 +30,7 @@ public class SolicitacaoController {
     }
 
     @GetMapping("/resgatar-solicitacao")
-    public ResponseEntity<SolicitacaoDTO> resgatarSolicitacao(@RequestBody @Valid SolicitacaoPesquisaDTO solicitacaoCreateDTO) throws RegraDeNegocioException {
-        return new ResponseEntity<>(solicitacaoService.list(solicitacaoCreateDTO), HttpStatus.OK);
+    public ResponseEntity<SolicitacaoDTO> resgatarSolicitacao(@RequestBody @Valid SolicitacaoPesquisaDTO solicitacaoPesquisaDTO) throws RegraDeNegocioException {
+        return new ResponseEntity<>(solicitacaoService.list(solicitacaoPesquisaDTO), HttpStatus.OK);
     }
 }
