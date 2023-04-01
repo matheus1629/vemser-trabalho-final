@@ -177,20 +177,26 @@ public class UsuarioServiceTest {
         assertEquals(1, usuarioEntityDesativadoMockDoBanco.getAtivo());
         assertEquals(usuarioDTOMock, usuarioDTOReativadoMock);
     }
-/*
+
     @Test
     public void deveTrocarSenhaUsuario() throws RegraDeNegocioException{
         //SETUP
+        UsuarioEntity usuarioEntityMock = getUsuarioEntityMock();
         TrocaSenhaDTO trocaSenhaDTO = getTrocaSenhaDTOMock();
-        doReturn().when(usuarioService).getUsuario(any());
+
+        doReturn(1).when(usuarioService).getIdLoggedUser();
+        doReturn(usuarioEntityMock).when(usuarioService).getUsuario(any());
+        when(passwordEncoder.matches("123rogerio123", "$2a$12$8iOr2M0EsANYEXQtP0MzV.UyhaVk/wc26UcAdOThNBtUSycZz/0gS")).thenReturn(true);
+        when(passwordEncoder.matches("147", "$2a$12$8iOr2M0EsANYEXQtP0MzV.UyhaVk/wc26UcAdOThNBtUSycZz/0gS")).thenReturn(false);
+        when(passwordEncoder.encode("147")).thenReturn("$2a$12$TNNR7Ii/s7A6h5Ie/owuEu3/fFh9OYZqtXDPvVwZCSuwACnZcZQwu");
 
         //ACT
-
+        usuarioService.trocarSenha(trocaSenhaDTO);
 
         //ASSERT
-
+        verify(usuarioRepository, times(1)).save(usuarioEntityMock);
     }
-*/
+
     @Test
     public void deveSolicitarRedefinirSenha() throws RegraDeNegocioException{
         //SETUP
