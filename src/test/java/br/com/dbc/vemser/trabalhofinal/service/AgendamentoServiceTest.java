@@ -235,7 +235,7 @@ public class AgendamentoServiceTest {
         //ACT
         AgendamentoMedicoRelatorioDTO relatorioMedicoByIdRecuperado = agendamentoService.getRelatorioMedicoById(1);
         //ASSERT
-// parei aqui
+// todo
         assertNotNull(relatorioMedicoByIdRecuperado);
         assertEquals(agendamentoClienteRelatorioDTOMock, relatorioMedicoByIdRecuperado);
     }
