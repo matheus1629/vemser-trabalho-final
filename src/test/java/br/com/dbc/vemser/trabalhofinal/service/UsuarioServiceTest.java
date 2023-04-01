@@ -102,7 +102,27 @@ public class UsuarioServiceTest {
         //ASSERT
         verify(usuarioRepository, times(1)).save(usuarioEntityMockDoBanco);
     }
+/*
+    //<TODO>
+    public void deveValidarUsuarioAdicionado(){
+        //SETUP
 
+        //ACT
+
+        //ASSERT
+
+    }
+
+    //<TODO>
+    public void deveValidarUsuarioEditado(){
+        //SETUP
+
+        //ACT
+
+        //ASSERT
+
+    }
+*/
     @Test
     public void deveRetornarUsuarioEntityPeloId() throws RegraDeNegocioException{
         //SETUP
@@ -177,7 +197,17 @@ public class UsuarioServiceTest {
         assertEquals(1, usuarioEntityDesativadoMockDoBanco.getAtivo());
         assertEquals(usuarioDTOMock, usuarioDTOReativadoMock);
     }
+/*
+    //<TODO>
+    public void deveRetornarIdUsuarioLogado(){
+        //SETUP
+        doReturn(1).when(usuarioService).getIdLoggedUser();
+        //ACT
 
+        //ASSERT
+
+    }
+*/
     @Test
     public void deveTrocarSenhaUsuario() throws RegraDeNegocioException{
         //SETUP
@@ -196,10 +226,13 @@ public class UsuarioServiceTest {
         //ASSERT
         verify(usuarioRepository, times(1)).save(usuarioEntityMock);
     }
-
+/*
+    //<TODO>
     @Test
     public void deveSolicitarRedefinirSenha() throws RegraDeNegocioException{
         //SETUP
+        UsuarioEntity usuarioEntityMock = getUsuarioEntityMockDoBanco();
+        doReturn(usuarioEntityMock).when(usuarioService).findByEmail(any());
 
         //ACT
 
@@ -207,7 +240,17 @@ public class UsuarioServiceTest {
 
     }
 
+    //<TODO>
+    @Test
+    public void deveRedefinirSenha() throws RegraDeNegocioException{
+        //SETUP
 
+        //ACT
+
+        //ASSERT
+
+    }
+*/
     // ABSTRAÇÃO DE MÉTODOS
 
     @NotNull
