@@ -37,18 +37,15 @@ public class SolicitacaoController {
     }
 
     @GetMapping("/resgatar-personalizado/{idMedico}/{idCliente}/{dataHoraInicio}/{dataHoraFim}/{statusSolicitacao}")
-    public ResponseEntity<List<SolicitacaoDTO>> resgatarSolicitacao(@RequestParam( value = "idMedico", required = false) Integer idMedico,
+    public ResponseEntity<List<SolicitacaoEntity>> resgatarSolicitacao(@RequestParam( value = "idMedico", required = false) Integer idMedico,
                                                                     @RequestParam(value = "idCliente", required = false) Integer idCliente,
                                                                     @RequestParam (value = "dataHoraInicio", required = false)
-                                                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime dataHoraInicio,
+                                                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataHoraInicio,
                                                                     @RequestParam(value = "dataHoraFim", required = false)
-                                                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDateTime dataHoraFim,
+                                                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime dataHoraFim,
                                                                     @RequestParam(value = "statusSolicitacao", required = false)StatusSolicitacao statusSolicitacao) {
-        return new ResponseEntity<>(solicitacaoService.list(idMedico, idCliente, dataHoraInicio, dataHoraFim, statusSolicitacao), HttpStatus.OK);
+        return new ResponseEntity<>(solicitacaoService.findSolicitacoes(idMedico, idCliente, dataHoraInicio, dataHoraFim, statusSolicitacao), HttpStatus.OK);
     }
 
-    @GetMapping("/resgatar-todas")
-    public ResponseEntity<List<SolicitacaoEntity>> resgatarTodasSolicitacoes() {
-        return new ResponseEntity<>(solicitacaoService.resgatarTodasSolicitacoes(), HttpStatus.OK);
-    }
+
 }

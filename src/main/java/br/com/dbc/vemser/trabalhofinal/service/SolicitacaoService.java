@@ -2,20 +2,18 @@ package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.dto.solicitacao.SolicitacaoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.solicitacao.SolicitacaoDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.solicitacao.SolicitacaoPesquisaDTO;
+import br.com.dbc.vemser.trabalhofinal.entity.QSolicitacaoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.SolicitacaoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.StatusSolicitacao;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.SolicitacaoReposiroty;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.client.model.Filters;
+import com.fasterxml.jackson.databind.util.ArrayBuilders;
+import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
-import org.bson.conversions.Bson;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -36,7 +34,7 @@ public class SolicitacaoService {
         var solicitacaoEntity = new SolicitacaoEntity();
         BeanUtils.copyProperties(solicitacaoCreateDTO, solicitacaoEntity);
 
-       solicitacaoReposiroty.save(solicitacaoEntity);
+        solicitacaoReposiroty.save(solicitacaoEntity);
 
         var solicitacaoDTO = new SolicitacaoDTO();
         BeanUtils.copyProperties(solicitacaoEntity, solicitacaoDTO);
@@ -45,7 +43,33 @@ public class SolicitacaoService {
 
     }
 
-    public List<SolicitacaoDTO> list(Integer idMedico, Integer idCliente, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, StatusSolicitacao statusSolicitacao) {
+//    public List<SolicitacaoDTO> list(Integer idMedico, Integer idCliente, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, StatusSolicitacao statusSolicitacao) {
+//
+//        if (dataHoraInicio == null) {
+//            dataHoraInicio = (LocalDateTime.of(2000, 01, 01, 00, 00));
+//        }
+//
+//        if (dataHoraFim == null) {
+//            dataHoraFim = (LocalDateTime.of(3000, 01, 01, 00, 00));
+//        }
+//
+//
+//        ZoneId zoneId = ZoneId.systemDefault();
+//        Date dateInicio = Date.from(dataHoraInicio.atZone(zoneId).toInstant());
+//        Date dateFim = Date.from(dataHoraFim.atZone(zoneId).toInstant());
+
+//        List<SolicitacaoDTO> buscaPersonalizada = solicitacaoReposiroty.CustomSerch(
+//                        idMedico, idCliente, statusSolicitacao.toString(), dateInicio, dateFim
+//                ).stream().map(solicitacaoEntity -> objectMapper.convertValue(solicitacaoEntity, SolicitacaoDTO.class))
+//                .collect(Collectors.toList());
+//
+//        return buscaPersonalizada;
+//    }
+
+    public List<SolicitacaoEntity> findSolicitacoes(
+            Integer idMedico, Integer idCliente, LocalDateTime dataHoraInicio, LocalDateTime
+            dataHoraFim, StatusSolicitacao statusSolicitacao
+    ) {
 
         if (dataHoraInicio == null) {
             dataHoraInicio = (LocalDateTime.of(2000, 01, 01, 00, 00));
@@ -55,50 +79,30 @@ public class SolicitacaoService {
             dataHoraFim = (LocalDateTime.of(3000, 01, 01, 00, 00));
         }
 
-//        Integer idMedico = solicitacaoPesquisaDTO.getIdMedico();
-//        Integer idCliente = solicitacaoPesquisaDTO.getIdCliente();
-//        String statusSolicitacao = solicitacaoPesquisaDTO.getStatusSolicitacao().toString();
-//        LocalDateTime dataHoraInicio = solicitacaoPesquisaDTO.getDataHoraInicio();
-//        LocalDateTime dataHoraFim = solicitacaoPesquisaDTO.getDataHoraFim();
+        QSolicitacaoEntity solicitacao = QSolicitacaoEntity.solicitacaoEntity;
+        BooleanBuilder builder = new BooleanBuilder();
 
-//        Bson query = Filters.and(
-//                Filters.gte("dataHora", dataHoraInicio),
-//                Filters.lt("dataHora", dataHoraFim)
-//        );
-//
-//        if (idMedico != null) {
-//            query = Filters.and(query, Filters.eq("idMedico", idMedico));
-//        }
-//
-//        if (idCliente != null) {
-//            query = Filters.and(query, Filters.eq("idCliente", idCliente));
-//        }
-//
-//        if (statusSolicitacao != null) {
-//            query = Filters.and(query, Filters.eq("statusSolicitacao", statusSolicitacao));
-//        }
-//        ZoneId zoneId = ZoneId.systemDefault();
-//        Date dateInicio = Date.from(dataHoraInicio.atZone(zoneId).toInstant());
-//        Date dateFim = Date.from(dataHoraFim.atZone(zoneId).toInstant());
-
-        List<SolicitacaoDTO> buscaPersonalizada = solicitacaoReposiroty.findByDataHoraBetweenAndIdMedicoAndIdClienteAndStatusSolicitacao(
-                        dataHoraInicio, dataHoraFim, idMedico, idCliente, statusSolicitacao.toString()
-                ).stream().map(solicitacaoEntity -> objectMapper.convertValue(solicitacaoEntity, SolicitacaoDTO.class))
-                .collect(Collectors.toList());
-
-
-        return buscaPersonalizada;
-       /*
-        if (solicitacaoPesquisaDTO.getIdMedico() == null && solicitacaoPesquisaDTO.getIdCliente() == null) {
-            solicitacaoReposiroty.findIdMedicoIdClienteIsNull(solicitacaoPesquisaDTO);
+        if (idMedico != null) {
+            builder.and(solicitacao.idMedico.eq(idMedico));
         }
-        */
-    }
 
-    public List<SolicitacaoEntity> resgatarTodasSolicitacoes() {
-        return solicitacaoReposiroty.findAll();
-    }
+        if (idCliente != null) {
+            builder.and(solicitacao.idCliente.eq(idCliente));
+        }
 
+        if (statusSolicitacao != null) {
+            builder.and(solicitacao.statusSolicitacao.eq(statusSolicitacao));
+        }
+
+        builder.and(solicitacao.dataHora.between(dataHoraInicio, dataHoraFim));
+
+        List<SolicitacaoEntity> results = (List<SolicitacaoEntity>) solicitacaoReposiroty.findAll(builder.getValue());
+        return results;
+//        return results.stream().map(solicitacaoEntity -> objectMapper.convertValue(results, SolicitacaoDTO.class)).collect(Collectors.toList());
+
+    }
 
 
 }
+
+
