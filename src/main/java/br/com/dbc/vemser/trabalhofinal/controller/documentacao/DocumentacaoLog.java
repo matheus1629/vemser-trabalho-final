@@ -5,6 +5,7 @@ import br.com.dbc.vemser.trabalhofinal.entity.TipoLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +25,7 @@ public interface DocumentacaoLog {
             }
     )
     @GetMapping("/id-solicitacao")
-    ResponseEntity<List<LogDTO>> buscarPeloIdSolicitacao(@RequestParam(value = "idSolicitacao") @NotNull Integer idSolicitacao);
+    ResponseEntity<List<LogDTO>> buscarPeloIdSolicitacao(@RequestParam(value = "idSolicitacao") @NotNull String idSolicitacao);
 
     @Operation(summary = "Recuperar Logs", description = "Recupera os logs por determinado ID de Agendamento")
     @ApiResponses(
@@ -58,7 +59,8 @@ public interface DocumentacaoLog {
             }
     )
     @GetMapping("/data")
-    ResponseEntity<List<LogDTO>> buscarPelaData(@RequestParam(value = "data") @NotNull LocalDate data);
+    ResponseEntity<List<LogDTO>> buscarPelaData(@RequestParam(value = "dataInicio") @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate dataInicio,
+                                                @RequestParam(value = "dataFim") @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate dataFim);
 
 
     @Operation(summary = "Recuperar Logs", description = "Recupera os logs por determinada tipo de log.")
@@ -70,6 +72,6 @@ public interface DocumentacaoLog {
             }
     )
     @GetMapping("/tipo-log")
-    ResponseEntity<List<LogDTO>> buscarPelaData(@RequestParam(value = "tipoLog") @NotNull TipoLog tipoLog);
+    ResponseEntity<List<LogDTO>> buscarPeloTipo(@RequestParam(value = "tipoLog") @NotNull TipoLog tipoLog);
 
 }

@@ -28,7 +28,7 @@ public class LogController implements DocumentacaoLog {
     private final LogService logService;
 
     @Override
-    public ResponseEntity<List<LogDTO>> buscarPeloIdSolicitacao(Integer idSolicitacao){
+    public ResponseEntity<List<LogDTO>> buscarPeloIdSolicitacao(String idSolicitacao){
         return new ResponseEntity<>(logService.listLogsByIdSolicitacao(idSolicitacao), HttpStatus.OK);
     }
 
@@ -43,12 +43,12 @@ public class LogController implements DocumentacaoLog {
     }
 
     @Override
-    public ResponseEntity<List<LogDTO>> buscarPelaData(LocalDate data){
-        return new ResponseEntity<>(logService.listLogsByData(data), HttpStatus.OK);
+    public ResponseEntity<List<LogDTO>> buscarPelaData(LocalDate dataInicio, LocalDate dataFim){
+        return new ResponseEntity<>(logService.listLogsByData(dataInicio, dataFim), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<LogDTO>> buscarPelaData(TipoLog tipoLog){
+    public ResponseEntity<List<LogDTO>> buscarPeloTipo(TipoLog tipoLog){
         return new ResponseEntity<>(logService.listLogsByTipoLog(tipoLog), HttpStatus.OK);
     }
 }

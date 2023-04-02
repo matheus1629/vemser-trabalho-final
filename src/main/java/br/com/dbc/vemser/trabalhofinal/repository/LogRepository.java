@@ -7,23 +7,16 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
 public interface LogRepository extends MongoRepository<LogEntity, String> {
 
-
-    List<LogEntity> findAllByIdSolicitacao(Integer idSolicitacao);
-
+    List<LogEntity> findAllByIdSolicitacao(String idSolicitacao);
     List<LogEntity> findAllByIdAgendamento(Integer idAgendamento);
-
     List<LogEntity> findAllByIdUsuario(Integer idUsuario);
-/*
-    @Query("{ dataHora : { $gte : { $trunc : { date : ?0 , unit : 'day' } } , $lt : { $trunc : { date : ?0 , unit : 'day' , 'add' : 1 } } } }")
-    List<LogEntity> findByDataHora(LocalDate data);
-*/
-    List<LogEntity> findByDataHora(LocalDate data);
-
+    List<LogEntity> findByDataHoraBetween(LocalDate localDateInicio, LocalDate localDateFim);
     List<LogEntity> findAllByTipoLog(TipoLog tipoLog);
 
 }

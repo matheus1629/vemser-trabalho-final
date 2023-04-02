@@ -7,7 +7,6 @@ import br.com.dbc.vemser.trabalhofinal.entity.TipoLog;
 import br.com.dbc.vemser.trabalhofinal.repository.LogRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -33,7 +32,7 @@ public class LogService {
     }
 
 
-    public List<LogDTO> listLogsByIdSolicitacao(Integer idSolicitacao) {
+    public List<LogDTO> listLogsByIdSolicitacao(String idSolicitacao) {
         return logRepository.findAllByIdSolicitacao(idSolicitacao).stream().map(log -> objectMapper.convertValue(log, LogDTO.class)).collect(Collectors.toList());
     }
 
@@ -45,8 +44,11 @@ public class LogService {
         return logRepository.findAllByIdUsuario(idUsuario).stream().map(log -> objectMapper.convertValue(log, LogDTO.class)).collect(Collectors.toList());
     }
 
-    public List<LogDTO> listLogsByData(LocalDate localDate) {
-        return logRepository.findByDataHora(localDate).stream().map(log -> objectMapper.convertValue(log, LogDTO.class)).collect(Collectors.toList());
+    public List<LogDTO> listLogsByData(LocalDate localDateInicio, LocalDate localDateFim) {
+        if(localDateInicio.isEqual(localDateFim)){
+            localDateFim = localDateFim.plusDays(1);
+        }
+        return logRepository.findByDataHoraBetween(localDateInicio, localDateFim).stream().map(log -> objectMapper.convertValue(log, LogDTO.class)).collect(Collectors.toList());
     }
 
     public List<LogDTO> listLogsByTipoLog(TipoLog tipoLog) {
