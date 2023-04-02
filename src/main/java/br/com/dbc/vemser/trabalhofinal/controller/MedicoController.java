@@ -1,6 +1,8 @@
 package br.com.dbc.vemser.trabalhofinal.controller;
 
 import br.com.dbc.vemser.trabalhofinal.controller.documentacao.DocumentacaoMedico;
+import br.com.dbc.vemser.trabalhofinal.dto.AgendamentoMedicoEditarCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoListaDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoUpdateDTO;
@@ -12,9 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Tag(name="Médico")
 @Slf4j
@@ -44,5 +46,10 @@ public class MedicoController implements DocumentacaoMedico<MedicoCompletoDTO> {
         return new ResponseEntity<>(medicoAtualizado, HttpStatus.OK);
     }
 
+    @PutMapping("/editar-agendamento/")
+    public ResponseEntity<AgendamentoDTO> editarAgendamento(@RequestParam ("idAgendamento") Integer idAgendamento,
+                                                            @RequestBody @Valid AgendamentoMedicoEditarCreateDTO agendamentoMedicoEditarCreateDTO) throws RegraDeNegocioException {
+        return new ResponseEntity<>(medicoService.editarAgendamentoMedico(idAgendamento, agendamentoMedicoEditarCreateDTO), HttpStatus.OK);
+    }
 
 }
