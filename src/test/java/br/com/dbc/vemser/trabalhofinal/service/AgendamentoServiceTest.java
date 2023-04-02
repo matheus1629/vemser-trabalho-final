@@ -9,10 +9,7 @@ import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoMedicoRelatori
 import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.convenio.ConvenioDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO;
-import br.com.dbc.vemser.trabalhofinal.entity.AgendamentoEntity;
-import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
-import br.com.dbc.vemser.trabalhofinal.entity.ConvenioEntity;
-import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.*;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.AgendamentoRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -62,7 +59,8 @@ public class AgendamentoServiceTest {
     private MedicoService medicoService;
     @Mock
     private EmailService emailService;
-
+    @Mock
+    private SolicitacaoService solicitacaoService;
 
     private ObjectMapper objectMapper = new ObjectMapper();
     @Before
@@ -74,20 +72,63 @@ public class AgendamentoServiceTest {
     }
 
     @Test
-    public void deveAdicionarAgendamento() throws RegraDeNegocioException {
+    public void deveAdicionarAgendamentoSucesso() throws RegraDeNegocioException {
         //SETUP
-        AgendamentoCreateDTO agendamentoCreateDTOMock = getAgendamentoCreateDTOMock();
         ClienteEntity clienteEntityMock = getClienteEntityMock();
         MedicoEntity medicoEntityMock = getMedicoEntityMock();
         AgendamentoEntity agendamentoEntityMock = getAgendamentoEntityMock();
-        AgendamentoDTO agendamentoDTOMock = getAgendamentoDTOMock();
+        SolicitacaoEntity solicitacaoEntity = getSolicitacaoEntityMock();
+        solicitacaoEntity.setStatusSolicitacao(StatusSolicitacao.PENDENTE);
+        AprovarReprovarSolicitacao aprovarReprovarSolicitacao = AprovarReprovarSolicitacao.APROVADA;
 
+        when(solicitacaoService.getSolicitacao(any())).thenReturn(solicitacaoEntity);
         doReturn(clienteEntityMock).when(clienteService).getCliente(any());
         doReturn(medicoEntityMock).when(medicoService).getMedico(any());
         when(agendamentoRepository.save(any())).thenReturn(agendamentoEntityMock);
 
         //ACT
-        AgendamentoDTO agendamentoAdicionado = agendamentoService.adicionar(agendamentoCreateDTOMock);
+        AgendamentoDTO agendamentoAdicionado = agendamentoService.adicionar("1",aprovarReprovarSolicitacao);
+
+        //ASSERT
+        verify(agendamentoRepository, times(1)).save(any());
+        assertNotNull(agendamentoAdicionado);
+    }
+
+    @Test
+    public void deveRecusarSolicitacaoAdicionar() throws RegraDeNegocioException {
+        //SETUP
+        ClienteEntity clienteEntityMock = getClienteEntityMock();
+        MedicoEntity medicoEntityMock = getMedicoEntityMock();
+        AgendamentoEntity agendamentoEntityMock = getAgendamentoEntityMock();
+        SolicitacaoEntity solicitacaoEntity = getSolicitacaoEntityMock();
+        solicitacaoEntity.setStatusSolicitacao(StatusSolicitacao.PENDENTE);
+        AprovarReprovarSolicitacao aprovarReprovarSolicitacao = AprovarReprovarSolicitacao.REPROVADA;
+
+        when(solicitacaoService.getSolicitacao(any())).thenReturn(solicitacaoEntity);
+        doReturn(clienteEntityMock).when(clienteService).getCliente(any());
+        doReturn(medicoEntityMock).when(medicoService).getMedico(any());
+        when(agendamentoRepository.save(any())).thenReturn(agendamentoEntityMock);
+
+        //ACT
+        AgendamentoDTO agendamentoAdicionado = agendamentoService.adicionar("1",aprovarReprovarSolicitacao);
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveEntrarNoIfPendenteAdicionarAgendamento() throws RegraDeNegocioException {
+        //SETUP
+        ClienteEntity clienteEntityMock = getClienteEntityMock();
+        MedicoEntity medicoEntityMock = getMedicoEntityMock();
+        AgendamentoEntity agendamentoEntityMock = getAgendamentoEntityMock();
+        SolicitacaoEntity solicitacaoEntity = getSolicitacaoEntityMock();
+        AprovarReprovarSolicitacao aprovarReprovarSolicitacao = AprovarReprovarSolicitacao.APROVADA;
+
+        when(solicitacaoService.getSolicitacao(any())).thenReturn(solicitacaoEntity);
+        doReturn(clienteEntityMock).when(clienteService).getCliente(any());
+        doReturn(medicoEntityMock).when(medicoService).getMedico(any());
+        when(agendamentoRepository.save(any())).thenReturn(agendamentoEntityMock);
+
+        //ACT
+        AgendamentoDTO agendamentoAdicionado = agendamentoService.adicionar("1",aprovarReprovarSolicitacao);
 
         //ASSERT
         verify(agendamentoRepository, times(1)).save(any());
@@ -97,17 +138,21 @@ public class AgendamentoServiceTest {
     @Test(expected = RegraDeNegocioException.class)
     public void deveEntrarNoCatchAdicionarAgendamento() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         //SETUP
-        AgendamentoCreateDTO agendamentoCreateDTOMock = getAgendamentoCreateDTOMock();
         ClienteEntity clienteEntityMock = getClienteEntityMock();
         MedicoEntity medicoEntityMock = getMedicoEntityMock();
         AgendamentoEntity agendamentoEntityMock = getAgendamentoEntityMock();
+        SolicitacaoEntity solicitacaoEntity = getSolicitacaoEntityMock();
+        solicitacaoEntity.setStatusSolicitacao(StatusSolicitacao.PENDENTE);
+        AprovarReprovarSolicitacao aprovarReprovarSolicitacao = AprovarReprovarSolicitacao.APROVADA;
 
+        when(solicitacaoService.getSolicitacao(any())).thenReturn(solicitacaoEntity);
         doReturn(clienteEntityMock).when(clienteService).getCliente(any());
         doReturn(medicoEntityMock).when(medicoService).getMedico(any());
         when(agendamentoRepository.save(any())).thenReturn(agendamentoEntityMock);
         doThrow(new MessagingException("Erro ao enviar o e-mail com as informações do agendamento.")).when(emailService).sendEmailAgendamento(any(),any(),any());
+
         //ACT
-        AgendamentoDTO agendamentoAdicionado = agendamentoService.adicionar(agendamentoCreateDTOMock);
+        AgendamentoDTO agendamentoAdicionado = agendamentoService.adicionar("1",aprovarReprovarSolicitacao);
     }
 
     @Test
@@ -351,6 +396,16 @@ public class AgendamentoServiceTest {
         return agendamentoClienteRelatorioDTO;
     }
 
+    public static SolicitacaoEntity getSolicitacaoEntityMock(){
+        SolicitacaoEntity solicitacaoEntity = new SolicitacaoEntity();
+        solicitacaoEntity.setStatusSolicitacao(StatusSolicitacao.APROVADA);
+        solicitacaoEntity.setIdCliente(1);
+        solicitacaoEntity.setDataHorario(LocalDateTime.now());
+        solicitacaoEntity.setMotivo("abc");
+        solicitacaoEntity.setIdMedico(1);
+        solicitacaoEntity.setIdSoliciatacao("1");
+        return solicitacaoEntity;
+    }
 
     public static AgendamentoCreateDTO getAgendamentoCreateDTOMock() {
         AgendamentoCreateDTO agendamentoCreateDTO = new AgendamentoCreateDTO();

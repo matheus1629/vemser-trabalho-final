@@ -17,6 +17,7 @@ import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.ClienteRepository;
 import br.com.dbc.vemser.trabalhofinal.repository.MedicoRepository;
 import br.com.dbc.vemser.trabalhofinal.repository.UsuarioRepository;
+import br.com.dbc.vemser.trabalhofinal.service.*;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

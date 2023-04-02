@@ -3,6 +3,7 @@ package br.com.dbc.vemser.trabalhofinal.service;
 import br.com.dbc.vemser.trabalhofinal.entity.AgendamentoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.TipoEmail;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
+import br.com.dbc.vemser.trabalhofinal.service.EmailService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
