@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 public class LogCreateDTO {
 
-    private Integer idSolicitacao;
+    private String idSolicitacao;
     private Integer idAgendamento;
     private Integer idUsuario;
     private LocalDateTime dataHora;

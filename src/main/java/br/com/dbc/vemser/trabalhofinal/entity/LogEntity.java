@@ -19,7 +19,7 @@ public class LogEntity {
 
     @Id
     private Integer idLog;
-    private Integer idSolicitacao;
+    private String idSolicitacao;
     private Integer idAgendamento;
     private Integer idUsuario;
     private LocalDateTime dataHora;
