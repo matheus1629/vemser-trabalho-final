@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Repository
 public interface SolicitacaoReposiroty extends MongoRepository<SolicitacaoEntity, String> {
 
-
+/*
     @Aggregation(pipeline = {
             "{$match:  {idMedico: ?0, $expr: { $ne: ['idMedico', null] } }}",
             "{$match:  {idCliente: ?1, $expr: { $ne: ['idCliente', null] } }}",
@@ -24,4 +24,17 @@ public interface SolicitacaoReposiroty extends MongoRepository<SolicitacaoEntity
             "{$group:  {idSoliciatacao: {idSoliciatacao: '$idSoliciatacao', idMedico:  '$idMedico', idCliente:  '$idCliente', motivo:  '$motivo', dataHora:  '$dataHora', statusSolicitacao:  '$statusSolicitacao'} }}"
     })
     SolicitacaoDTO findByCustomSearch(Integer idMedico, Integer idCliente, StatusSolicitacao statusSolicitacao, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim);
+
+ */
+
+    @Aggregation(pipeline = {
+            "{$match:  {idMedico: {$cond: [{$eq: ['$idMedico', ?0]}, ?0, null]}, " +
+                    "idCliente: {$cond: [{$eq: ['$idCliente', ?1]}, ?1, null]}, " +
+                    "StatusSolicitacao: {$cond: [{$eq: ['$StatusSolicitacao', ?2]}, ?2, null]}, " +
+                    "dataHora: {$gte: {$cond: [{$eq: ['$dataHora', ?3]}, ?3, null]}}, " +
+                    "dataHora: {$lte: {$cond: [{$eq: ['$dataHora', ?4]}, ?4, null]}}}}" +
+            "{$group:  {_id: {idSoliciatacao: '$idSoliciatacao', idMedico:  '$idMedico', idCliente:  '$idCliente', motivo:  '$motivo', dataHora:  '$dataHora', statusSolicitacao:  '$statusSolicitacao'} }}"
+    })
+    SolicitacaoDTO findByCustomSearch(Integer idMedico, Integer idCliente, StatusSolicitacao statusSolicitacao, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim);
+
 }
