@@ -116,7 +116,9 @@ public class MedicoService {
 
         UsuarioCreateDTO usuarioCreateDTO = objectMapper.convertValue(medico, UsuarioCreateDTO.class);
 
-        List<MedicoEntity> listaMedico = medicoRepository.findAll().stream().toList();
+        List<MedicoEntity> listaMedico = medicoRepository.findAll().stream()
+                .filter(medicoEntity1 -> !medicoEntity1.getCrm().equals(medico.getCrm()))
+                .toList();
 
         for (MedicoEntity medicoVerificarCRM : listaMedico) {
             if (medico.getCrm().equals(medicoVerificarCRM.getCrm())) {

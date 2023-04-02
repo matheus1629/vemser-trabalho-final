@@ -34,7 +34,7 @@ public interface DocumentacaoMedico<MedicoCompletoDTO> {
     @GetMapping("/agendamentos")
     ResponseEntity<AgendamentoListaDTO> getClienteAgentamentos() throws RegraDeNegocioException;
 
-    @Operation(summary = "Atualizar Medico", description = "Atualiza um Medico passando o id")
+    @Operation(summary = "Atualizar Medico", description = "Atualiza um Medico Logado")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Medico atualizado com sucesso"),
