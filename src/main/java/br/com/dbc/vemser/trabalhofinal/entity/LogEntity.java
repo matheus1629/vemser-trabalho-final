@@ -7,18 +7,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@Document(collection = "Log")
 @Getter
 @Setter
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Document(collection = "Log")
+@AllArgsConstructor
+@NoArgsConstructor
 public class LogEntity {
 
-    Integer idOperaedor;
-    Integer idSolicitacao;
-    LocalDateTime dataHora = LocalDateTime.now();
-    StatusSolicitacao statusSolicitacao;
+    @Id
+    private Integer idLog;
+    private Integer idSolicitacao;
+    private Integer idAgendamento;
+    private Integer idUsuario;
+    private LocalDateTime dataHora;
+    private TipoLog tipoLog;
 }

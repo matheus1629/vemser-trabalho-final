@@ -29,12 +29,12 @@ public class MedicoController implements DocumentacaoMedico<MedicoCompletoDTO> {
 
     @Override
     @GetMapping("/verificar-info")
-    public ResponseEntity<MedicoCompletoDTO> recuperarCliente() throws RegraDeNegocioException {
+    public ResponseEntity<MedicoCompletoDTO> recuperarMedico() throws RegraDeNegocioException {
         return new ResponseEntity<>(medicoService.recuperarMedico(), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<AgendamentoListaDTO> getClienteAgentamentos() throws RegraDeNegocioException {
+    public ResponseEntity<AgendamentoListaDTO> getMedicoAgentamentos() throws RegraDeNegocioException {
         return new ResponseEntity<>(medicoService.getMedicoAgentamentos(), HttpStatus.OK);
     }
 
