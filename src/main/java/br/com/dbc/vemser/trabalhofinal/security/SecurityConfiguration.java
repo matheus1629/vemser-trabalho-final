@@ -28,7 +28,7 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeHttpRequests((authz) -> authz
 //                        .antMatchers("/auth/**").permitAll()
-                                .antMatchers("/administrativo/**", "/agendamento/**", "/convenio/**", "/especialidade/**").hasRole("ADM")
+                                .antMatchers("/administrativo/**", "/agendamento/**", "/convenio/**", "/especialidade/**", "/logs/***").hasRole("ADM")
                                 .antMatchers("/cliente/**", "/solicitacao/**").hasRole("CLIENTE")
                                 .antMatchers("/medico/**").hasRole("MEDICO")
                         .anyRequest().authenticated()
