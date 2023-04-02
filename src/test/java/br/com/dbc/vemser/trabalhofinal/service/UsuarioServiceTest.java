@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.client.EnderecoClient;
+import br.com.dbc.vemser.trabalhofinal.dto.RedefinicaoSenhaDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.TrocaSenhaDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioDTO;
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import freemarker.template.TemplateException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,12 +24,16 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.mail.MessagingException;
 import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.util.*;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
@@ -71,7 +77,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void deveRemoverUsuario() throws RegraDeNegocioException{
+    public void deveRemoverUsuarioSucesso() throws RegraDeNegocioException{
         //SETUP
         UsuarioEntity usuarioEntityMockDoBanco = getUsuarioEntityMockDoBanco();
         when(usuarioRepository.findById(anyInt())).thenReturn(Optional.of(usuarioEntityMockDoBanco));
@@ -80,6 +86,16 @@ public class UsuarioServiceTest {
         usuarioService.remover(idProcurado);
         //ASSERT
         verify(usuarioRepository, times(1)).save(usuarioEntityMockDoBanco);
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveRemoverUsuarioFalha() throws RegraDeNegocioException{
+        //SETUP
+        UsuarioEntity usuarioEntityMockDoBanco = getUsuarioEntityDesativadoMockDoBanco();
+
+        doReturn(usuarioEntityMockDoBanco).when(usuarioService).getUsuario(anyInt());
+        //ACT
+        usuarioService.remover(usuarioEntityMockDoBanco.getIdUsuario());
     }
 
     @Test
@@ -107,10 +123,9 @@ public class UsuarioServiceTest {
         verify(usuarioRepository, times(1)).save(usuarioEntityMockDoBanco);
     }
     @Test(expected = RegraDeNegocioException.class)
-    public void deveValidarUsuarioAdicionado() throws RegraDeNegocioException {
+    public void deveEntrarIfCpfJaExisteUsuarioAdicionado() throws RegraDeNegocioException {
         //SETUP
         UsuarioEntity usuarioEntity = getUsuarioEntityMock();
-        usuarioEntity.setIdCargo(2);
         List<UsuarioEntity> usuarioEntities = List.of(getUsuarioEntityMock());
 
         when(usuarioRepository.findAll()).thenReturn(usuarioEntities);
@@ -118,6 +133,46 @@ public class UsuarioServiceTest {
         usuarioService.validarUsuarioAdicionado(usuarioEntity);
         //ASSERT
         verify(usuarioService,times(1)).validarUsuarioAdicionado(usuarioEntity);
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveEntrarIfEmailJaExisteUsuarioAdicionado() throws RegraDeNegocioException {
+        //SETUP
+        UsuarioEntity usuarioEntity = getUsuarioEntityMock();
+        usuarioEntity.setIdCargo(2);
+        usuarioEntity.setCpf("12345678999");
+        List<UsuarioEntity> usuarioEntities = List.of(getUsuarioEntityMock());
+
+        when(usuarioRepository.findAll()).thenReturn(usuarioEntities);
+        //ACT
+        usuarioService.validarUsuarioAdicionado(usuarioEntity);
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveEntrarIfCrmJaExisteUsuarioAdicionado() throws RegraDeNegocioException {
+        //SETUP
+        UsuarioEntity usuarioEntity = getUsuarioEntityMock();
+        usuarioEntity.setIdCargo(2);
+        usuarioEntity.setMedicoEntity(getMedicoEntityMock());
+
+
+        List<UsuarioEntity> usuarioEntities = List.of(usuarioEntity);
+        when(usuarioRepository.findAll()).thenReturn(usuarioEntities);
+        //ACT
+        usuarioService.validarUsuarioAdicionado(usuarioEntity);
+    }
+
+    @Test
+    public void naoDeveEntrarNoForUsuarioAdicionado() throws RegraDeNegocioException {
+        //Setup
+        UsuarioEntity usuarioEntity = getUsuarioEntityMock();
+        usuarioEntity.setCpf("12345678999");
+        usuarioEntity.setEmail("abc@gmail.com");
+        List<UsuarioEntity> usuarioEntities = List.of(getUsuarioEntityMock());
+
+        when(usuarioRepository.findAll()).thenReturn(usuarioEntities);
+        //ACT
+        usuarioService.validarUsuarioAdicionado(usuarioEntity);
     }
 
     //<TODO>
@@ -133,14 +188,24 @@ public class UsuarioServiceTest {
         verify(usuarioService,times(1)).validarUsuarioEditado(usuarioCreateDTO,1);
     }
 
-//<TODO>
-//    @Test
-//    public void deveEntrarIfDeValidarUsuarioEditado() throws RegraDeNegocioException{
-//        //SETUP
-//        List<UsuarioEntity> usuarioEntities = List.of(getUsuarioEntityMock(),getUsuarioEntityMock());
-//        //assert
-//        assertEquals(getUsuarioEntityMock(),usuarioEntities.get(0));
-//    }
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveEntrarIfDeValidarUsuarioEditado() throws RegraDeNegocioException{
+        //Setup
+        UsuarioCreateDTO usuarioCreateDTO = getUsuarioCreateDTOMock();
+        List<UsuarioEntity> usuarioEntities = List.of(getUsuarioEntityMockDoBanco());
+
+        when(usuarioRepository.findAll()).thenReturn(usuarioEntities);
+        //act
+        usuarioService.validarUsuarioEditado(usuarioCreateDTO,2);
+
+        //Setup
+        usuarioCreateDTO.setCpf("11111111111");
+        //act
+        usuarioService.validarUsuarioEditado(usuarioCreateDTO,2);
+
+    }
+
+
 
     @Test
     public void deveRetornarUsuarioEntityPeloId() throws RegraDeNegocioException{
@@ -201,7 +266,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void deveReativarUsuario() throws RegraDeNegocioException {
+    public void deveReativarUsuarioSucesso() throws RegraDeNegocioException {
         //SETUP
         UsuarioEntity usuarioEntityDesativadoMockDoBanco = getUsuarioEntityDesativadoMockDoBanco();
         doReturn(usuarioEntityDesativadoMockDoBanco).when(usuarioService).getUsuario(any());
@@ -216,19 +281,38 @@ public class UsuarioServiceTest {
         assertEquals(1, usuarioEntityDesativadoMockDoBanco.getAtivo());
         assertEquals(usuarioDTOMock, usuarioDTOReativadoMock);
     }
-/*
-    //<TODO>
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveReativarUsuarioFalha() throws RegraDeNegocioException {
+        //SETUP
+        UsuarioEntity usuarioEntityDesativadoMockDoBanco = getUsuarioEntityMockDoBanco();
+        doReturn(usuarioEntityDesativadoMockDoBanco).when(usuarioService).getUsuario(any());
+        UsuarioDTO usuarioDTOMock = getUsuarioDTOMock();
+        doReturn(usuarioDTOMock).when(usuarioService).getById(any());
+
+        //ACT
+        UsuarioDTO usuarioDTOReativadoMock = usuarioService.reativarUsuario(1);
+    }
+
+    @Test
     public void deveRetornarIdUsuarioLogado(){
         //SETUP
-        doReturn(1).when(usuarioService).getIdLoggedUser();
-        //ACT
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        SecurityContextHolder.setContext(securityContext);
+        Integer id = 1;
 
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(authentication.getPrincipal()).thenReturn(id);
+
+        //ACT
+        Integer variavel = usuarioService.getIdLoggedUser();
         //ASSERT
+        assertNotNull(variavel);
 
     }
-*/
     @Test
-    public void deveTrocarSenhaUsuario() throws RegraDeNegocioException{
+    public void deveTrocarSenhaUsuarioSucesso() throws RegraDeNegocioException{
         //SETUP
         UsuarioEntity usuarioEntityMock = getUsuarioEntityMock();
         TrocaSenhaDTO trocaSenhaDTO = getTrocaSenhaDTOMock();
@@ -246,31 +330,90 @@ public class UsuarioServiceTest {
         verify(usuarioRepository, times(1)).save(usuarioEntityMock);
     }
 
-    //<TODO>
-    @Test
-    public void deveSolicitarRedefinirSenha() throws RegraDeNegocioException{
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveTrocarSenhaUsuarioFalha() throws RegraDeNegocioException{
         //SETUP
-        String email = "thassio@gmail.com";
-//        doThrow(new RegraDeNegocioException("abc")).when(usuarioService).solicitarRedefinirSenha(any());
-        doReturn(getMedicoEntityMock()).when(usuarioService).findByEmail(email);
+        UsuarioEntity usuarioEntityMock = getUsuarioEntityMock();
+        TrocaSenhaDTO trocaSenhaDTO = getTrocaSenhaDTOMock();
+
+        doReturn(1).when(usuarioService).getIdLoggedUser();
+        doReturn(usuarioEntityMock).when(usuarioService).getUsuario(any());
+        when(passwordEncoder.matches("123rogerio123", "$2a$12$8iOr2M0EsANYEXQtP")).thenReturn(true);
+        when(passwordEncoder.encode("147")).thenReturn("$2a$12$TNNR7Ii/s7A6h5Ie/owuEu3/fFh9OYZqtXDPvVwZCSuwACnZcZQwu");
+
         //ACT
+        usuarioService.trocarSenha(trocaSenhaDTO);
+    }
+
+    //<TODO>
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveSolicitarRedefinirSenhaFalha() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+        //setup
+        String email = "aab@gmail.com";
+        UsuarioEntity usuario = getUsuarioEntityMock();
+
+        when(usuarioService.findByEmail(anyString())).thenReturn(Optional.of(usuario));
+        Mockito.doThrow(new MessagingException("Erro ao enviar o e-mail. Cadastro não realizado.")).when(emailService).sendEmailUsuario(any(),any(),any());
+        //act
         usuarioService.solicitarRedefinirSenha(email);
-        //ASSERT
+        //asserts
         verify(usuarioService,times(1)).solicitarRedefinirSenha(email);
     }
-/*
 
-    //<TODO>
-    @Test
-    public void deveRedefinirSenha() throws RegraDeNegocioException{
-        //SETUP
-
-        //ACT
-
-        //ASSERT
-
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveSolicitarRedefinirSenhaFalhaEmail() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+        //setup
+        UsuarioEntity usuario = getUsuarioEntityMock();
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.of(usuario));
+        Mockito.doThrow(new MessagingException("Erro ao enviar o e-mail. Cadastro não realizado.")).when(emailService).sendEmailUsuario(any(),any(),any());
+        //act
+        usuarioService.solicitarRedefinirSenha(usuario.getEmail());
+        //asserts
+        verify(emailService,times(1)).sendEmailUsuario(any(),any(),any());
     }
-*/
+
+    @Test
+    public void deveSolicitarRedefinirSenhaSucesso() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+        //setup
+        String email = "rogerio.santos@gmail.com";
+        UsuarioEntity usuario = getUsuarioEntityMock();
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.of(usuario));
+        //act
+        usuarioService.solicitarRedefinirSenha(usuario.getEmail());
+        //asserts
+        verify(emailService,times(1)).sendEmailUsuario(any(),any(),any());
+        verify(usuarioService,times(1)).solicitarRedefinirSenha(email);
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveRedefinirSenhaFalha() throws RegraDeNegocioException{
+        //SETUP
+        UsuarioEntity usuario = getUsuarioEntityMock();
+        RedefinicaoSenhaDTO redefinicaoSenhaDTO = getRedefinicaoSenhaDTOMock();
+
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.of(usuario));
+        //ACT
+        usuarioService.redefinirSenha(redefinicaoSenhaDTO);
+        //ASSERT
+        verify(usuarioService,times(1)).redefinirSenha(redefinicaoSenhaDTO);
+    }
+
+    @Test
+    public void deveRedefinirSenhaSucesso() throws RegraDeNegocioException{
+        //SETUP
+        UsuarioEntity usuario = getUsuarioEntityMock();
+        RedefinicaoSenhaDTO redefinicaoSenhaDTO = getRedefinicaoSenhaDTOMock();
+        Map<String, Integer> map = new HashMap<>();
+        map.put(redefinicaoSenhaDTO.getEmail(), redefinicaoSenhaDTO.getCodigoConfirmacao());
+
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.of(usuario));
+        when(codigoTrocaSenha.getTokenBD()).thenReturn(map);
+        //ACT
+        usuarioService.redefinirSenha(redefinicaoSenhaDTO);
+        //ASSERT
+        verify(usuarioService,times(1)).redefinirSenha(redefinicaoSenhaDTO);
+    }
+
     // ABSTRAÇÃO DE MÉTODOS
 
     @NotNull
@@ -286,9 +429,18 @@ public class UsuarioServiceTest {
         usuarioEntityMockado.setNumero(15);
         usuarioEntityMockado.setContatos("34999748512, 34999658741");
         usuarioEntityMockado.setIdCargo(1);
+        usuarioEntityMockado.setAtivo(1);
         return usuarioEntityMockado;
     }
 
+    @NotNull
+    public static RedefinicaoSenhaDTO getRedefinicaoSenhaDTOMock(){
+        RedefinicaoSenhaDTO redefinicaoSenhaDTO = new RedefinicaoSenhaDTO();
+        redefinicaoSenhaDTO.setEmail("rogerio.santos@gmail.com");
+        redefinicaoSenhaDTO.setCodigoConfirmacao(123);
+        redefinicaoSenhaDTO.setSenhaNova("123");
+        return redefinicaoSenhaDTO;
+    }
     @NotNull
     private static UsuarioDTO getUsuarioDTOMock(){
         UsuarioDTO usuarioDTOMockado = new UsuarioDTO();
@@ -344,6 +496,7 @@ public class UsuarioServiceTest {
         usuarioCreateDTOMock.setCep("04650185");
         usuarioCreateDTOMock.setNumero(15);
         usuarioCreateDTOMock.setContatos("34999748512, 34999658741");
+        usuarioCreateDTOMock.setEmail("rogerio.santos@gmail.com");
         return usuarioCreateDTOMock;
     }
 
