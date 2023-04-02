@@ -4,6 +4,8 @@ import br.com.dbc.vemser.trabalhofinal.client.EnderecoClient;
 import br.com.dbc.vemser.trabalhofinal.dto.TrocaSenhaDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioDTO;
+import br.com.dbc.vemser.trabalhofinal.entity.EspecialidadeEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.UsuarioRepository;
@@ -17,12 +19,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -102,27 +106,42 @@ public class UsuarioServiceTest {
         //ASSERT
         verify(usuarioRepository, times(1)).save(usuarioEntityMockDoBanco);
     }
-/*
-    //<TODO>
-    public void deveValidarUsuarioAdicionado(){
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveValidarUsuarioAdicionado() throws RegraDeNegocioException {
         //SETUP
+        UsuarioEntity usuarioEntity = getUsuarioEntityMock();
+        usuarioEntity.setIdCargo(2);
+        List<UsuarioEntity> usuarioEntities = List.of(getUsuarioEntityMock());
 
+        when(usuarioRepository.findAll()).thenReturn(usuarioEntities);
         //ACT
-
+        usuarioService.validarUsuarioAdicionado(usuarioEntity);
         //ASSERT
-
+        verify(usuarioService,times(1)).validarUsuarioAdicionado(usuarioEntity);
     }
 
     //<TODO>
-    public void deveValidarUsuarioEditado(){
+    @Test
+    public void deveValidarUsuarioEditado() throws RegraDeNegocioException {
         //SETUP
-
+        UsuarioCreateDTO usuarioCreateDTO = getUsuarioCreateDTOMock();
+        List<UsuarioEntity> usuarioEntities = List.of(getUsuarioEntityMock());
+        when(usuarioRepository.findAll()).thenReturn(usuarioEntities);
         //ACT
-
+        usuarioService.validarUsuarioEditado(usuarioCreateDTO,1);
         //ASSERT
-
+        verify(usuarioService,times(1)).validarUsuarioEditado(usuarioCreateDTO,1);
     }
-*/
+
+//<TODO>
+//    @Test
+//    public void deveEntrarIfDeValidarUsuarioEditado() throws RegraDeNegocioException{
+//        //SETUP
+//        List<UsuarioEntity> usuarioEntities = List.of(getUsuarioEntityMock(),getUsuarioEntityMock());
+//        //assert
+//        assertEquals(getUsuarioEntityMock(),usuarioEntities.get(0));
+//    }
+
     @Test
     public void deveRetornarUsuarioEntityPeloId() throws RegraDeNegocioException{
         //SETUP
@@ -226,19 +245,20 @@ public class UsuarioServiceTest {
         //ASSERT
         verify(usuarioRepository, times(1)).save(usuarioEntityMock);
     }
-/*
+
     //<TODO>
     @Test
     public void deveSolicitarRedefinirSenha() throws RegraDeNegocioException{
         //SETUP
-        UsuarioEntity usuarioEntityMock = getUsuarioEntityMockDoBanco();
-        doReturn(usuarioEntityMock).when(usuarioService).findByEmail(any());
-
+        String email = "thassio@gmail.com";
+//        doThrow(new RegraDeNegocioException("abc")).when(usuarioService).solicitarRedefinirSenha(any());
+        doReturn(getMedicoEntityMock()).when(usuarioService).findByEmail(email);
         //ACT
-
+        usuarioService.solicitarRedefinirSenha(email);
         //ASSERT
-
+        verify(usuarioService,times(1)).solicitarRedefinirSenha(email);
     }
+/*
 
     //<TODO>
     @Test
@@ -282,6 +302,24 @@ public class UsuarioServiceTest {
         usuarioDTOMockado.setContatos("34999748512, 34999658741");
         usuarioDTOMockado.setIdCargo(1);
         return usuarioDTOMockado;
+    }
+
+    @NotNull
+    static MedicoEntity getMedicoEntityMock() {
+        MedicoEntity medicoMockadaDoBanco = new MedicoEntity();
+        medicoMockadaDoBanco.setIdMedico(1);
+        medicoMockadaDoBanco.setCrm("123456");
+        medicoMockadaDoBanco.setUsuarioEntity(getUsuarioEntityMock());
+        medicoMockadaDoBanco.setEspecialidadeEntity(getEspecialidadeEntityMock());
+        return medicoMockadaDoBanco;
+    }
+    @NotNull
+    private static EspecialidadeEntity getEspecialidadeEntityMock() {
+        EspecialidadeEntity especialidadeEntity = new EspecialidadeEntity();
+        especialidadeEntity.setIdEspecialidade(1);
+        especialidadeEntity.setNomeEspecialidade("Cardiologista");
+        especialidadeEntity.setValor(500);
+        return especialidadeEntity;
     }
 
     @NotNull
