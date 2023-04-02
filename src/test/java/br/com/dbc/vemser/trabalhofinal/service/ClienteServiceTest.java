@@ -211,8 +211,6 @@ public class ClienteServiceTest {
         clienteCreateDTO.setSenha("123");
 
         Mockito.doThrow(new MessagingException("Erro ao enviar o e-mail. Cadastro não realizado.")).when(emailService).sendEmailUsuario(any(),any(),any());
-        ClienteCompletoDTO clienteCompletoDTO = getClienteCompletoDTOMock();
-        doReturn(clienteCompletoDTO).when(clienteService).getById(any());
         // ação (ACT)
         clienteService.adicionar(clienteCreateDTO);
     }

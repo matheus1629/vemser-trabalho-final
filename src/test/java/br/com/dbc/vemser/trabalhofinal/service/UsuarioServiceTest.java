@@ -197,14 +197,18 @@ public class UsuarioServiceTest {
         when(usuarioRepository.findAll()).thenReturn(usuarioEntities);
         //act
         usuarioService.validarUsuarioEditado(usuarioCreateDTO,2);
-
-        //Setup
-        usuarioCreateDTO.setCpf("11111111111");
-        //act
-        usuarioService.validarUsuarioEditado(usuarioCreateDTO,2);
-
     }
 
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveEntrarIfEmailDeValidarUsuarioEditado() throws RegraDeNegocioException{
+        //Setup
+        UsuarioCreateDTO usuarioCreateDTO = getUsuarioCreateDTOMock();
+        List<UsuarioEntity> usuarioEntities = List.of(getUsuarioEntityMockDoBanco());
+        usuarioCreateDTO.setCpf("11122233344");
+        when(usuarioRepository.findAll()).thenReturn(usuarioEntities);
+        //act
+        usuarioService.validarUsuarioEditado(usuarioCreateDTO,2);
+    }
 
 
     @Test
@@ -288,8 +292,6 @@ public class UsuarioServiceTest {
         UsuarioEntity usuarioEntityDesativadoMockDoBanco = getUsuarioEntityMockDoBanco();
         doReturn(usuarioEntityDesativadoMockDoBanco).when(usuarioService).getUsuario(any());
         UsuarioDTO usuarioDTOMock = getUsuarioDTOMock();
-        doReturn(usuarioDTOMock).when(usuarioService).getById(any());
-
         //ACT
         UsuarioDTO usuarioDTOReativadoMock = usuarioService.reativarUsuario(1);
     }
@@ -338,9 +340,6 @@ public class UsuarioServiceTest {
 
         doReturn(1).when(usuarioService).getIdLoggedUser();
         doReturn(usuarioEntityMock).when(usuarioService).getUsuario(any());
-        when(passwordEncoder.matches("123rogerio123", "$2a$12$8iOr2M0EsANYEXQtP")).thenReturn(true);
-        when(passwordEncoder.encode("147")).thenReturn("$2a$12$TNNR7Ii/s7A6h5Ie/owuEu3/fFh9OYZqtXDPvVwZCSuwACnZcZQwu");
-
         //ACT
         usuarioService.trocarSenha(trocaSenhaDTO);
     }
@@ -353,7 +352,6 @@ public class UsuarioServiceTest {
         UsuarioEntity usuario = getUsuarioEntityMock();
 
         when(usuarioService.findByEmail(anyString())).thenReturn(Optional.of(usuario));
-        Mockito.doThrow(new MessagingException("Erro ao enviar o e-mail. Cadastro não realizado.")).when(emailService).sendEmailUsuario(any(),any(),any());
         //act
         usuarioService.solicitarRedefinirSenha(email);
         //asserts
