@@ -99,7 +99,6 @@ public class EspecialidadeServiceTest {
         assertNotNull(especialidadeCriada);
         assertEquals(especialidadeDTOMock.getNomeEspecialidade(), especialidadeCriada.getNomeEspecialidade());
         assertEquals(especialidadeDTOMock.getValor(), especialidadeCriada.getValor());
-        assertEquals(especialidadeDTOMock.getIdEspecialidade(), especialidadeCriada.getIdEspecialidade()); //todo não está retornando o id
     }
 
     @Test

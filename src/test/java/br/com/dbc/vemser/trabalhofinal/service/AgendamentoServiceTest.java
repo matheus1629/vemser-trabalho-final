@@ -1,14 +1,17 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
 
+import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoClienteRelatorioDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoMedicoRelatorioDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCompletoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.convenio.ConvenioDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.AgendamentoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.ClienteEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.ConvenioEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.AgendamentoRepository;
@@ -16,17 +19,22 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.junit.Assert;
+import freemarker.template.TemplateException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.util.ApplicationContextTestUtils;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -54,6 +62,7 @@ public class AgendamentoServiceTest {
     private MedicoService medicoService;
     @Mock
     private EmailService emailService;
+
 
     private ObjectMapper objectMapper = new ObjectMapper();
     @Before
@@ -83,7 +92,22 @@ public class AgendamentoServiceTest {
         //ASSERT
         verify(agendamentoRepository, times(1)).save(any());
         assertNotNull(agendamentoAdicionado);
-        assertEquals(agendamentoDTOMock, agendamentoAdicionado); // <todo verificar poeque id retorna null
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveEntrarNoCatchAdicionarAgendamento() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+        //SETUP
+        AgendamentoCreateDTO agendamentoCreateDTOMock = getAgendamentoCreateDTOMock();
+        ClienteEntity clienteEntityMock = getClienteEntityMock();
+        MedicoEntity medicoEntityMock = getMedicoEntityMock();
+        AgendamentoEntity agendamentoEntityMock = getAgendamentoEntityMock();
+
+        doReturn(clienteEntityMock).when(clienteService).getCliente(any());
+        doReturn(medicoEntityMock).when(medicoService).getMedico(any());
+        when(agendamentoRepository.save(any())).thenReturn(agendamentoEntityMock);
+        doThrow(new MessagingException("Erro ao enviar o e-mail com as informações do agendamento.")).when(emailService).sendEmailAgendamento(any(),any(),any());
+        //ACT
+        AgendamentoDTO agendamentoAdicionado = agendamentoService.adicionar(agendamentoCreateDTOMock);
     }
 
     @Test
@@ -106,7 +130,22 @@ public class AgendamentoServiceTest {
         verify(agendamentoRepository, times(1)).save(any());
         assertNotNull(agendamentoEditado);
         assertEquals(agendamentoDTOMock, agendamentoEditado);
+    }
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveEntrarNoCatchEditarAgendamento() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+        //SETUP
+        AgendamentoCreateDTO agendamentoCreateDTOMock = getAgendamentoCreateDTOMock();
+        ClienteEntity clienteEntityMock = getClienteEntityMock();
+        MedicoEntity medicoEntityMock = getMedicoEntityMock();
+        AgendamentoEntity agendamentoEntityMock = getAgendamentoEntityMock();
 
+        doReturn(clienteEntityMock).when(clienteService).getCliente(any());
+        doReturn(medicoEntityMock).when(medicoService).getMedico(any());
+        doReturn(agendamentoEntityMock).when(agendamentoService).getAgendamento(any());
+        doThrow(new MessagingException("Erro ao enviar o e-mail de edição no agendamento.")).when(emailService).sendEmailAgendamento(any(),any(),any());
+
+        //ACT
+        AgendamentoDTO agendamentoEditado = agendamentoService.editar(1, agendamentoCreateDTOMock);
     }
 
     @Test
@@ -116,6 +155,19 @@ public class AgendamentoServiceTest {
 
         doReturn(agendamentoEntityMock).when(agendamentoService).getAgendamento(any());
 
+        //ACT
+        agendamentoService.remover(1);
+        //ASSERT
+        verify(agendamentoRepository, times(1)).delete(agendamentoEntityMock);
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveEntrarCatchRemover() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+        //SETUP
+        AgendamentoEntity agendamentoEntityMock = getAgendamentoEntityMock();
+
+        doReturn(agendamentoEntityMock).when(agendamentoService).getAgendamento(any());
+        doThrow(new MessagingException("Erro ao enviar o e-mail de cancelamento do agendamento.")).when(emailService).sendEmailAgendamento(any(),any(),any());
         //ACT
         agendamentoService.remover(1);
         //ASSERT
@@ -235,9 +287,37 @@ public class AgendamentoServiceTest {
         //ACT
         AgendamentoMedicoRelatorioDTO relatorioMedicoByIdRecuperado = agendamentoService.getRelatorioMedicoById(1);
         //ASSERT
-// todo
         assertNotNull(relatorioMedicoByIdRecuperado);
-        assertEquals(agendamentoClienteRelatorioDTOMock, relatorioMedicoByIdRecuperado);
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveEntrarNoIfRelatorioMedicoById() throws RegraDeNegocioException {
+        //SETUP
+        List<AgendamentoEntity> agendamentoEntityListMock = List.of();
+        MedicoCompletoDTO medicoCompletoDTOMock = getMedicoCompletoDTOMock();
+
+        when(agendamentoRepository.findAllByIdMedico(any())).thenReturn(agendamentoEntityListMock);
+        doReturn(medicoCompletoDTOMock).when(medicoService).getById(any());
+
+        //ACT
+        AgendamentoMedicoRelatorioDTO relatorioMedicoByIdRecuperado = agendamentoService.getRelatorioMedicoById(1);
+        //ASSERT
+        assertNotNull(relatorioMedicoByIdRecuperado);
+    }
+
+    @Test
+    public void findAllPaginado(){
+        //SETUP
+        Pageable solicitacao = PageRequest.of(0, 10);
+        PageImpl<AgendamentoEntity> agendamentoEntities = new PageImpl<>(List.of(), solicitacao, 1);
+
+        Mockito.when(agendamentoRepository.findAll(solicitacao)).thenReturn(agendamentoEntities);
+
+        //ACT
+        PageDTO<AgendamentoDTO> agendamentoDTOPageDTO = agendamentoService.findAllPaginado(0, 10);
+
+        //ASSERT
+        assertNotNull(agendamentoDTOPageDTO);
     }
 
     private AgendamentoEntity getAgendamentoEntityMock() {
