@@ -1,7 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.especialidade.EspecialidadeCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.especialidade.EspecialidadeDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.EspecialidadeEntity;
@@ -20,7 +19,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Collections;

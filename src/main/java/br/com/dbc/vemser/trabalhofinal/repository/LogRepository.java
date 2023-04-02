@@ -3,11 +3,9 @@ package br.com.dbc.vemser.trabalhofinal.repository;
 import br.com.dbc.vemser.trabalhofinal.entity.LogEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.TipoLog;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository

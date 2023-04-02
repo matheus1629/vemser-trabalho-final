@@ -3,7 +3,6 @@ package br.com.dbc.vemser.trabalhofinal.controller;
 import br.com.dbc.vemser.trabalhofinal.controller.documentacao.DocumentacaoLog;
 import br.com.dbc.vemser.trabalhofinal.dto.log.LogDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.TipoLog;
-import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.LogService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

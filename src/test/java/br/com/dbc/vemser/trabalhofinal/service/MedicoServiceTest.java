@@ -8,12 +8,12 @@ import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoMedicoRelatori
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoUpdateDTO;
-import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
-import br.com.dbc.vemser.trabalhofinal.repository.MedicoRepository;
 import br.com.dbc.vemser.trabalhofinal.entity.CargoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.EspecialidadeEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
+import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
+import br.com.dbc.vemser.trabalhofinal.repository.MedicoRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -39,7 +39,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MedicoServiceTest {

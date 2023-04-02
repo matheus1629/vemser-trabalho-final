@@ -27,11 +27,8 @@ public class SolicitacaoService {
     private final EmailService emailService;
     private final UsuarioService usuarioService;
     private final ObjectMapper objectMapper;
-<<<<<<< HEAD
     private final MedicoService medicoService;
-=======
     private final LogService logService;
->>>>>>> a6a82de801beb4304cb3d29f33161b812cd1006a
 
     public SolicitacaoDTO create(SolicitacaoCreateDTO solicitacaoCreateDTO) throws RegraDeNegocioException {
         medicoService.getMedico(solicitacaoCreateDTO.getIdMedico()); //verifica se o médico existe
