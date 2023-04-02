@@ -37,7 +37,7 @@ public class SolicitacaoController {
     }
 
     @GetMapping("/resgatar-personalizado/{idMedico}/{idCliente}/{dataHoraInicio}/{dataHoraFim}/{statusSolicitacao}")
-    public ResponseEntity<List<SolicitacaoEntity>> resgatarSolicitacao(@RequestParam( value = "idMedico", required = false) Integer idMedico,
+    public ResponseEntity<List<SolicitacaoDTO>> resgatarSolicitacao(@RequestParam( value = "idMedico", required = false) Integer idMedico,
                                                                     @RequestParam(value = "idCliente", required = false) Integer idCliente,
                                                                     @RequestParam (value = "dataHoraInicio", required = false)
                                                                         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataHoraInicio,

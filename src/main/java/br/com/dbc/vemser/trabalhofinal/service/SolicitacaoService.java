@@ -2,6 +2,7 @@ package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.dto.solicitacao.SolicitacaoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.solicitacao.SolicitacaoDTO;
+import br.com.dbc.vemser.trabalhofinal.entity.LogEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.QSolicitacaoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.SolicitacaoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.StatusSolicitacao;
@@ -43,30 +44,7 @@ public class SolicitacaoService {
 
     }
 
-//    public List<SolicitacaoDTO> list(Integer idMedico, Integer idCliente, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, StatusSolicitacao statusSolicitacao) {
-//
-//        if (dataHoraInicio == null) {
-//            dataHoraInicio = (LocalDateTime.of(2000, 01, 01, 00, 00));
-//        }
-//
-//        if (dataHoraFim == null) {
-//            dataHoraFim = (LocalDateTime.of(3000, 01, 01, 00, 00));
-//        }
-//
-//
-//        ZoneId zoneId = ZoneId.systemDefault();
-//        Date dateInicio = Date.from(dataHoraInicio.atZone(zoneId).toInstant());
-//        Date dateFim = Date.from(dataHoraFim.atZone(zoneId).toInstant());
-
-//        List<SolicitacaoDTO> buscaPersonalizada = solicitacaoReposiroty.CustomSerch(
-//                        idMedico, idCliente, statusSolicitacao.toString(), dateInicio, dateFim
-//                ).stream().map(solicitacaoEntity -> objectMapper.convertValue(solicitacaoEntity, SolicitacaoDTO.class))
-//                .collect(Collectors.toList());
-//
-//        return buscaPersonalizada;
-//    }
-
-    public List<SolicitacaoEntity> findSolicitacoes(
+    public List<SolicitacaoDTO> findSolicitacoes(
             Integer idMedico, Integer idCliente, LocalDateTime dataHoraInicio, LocalDateTime
             dataHoraFim, StatusSolicitacao statusSolicitacao
     ) {
@@ -97,9 +75,8 @@ public class SolicitacaoService {
         builder.and(solicitacao.dataHora.between(dataHoraInicio, dataHoraFim));
 
         List<SolicitacaoEntity> results = (List<SolicitacaoEntity>) solicitacaoReposiroty.findAll(builder.getValue());
-        return results;
-//        return results.stream().map(solicitacaoEntity -> objectMapper.convertValue(results, SolicitacaoDTO.class)).collect(Collectors.toList());
 
+        return results.stream().map(solicitacaoEntity ->  objectMapper.convertValue(solicitacaoEntity, SolicitacaoDTO.class)).collect(Collectors.toList());
     }
 
 
