@@ -4,7 +4,6 @@ import br.com.dbc.vemser.trabalhofinal.entity.StatusSolicitacao;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 

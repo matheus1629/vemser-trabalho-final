@@ -2,22 +2,18 @@ package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.dto.solicitacao.SolicitacaoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.solicitacao.SolicitacaoDTO;
-import br.com.dbc.vemser.trabalhofinal.entity.LogEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.QSolicitacaoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.SolicitacaoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.StatusSolicitacao;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.SolicitacaoReposiroty;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.ArrayBuilders;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
