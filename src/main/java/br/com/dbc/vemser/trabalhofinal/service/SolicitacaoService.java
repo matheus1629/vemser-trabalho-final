@@ -40,6 +40,19 @@ public class SolicitacaoService {
 
     }
 
+    public void reprovarSolicitacao(SolicitacaoEntity solicitacaoEntity){
+        solicitacaoReposiroty.save(solicitacaoEntity);
+    }
+
+    public void aprovarSolicitacao(SolicitacaoEntity solicitacaoEntity){
+        solicitacaoReposiroty.save(solicitacaoEntity);
+    }
+
+    public SolicitacaoEntity getSolicitacao(String idSolicitacao) throws RegraDeNegocioException {
+        return solicitacaoReposiroty.findById(idSolicitacao)
+                .orElseThrow(() -> new RegraDeNegocioException("Esta solicitação não existe!"));
+    }
+
     public List<SolicitacaoDTO> findSolicitacoes(
             Integer idMedico, Integer idCliente, LocalDateTime dataHoraInicio, LocalDateTime
             dataHoraFim, StatusSolicitacao statusSolicitacao
@@ -68,7 +81,7 @@ public class SolicitacaoService {
             builder.and(solicitacao.statusSolicitacao.eq(statusSolicitacao));
         }
 
-        builder.and(solicitacao.dataHora.between(dataHoraInicio, dataHoraFim));
+        builder.and(solicitacao.dataHorario.between(dataHoraInicio, dataHoraFim));
 
         List<SolicitacaoEntity> results = (List<SolicitacaoEntity>) solicitacaoReposiroty.findAll(builder.getValue());
 

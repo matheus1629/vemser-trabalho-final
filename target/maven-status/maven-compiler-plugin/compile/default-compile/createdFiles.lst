@@ -57,6 +57,7 @@ br\com\dbc\vemser\trabalhofinal\security\TokenService.class
 br\com\dbc\vemser\trabalhofinal\security\SecurityConfiguration$1.class
 br\com\dbc\vemser\trabalhofinal\service\SolicitacaoService.class
 br\com\dbc\vemser\trabalhofinal\dto\medico\MedicoCompletoDTO.class
+br\com\dbc\vemser\trabalhofinal\entity\AprovarReprovarSolicitacao.class
 br\com\dbc\vemser\trabalhofinal\service\ClienteService.class
 br\com\dbc\vemser\trabalhofinal\security\TokenAuthenticationFilter.class
 br\com\dbc\vemser\trabalhofinal\controller\AdministrativoController.class

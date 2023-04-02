@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: br.com.dbc.vemser.trabalhofinal.service.EspecialidadeServiceTest
--------------------------------------------------------------------------------
-Tests run: 9, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.052 s <<< FAILURE! - in br.com.dbc.vemser.trabalhofinal.service.EspecialidadeServiceTest
-deveAdicionarEspecialidade  Time elapsed: 0.006 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <1> but was: <null>
-	at br.com.dbc.vemser.trabalhofinal.service.EspecialidadeServiceTest.deveAdicionarEspecialidade(EspecialidadeServiceTest.java:102)
-

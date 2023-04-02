@@ -71,6 +71,7 @@ C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\jav
 C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\config\FeingConfig.java
 C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\security\SecurityConfiguration.java
 C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\cliente\ClienteCreateDTO.java
+C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\AprovarReprovarSolicitacao.java
 C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\agendamento\AgendamentoClienteRelatorioDTO.java
 C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\usuario\UsuarioDTO.java
 C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocunentacaoAuth.java

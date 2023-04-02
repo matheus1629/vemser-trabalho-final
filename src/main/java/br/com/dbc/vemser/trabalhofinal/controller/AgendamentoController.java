@@ -6,23 +6,25 @@ import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoClienteRelator
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoMedicoRelatorioDTO;
+import br.com.dbc.vemser.trabalhofinal.entity.AprovarReprovarSolicitacao;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.AgendamentoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Agendamento")
 @Validated
 @RestController
 @RequestMapping("/agendamento")
 @RequiredArgsConstructor
-public class AgendamentoController implements DocumentacaoAgendamento<AgendamentoDTO, AgendamentoCreateDTO, Integer, Integer> {
+public class AgendamentoController implements DocumentacaoAgendamento<AgendamentoDTO, AgendamentoCreateDTO, Integer, Integer, String, AprovarReprovarSolicitacao> {
 
     private final AgendamentoService agendamentoService;
 
@@ -46,9 +48,18 @@ public class AgendamentoController implements DocumentacaoAgendamento<Agendament
         return new ResponseEntity<>(agendamentoService.getRelatorioMedicoById(idMedico), HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<AgendamentoDTO> create(AgendamentoCreateDTO agendamento) throws RegraDeNegocioException {
-        return new ResponseEntity<>(agendamentoService.adicionar(agendamento), HttpStatus.OK);
+    @Operation(summary = "Aprovar ou reprovar solicitação", description = "Ao aprovar a solicitação, é criado o agendamento no banco de dados Oracle e o status da solicitação é alterado para APROVADO. Ao reprovar, não é criado agendamento, apenas é trocado o status da solicitação para REPROVADO")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Solicitação aprovada/reprovada com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @PostMapping
+    public ResponseEntity<AgendamentoDTO> create(@RequestParam ("idSolicitacao") String idSolicitacao,
+                                                 @RequestParam ("aprovarReprovarSolicitacao") AprovarReprovarSolicitacao aprovarReprovarSolicitacao) throws RegraDeNegocioException {
+        return new ResponseEntity<>(agendamentoService.adicionar(idSolicitacao, aprovarReprovarSolicitacao), HttpStatus.OK);
     }
 
 
