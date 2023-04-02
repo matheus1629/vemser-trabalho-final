@@ -87,8 +87,6 @@ public class SolicitacaoService {
 
         return results.stream().map(solicitacaoEntity ->  objectMapper.convertValue(solicitacaoEntity, SolicitacaoDTO.class)).collect(Collectors.toList());
     }
-
-
 }
 
 

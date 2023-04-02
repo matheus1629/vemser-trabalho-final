@@ -86,7 +86,6 @@ public class UsuarioService {
             if (value.getEmail().equals(usuarioEntity.getEmail())) {
                 throw new RegraDeNegocioException("Já existe usuário com esse e-mail!");
             }
-
         }
     }
 
