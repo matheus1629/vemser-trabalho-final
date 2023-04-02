@@ -6,6 +6,7 @@ import br.com.dbc.vemser.trabalhofinal.dto.convenio.ConvenioDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.ConvenioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.ConvenioRepository;
+import br.com.dbc.vemser.trabalhofinal.service.ConvenioService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

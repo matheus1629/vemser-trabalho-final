@@ -21,7 +21,7 @@ public interface DocumentacaoMedico<MedicoCompletoDTO> {
             }
     )
     @GetMapping
-    ResponseEntity<MedicoCompletoDTO> recuperarCliente() throws RegraDeNegocioException;
+    ResponseEntity<MedicoCompletoDTO> recuperarMedico() throws RegraDeNegocioException;
 
     @Operation(summary = "Recuperar os Agendamentos do Medico", description = "Lista os Agendamentos de acordo com o Medico logado")
     @ApiResponses(
@@ -32,7 +32,7 @@ public interface DocumentacaoMedico<MedicoCompletoDTO> {
             }
     )
     @GetMapping("/agendamentos")
-    ResponseEntity<AgendamentoListaDTO> getClienteAgentamentos() throws RegraDeNegocioException;
+    ResponseEntity<AgendamentoListaDTO> getMedicoAgentamentos() throws RegraDeNegocioException;
 
     @Operation(summary = "Atualizar Medico", description = "Atualiza um Medico Logado")
     @ApiResponses(
