@@ -10,8 +10,9 @@ public enum TipoEmail {
     AGENDAMENTO_CANCELADO_CLIENTE("Agendamento removido"),
     AGENDAMENTO_CRIADO_MEDICO("Novo agendamento"),
     AGENDAMENTO_EDITADO_MEDICO("Agendamento alterado"),
-    AGENDAMENTO_CANCELADO_MEDICO("Agendamento removido");
-
+    AGENDAMENTO_CANCELADO_MEDICO("Agendamento removido"),
+    SOLICITACAO_RECUSADA("Solicitação recusada"),
+    SOLICITACAO_CRIADA("Solicitação criada");
 
     private String assunto;
 

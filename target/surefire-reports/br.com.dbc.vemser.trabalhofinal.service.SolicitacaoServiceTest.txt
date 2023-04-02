@@ -1,0 +1,17 @@
+-------------------------------------------------------------------------------
+Test set: br.com.dbc.vemser.trabalhofinal.service.SolicitacaoServiceTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.001 s <<< FAILURE! - in br.com.dbc.vemser.trabalhofinal.service.SolicitacaoServiceTest
+initializationError  Time elapsed: 0 s  <<< ERROR!
+org.mockito.exceptions.base.MockitoException: 
+
+
+No tests found in SolicitacaoServiceTest
+Is the method annotated with @Test?
+Is the method public?
+
+Caused by: java.lang.reflect.InvocationTargetException
+Caused by: org.junit.runners.model.InvalidTestClassError: 
+Invalid test class 'br.com.dbc.vemser.trabalhofinal.service.SolicitacaoServiceTest':
+  1. No runnable methods
+

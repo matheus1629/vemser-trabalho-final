@@ -1,24 +1,26 @@
 package br.com.dbc.vemser.trabalhofinal.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import org.springframework.data.annotation.Id;
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@Document(collection = "Log")
 @Getter
 @Setter
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Document(collection = "Log")
+@AllArgsConstructor
+@NoArgsConstructor
 public class LogEntity {
 
-    Integer idOperaedor;
-    Integer idSolicitacao;
-    LocalDateTime dataHora = LocalDateTime.now();
-    StatusSolicitacao statusSolicitacao;
+    @Id
+    private String idLog;
+    private String idSolicitacao;
+    private Integer idAgendamento;
+    private Integer idUsuario;
+    private LocalDateTime dataHora;
+    private TipoLog tipoLog;
 }

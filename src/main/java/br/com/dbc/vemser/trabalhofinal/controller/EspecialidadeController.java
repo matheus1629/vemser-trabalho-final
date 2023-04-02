@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/especialidade")
-public class DocumentacaoEspecialidadeController implements DocumentacaoEspecialidadeConvenio<EspecialidadeDTO, EspecialidadeCreateDTO, Integer, Integer> {
+public class EspecialidadeController implements DocumentacaoEspecialidadeConvenio<EspecialidadeDTO, EspecialidadeCreateDTO, Integer, Integer> {
 
     private final EspecialidadeService especialidadeService;
 

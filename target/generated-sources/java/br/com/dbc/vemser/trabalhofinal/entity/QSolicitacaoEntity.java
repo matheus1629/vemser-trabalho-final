@@ -19,7 +19,11 @@ public class QSolicitacaoEntity extends EntityPathBase<SolicitacaoEntity> {
 
     public static final QSolicitacaoEntity solicitacaoEntity = new QSolicitacaoEntity("solicitacaoEntity");
 
+<<<<<<< HEAD
     public final DateTimePath<java.time.LocalDateTime> dataHora = createDateTime("dataHora", java.time.LocalDateTime.class);
+=======
+    public final DateTimePath<java.time.LocalDateTime> dataHorario = createDateTime("dataHorario", java.time.LocalDateTime.class);
+>>>>>>> c307f9113a2937987ae3ea15eef679bf20e4aa48
 
     public final NumberPath<Integer> idCliente = createNumber("idCliente", Integer.class);
 

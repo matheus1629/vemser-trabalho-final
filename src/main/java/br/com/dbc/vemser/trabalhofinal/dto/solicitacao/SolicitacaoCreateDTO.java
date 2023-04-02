@@ -27,7 +27,7 @@ public class SolicitacaoCreateDTO {
     @NotNull
     @Future
     @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-    private LocalDateTime dataHora;
+    private LocalDateTime dataHorario;
     @JsonIgnore
     private Integer idCliente;
     @JsonIgnore

@@ -57,6 +57,10 @@ br\com\dbc\vemser\trabalhofinal\security\TokenService.class
 br\com\dbc\vemser\trabalhofinal\security\SecurityConfiguration$1.class
 br\com\dbc\vemser\trabalhofinal\service\SolicitacaoService.class
 br\com\dbc\vemser\trabalhofinal\dto\medico\MedicoCompletoDTO.class
+<<<<<<< HEAD
+=======
+br\com\dbc\vemser\trabalhofinal\entity\AprovarReprovarSolicitacao.class
+>>>>>>> c307f9113a2937987ae3ea15eef679bf20e4aa48
 br\com\dbc\vemser\trabalhofinal\service\ClienteService.class
 br\com\dbc\vemser\trabalhofinal\security\TokenAuthenticationFilter.class
 br\com\dbc\vemser\trabalhofinal\controller\AdministrativoController.class

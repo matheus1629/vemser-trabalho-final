@@ -21,7 +21,7 @@ public class SolicitacaoEntity {
     private Integer idMedico;
     private Integer idCliente;
     private String motivo;
-    private LocalDateTime dataHora;
+    private LocalDateTime dataHorario;
     private StatusSolicitacao statusSolicitacao;
 
 }

@@ -6,6 +6,7 @@ import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoClienteRelator
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoMedicoRelatorioDTO;
+import br.com.dbc.vemser.trabalhofinal.entity.AprovarReprovarSolicitacao;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.AgendamentoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/agendamento")
 @RequiredArgsConstructor
-public class AgendamentoController implements DocumentacaoAgendamento<AgendamentoDTO, AgendamentoCreateDTO, Integer, Integer> {
+public class AgendamentoController implements DocumentacaoAgendamento {
 
     private final AgendamentoService agendamentoService;
 
@@ -47,10 +48,9 @@ public class AgendamentoController implements DocumentacaoAgendamento<Agendament
     }
 
     @Override
-    public ResponseEntity<AgendamentoDTO> create(AgendamentoCreateDTO agendamento) throws RegraDeNegocioException {
-        return new ResponseEntity<>(agendamentoService.adicionar(agendamento), HttpStatus.OK);
+    public ResponseEntity<AgendamentoDTO> create(String idSolicitacao, AprovarReprovarSolicitacao aprovarReprovarSolicitacao) throws RegraDeNegocioException {
+        return new ResponseEntity<>(agendamentoService.adicionar(idSolicitacao, aprovarReprovarSolicitacao), HttpStatus.OK);
     }
-
 
     @Override
     public ResponseEntity<AgendamentoDTO> update(Integer id, AgendamentoCreateDTO agendamento) throws RegraDeNegocioException {
@@ -62,7 +62,5 @@ public class AgendamentoController implements DocumentacaoAgendamento<Agendament
         agendamentoService.remover(id);
         return ResponseEntity.ok().build();
     }
-
-
 
 }

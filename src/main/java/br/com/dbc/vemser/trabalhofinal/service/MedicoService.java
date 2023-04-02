@@ -1,12 +1,16 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.client.EnderecoClient;
+import br.com.dbc.vemser.trabalhofinal.dto.AgendamentoMedicoEditarCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoListaDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoMedicoRelatorioDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoUpdateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.entity.AgendamentoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.TipoEmail;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
@@ -132,6 +136,27 @@ public class MedicoService {
         MedicoEntity medicoEditado = medicoRepository.save(medicoEntity);
 
         return getById(medicoEditado.getIdMedico());
+    }
+
+
+
+    public AgendamentoDTO editarAgendamentoMedico(Integer idAgendamento, AgendamentoMedicoEditarCreateDTO agendamentoMedicoEditarCreateDTO) throws RegraDeNegocioException {
+        AgendamentoEntity agendamentoEntity = agendamentoService.getAgendamento(idAgendamento);
+
+        MedicoEntity medicoEntity = medicoRepository.getMedicoEntityByIdUsuario(usuarioService.getIdLoggedUser());
+
+        if (!agendamentoEntity.getMedicoEntity().getIdMedico().equals(medicoEntity.getIdMedico())){
+            throw new RegraDeNegocioException("Você não pode alterar um agendamento que não é seu.");
+        }
+
+        agendamentoEntity.setTratamento(agendamentoMedicoEditarCreateDTO.getTratamento());
+        agendamentoEntity.setExame(agendamentoMedicoEditarCreateDTO.getExame());
+
+        AgendamentoCreateDTO agendamentoCreateDTO = objectMapper.convertValue(agendamentoEntity, AgendamentoCreateDTO.class);
+
+        AgendamentoDTO agendamentoEditado = agendamentoService.editar(idAgendamento, agendamentoCreateDTO);
+
+        return agendamentoEditado;
     }
 
     @Transactional
