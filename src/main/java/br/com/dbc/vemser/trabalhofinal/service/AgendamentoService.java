@@ -47,7 +47,11 @@ public class AgendamentoService {
         if (aprovarReprovarSolicitacao.equals(AprovarReprovarSolicitacao.REPROVADA)){
             solicitacaoEntity.setStatusSolicitacao(StatusSolicitacao.RECUSADA);
             solicitacaoService.reprovarSolicitacao(solicitacaoEntity);
-            //<todo envio de email para solicitacao reprovada
+            try{
+                emailService.sendEmailCliente(usuarioService.getUsuario(clienteService.getCliente(solicitacaoEntity.getIdCliente()).getIdUsuario()), TipoEmail.SOLICITACAO_RECUSADA, solicitacaoEntity.getIdSoliciatacao());
+            } catch (MessagingException | TemplateException | IOException e) {
+                throw new RegraDeNegocioException("Erro ao enviar informativo de solicitação recusada.");
+            }
             return null;
         }
 

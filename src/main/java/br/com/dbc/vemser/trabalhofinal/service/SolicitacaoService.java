@@ -3,18 +3,18 @@ package br.com.dbc.vemser.trabalhofinal.service;
 import br.com.dbc.vemser.trabalhofinal.dto.log.LogCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.solicitacao.SolicitacaoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.solicitacao.SolicitacaoDTO;
-import br.com.dbc.vemser.trabalhofinal.entity.QSolicitacaoEntity;
-import br.com.dbc.vemser.trabalhofinal.entity.SolicitacaoEntity;
-import br.com.dbc.vemser.trabalhofinal.entity.StatusSolicitacao;
-import br.com.dbc.vemser.trabalhofinal.entity.TipoLog;
+import br.com.dbc.vemser.trabalhofinal.entity.*;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.SolicitacaoReposiroty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.BooleanBuilder;
+import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 public class SolicitacaoService {
     private final SolicitacaoReposiroty solicitacaoReposiroty;
     private final ClienteService clienteService;
+    private final EmailService emailService;
     private final UsuarioService usuarioService;
     private final ObjectMapper objectMapper;
 <<<<<<< HEAD
@@ -42,6 +43,12 @@ public class SolicitacaoService {
         BeanUtils.copyProperties(solicitacaoCreateDTO, solicitacaoEntity);
 
         solicitacaoReposiroty.save(solicitacaoEntity);
+
+        try{
+            emailService.sendEmailCliente(usuarioService.getUsuario(clienteService.recuperarCliente().getIdUsuario()), TipoEmail.SOLICITACAO_CRIADA, solicitacaoEntity.getIdSoliciatacao());
+        } catch (MessagingException | TemplateException | IOException e) {
+            throw new RegraDeNegocioException("Erro ao enviar informativo da criação de solicitação.");
+        }
 
         var solicitacaoDTO = new SolicitacaoDTO();
         BeanUtils.copyProperties(solicitacaoEntity, solicitacaoDTO);
