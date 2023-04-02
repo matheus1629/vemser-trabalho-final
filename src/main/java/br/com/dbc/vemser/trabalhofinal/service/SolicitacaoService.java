@@ -23,8 +23,11 @@ public class SolicitacaoService {
     private final SolicitacaoReposiroty solicitacaoReposiroty;
     private final ClienteService clienteService;
     private final ObjectMapper objectMapper;
+    private final MedicoService medicoService;
 
     public SolicitacaoDTO create(SolicitacaoCreateDTO solicitacaoCreateDTO) throws RegraDeNegocioException {
+        medicoService.getMedico(solicitacaoCreateDTO.getIdMedico()); //verifica se o médico existe
+
         solicitacaoCreateDTO.setIdCliente(clienteService.recuperarCliente().getIdCliente());
         solicitacaoCreateDTO.setStatusSolicitacao(StatusSolicitacao.PENDENTE);
 
@@ -37,7 +40,6 @@ public class SolicitacaoService {
         BeanUtils.copyProperties(solicitacaoEntity, solicitacaoDTO);
 
         return solicitacaoDTO;
-
     }
 
     public void reprovarSolicitacao(SolicitacaoEntity solicitacaoEntity){

@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.controller;
 
+import br.com.dbc.vemser.trabalhofinal.controller.documentacao.DocumentacaoSolicitacao;
 import br.com.dbc.vemser.trabalhofinal.dto.solicitacao.SolicitacaoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.solicitacao.SolicitacaoDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.StatusSolicitacao;
@@ -24,15 +25,16 @@ import java.util.List;
 @RequestMapping("/solicitacao")
 @RestController
 @RequiredArgsConstructor
-public class SolicitacaoController {
+public class SolicitacaoController implements DocumentacaoSolicitacao {
 
     private final SolicitacaoService solicitacaoService;
 
-    @PostMapping("/requisitar")
+    @Override
     public ResponseEntity<SolicitacaoDTO> Requisitarsolicitacao(@RequestBody @Valid SolicitacaoCreateDTO solicitacaoCreateDTO) throws RegraDeNegocioException {
         return new ResponseEntity<>(solicitacaoService.create(solicitacaoCreateDTO), HttpStatus.OK);
     }
-    @GetMapping("/resgatar-personalizado")
+
+    @Override
     public ResponseEntity<List<SolicitacaoDTO>> resgatarSolicitacao(@RequestParam( value = "idMedico", required = false) Integer idMedico,
                                                                     @RequestParam(value = "idCliente", required = false) Integer idCliente,
                                                                     @RequestParam (value = "dataHoraInicio", required = false)
