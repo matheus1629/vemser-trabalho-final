@@ -32,19 +32,6 @@ public class SolicitacaoController {
     public ResponseEntity<SolicitacaoDTO> Requisitarsolicitacao(@RequestBody @Valid SolicitacaoCreateDTO solicitacaoCreateDTO) throws RegraDeNegocioException {
         return new ResponseEntity<>(solicitacaoService.create(solicitacaoCreateDTO), HttpStatus.OK);
     }
-
-<<<<<<< HEAD
-//    @GetMapping("/resgatar-personalizado/{idMedico}/{idCliente}/{dataHoraInicio}/{dataHoraFim}/{statusSolicitacao}")
-//    public ResponseEntity<List<SolicitacaoDTO>> resgatarSolicitacao(@RequestParam( value = "idMedico", required = false) Integer idMedico,
-//                                                                    @RequestParam(value = "idCliente", required = false) Integer idCliente,
-//                                                                    @RequestParam (value = "dataHoraInicio", required = false)
-//                                                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataHoraInicio,
-//                                                                    @RequestParam(value = "dataHoraFim", required = false)
-//                                                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime dataHoraFim,
-//                                                                    @RequestParam(value = "statusSolicitacao", required = false)StatusSolicitacao statusSolicitacao) {
-//        return new ResponseEntity<>(solicitacaoService.findSolicitacoes(idMedico, idCliente, dataHoraInicio, dataHoraFim, statusSolicitacao), HttpStatus.OK);
-//    }
-=======
     @GetMapping("/resgatar-personalizado")
     public ResponseEntity<List<SolicitacaoDTO>> resgatarSolicitacao(@RequestParam( value = "idMedico", required = false) Integer idMedico,
                                                                     @RequestParam(value = "idCliente", required = false) Integer idCliente,
@@ -55,7 +42,6 @@ public class SolicitacaoController {
                                                                     @RequestParam(value = "statusSolicitacao", required = false)StatusSolicitacao statusSolicitacao) {
         return new ResponseEntity<>(solicitacaoService.findSolicitacoes(idMedico, idCliente, dataHoraInicio, dataHoraFim, statusSolicitacao), HttpStatus.OK);
     }
->>>>>>> 01e82e007ff926e09b598d612d2d82d09f613820
 
 
 }
