@@ -33,7 +33,7 @@ public class SolicitacaoController {
         return new ResponseEntity<>(solicitacaoService.create(solicitacaoCreateDTO), HttpStatus.OK);
     }
 
-    @GetMapping("/resgatar-personalizado/{idMedico}/{idCliente}/{dataHoraInicio}/{dataHoraFim}/{statusSolicitacao}")
+    @GetMapping("/resgatar-personalizado")
     public ResponseEntity<List<SolicitacaoDTO>> resgatarSolicitacao(@RequestParam( value = "idMedico", required = false) Integer idMedico,
                                                                     @RequestParam(value = "idCliente", required = false) Integer idCliente,
                                                                     @RequestParam (value = "dataHoraInicio", required = false)
