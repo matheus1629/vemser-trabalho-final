@@ -60,6 +60,10 @@ public class AgendamentoServiceTest {
     private EmailService emailService;
     @Mock
     private SolicitacaoService solicitacaoService;
+    @Mock
+    private LogService logService;
+    @Mock
+    private UsuarioService usuarioService;
 
     private ObjectMapper objectMapper = new ObjectMapper();
     @Before
@@ -93,6 +97,7 @@ public class AgendamentoServiceTest {
         assertNotNull(agendamentoAdicionado);
     }
 
+
     @Test
     public void deveRecusarSolicitacaoAdicionar() throws RegraDeNegocioException {
         //SETUP
@@ -105,12 +110,10 @@ public class AgendamentoServiceTest {
 
         when(solicitacaoService.getSolicitacao(any())).thenReturn(solicitacaoEntity);
         doReturn(clienteEntityMock).when(clienteService).getCliente(any());
-        doReturn(medicoEntityMock).when(medicoService).getMedico(any());
-        when(agendamentoRepository.save(any())).thenReturn(agendamentoEntityMock);
-
         //ACT
         AgendamentoDTO agendamentoAdicionado = agendamentoService.adicionar("1",aprovarReprovarSolicitacao);
     }
+
 
     @Test(expected = RegraDeNegocioException.class)
     public void deveEntrarNoIfPendenteAdicionarAgendamento() throws RegraDeNegocioException {
@@ -122,10 +125,6 @@ public class AgendamentoServiceTest {
         AprovarReprovarSolicitacao aprovarReprovarSolicitacao = AprovarReprovarSolicitacao.APROVADA;
 
         when(solicitacaoService.getSolicitacao(any())).thenReturn(solicitacaoEntity);
-        doReturn(clienteEntityMock).when(clienteService).getCliente(any());
-        doReturn(medicoEntityMock).when(medicoService).getMedico(any());
-        when(agendamentoRepository.save(any())).thenReturn(agendamentoEntityMock);
-
         //ACT
         AgendamentoDTO agendamentoAdicionado = agendamentoService.adicionar("1",aprovarReprovarSolicitacao);
 
@@ -135,21 +134,40 @@ public class AgendamentoServiceTest {
     }
 
     @Test(expected = RegraDeNegocioException.class)
-    public void deveEntrarNoCatchAdicionarAgendamento() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+    public void deveEntrarNoPrimeiroCatchAdicionarAgendamento() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         //SETUP
         ClienteEntity clienteEntityMock = getClienteEntityMock();
-        MedicoEntity medicoEntityMock = getMedicoEntityMock();
-        AgendamentoEntity agendamentoEntityMock = getAgendamentoEntityMock();
+        MedicoEntity medicoEntity = getMedicoEntityMock();
         SolicitacaoEntity solicitacaoEntity = getSolicitacaoEntityMock();
         solicitacaoEntity.setStatusSolicitacao(StatusSolicitacao.PENDENTE);
         AprovarReprovarSolicitacao aprovarReprovarSolicitacao = AprovarReprovarSolicitacao.APROVADA;
 
+        clienteEntityMock.setUsuarioEntity(null);
+        medicoEntity.setUsuarioEntity(null);
+
+        when(medicoService.getMedico(any())).thenReturn(medicoEntity);
         when(solicitacaoService.getSolicitacao(any())).thenReturn(solicitacaoEntity);
         doReturn(clienteEntityMock).when(clienteService).getCliente(any());
-        doReturn(medicoEntityMock).when(medicoService).getMedico(any());
-        when(agendamentoRepository.save(any())).thenReturn(agendamentoEntityMock);
         doThrow(new MessagingException("Erro ao enviar o e-mail com as informações do agendamento.")).when(emailService).sendEmailAgendamento(any(),any(),any());
+        //ACT
+        AgendamentoDTO agendamentoAdicionado = agendamentoService.adicionar("1",aprovarReprovarSolicitacao);
+    }
 
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveEntrarNoCatchAdicionarAgendamento() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+        //SETUP
+        ClienteEntity clienteEntityMock = getClienteEntityMock();
+        MedicoEntity medicoEntity = getMedicoEntityMock();
+        SolicitacaoEntity solicitacaoEntity = getSolicitacaoEntityMock();
+        solicitacaoEntity.setStatusSolicitacao(StatusSolicitacao.PENDENTE);
+        AprovarReprovarSolicitacao aprovarReprovarSolicitacao = AprovarReprovarSolicitacao.REPROVADA;
+
+        clienteEntityMock.setUsuarioEntity(null);
+        medicoEntity.setUsuarioEntity(null);
+
+        when(solicitacaoService.getSolicitacao(any())).thenReturn(solicitacaoEntity);
+        doReturn(clienteEntityMock).when(clienteService).getCliente(any());
+        doThrow(new MessagingException("Erro ao enviar o e-mail com as informações do agendamento.")).when(emailService).sendEmailCliente(any(),any(),any());
         //ACT
         AgendamentoDTO agendamentoAdicionado = agendamentoService.adicionar("1",aprovarReprovarSolicitacao);
     }

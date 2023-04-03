@@ -13,10 +13,10 @@ import javax.validation.constraints.Size;
 public class AgendamentoMedicoEditarCreateDTO {
 
     @Size(max = 40)
-    @Schema(description = "Exame(s) pedidos pelo médico", example = "Sangue e urina")
+    @Schema(description = "Tratamento a ser seguido pelo cliente", example = "Dipirona de 6 em 6 horas")
     private String tratamento;
 
     @Size(max = 40)
-    @Schema(description = "Tratamento a ser seguido pelo cliente", example = "Dipirona de 6 em 6 horas")
+    @Schema(description = "Exame(s) pedidos pelo médico", example = "Sangue e urina")
     private String exame;
 }

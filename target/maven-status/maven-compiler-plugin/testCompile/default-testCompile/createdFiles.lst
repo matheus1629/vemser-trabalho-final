@@ -1,3 +1,10 @@
-br\com\dbc\vemser\trabalhofinal\service\MedicoServiceTest.class
+br\com\dbc\vemser\trabalhofinal\service\ConvenioServiceTest.class
+br\com\dbc\vemser\trabalhofinal\service\AdministrativoServiceTest.class
 br\com\dbc\vemser\trabalhofinal\service\ClienteServiceTest.class
+br\com\dbc\vemser\trabalhofinal\service\EmailServiceTest.class
+br\com\dbc\vemser\trabalhofinal\service\MedicoServiceTest.class
 br\com\dbc\vemser\trabalhofinal\service\EspecialidadeServiceTest.class
+br\com\dbc\vemser\trabalhofinal\service\UsuarioServiceTest.class
+br\com\dbc\vemser\trabalhofinal\service\AgendamentoServiceTest.class
+br\com\dbc\vemser\trabalhofinal\service\SolicitacaoServiceTest.class
+br\com\dbc\vemser\trabalhofinal\TrabalhoFinalApplicationTests.class

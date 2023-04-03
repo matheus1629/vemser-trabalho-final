@@ -1,88 +1,97 @@
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\service\EspecialidadeService.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\convenio\ConvenioDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\medico\MedicoCompletoDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\service\AgendamentoService.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\AgendamentoController.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\Status.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\TrocaSenhaDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\security\CodigoTrocaSenha.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocumentacaoMedico.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\medico\MedicoCreateDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\exceptions\RegraDeNegocioException.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\repository\ConvenioRepository.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\TrabalhoFinalApplication.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\convenio\ConvenioCreateDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\MedicoEntity.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\service\ClienteService.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\UsuarioEntity.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\client\EnderecoClient.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\OpenApiController.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\SolicitacaoEntity.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\medico\MedicoUpdateDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\LogEntity.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\repository\SolicitacaoReposiroty.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\security\TokenService.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\CargoEntity.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\service\MedicoService.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\SolicitacaoController.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\RedefinicaoSenhaDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\service\UsuarioService.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocumentacaoEspecialidadeConvenio.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\service\AdministrativoService.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\MedicoController.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\security\TokenAuthenticationFilter.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\usuario\UsuarioCreateDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\repository\AgendamentoRepository.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\cliente\ClienteDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\cliente\ClienteUpdateDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\repository\UsuarioRepository.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\especialidade\EspecialidadeDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\AuthController.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\agendamento\AgendamentoMedicoRelatorioDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\repository\ClienteRepository.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\especialidade\EspecialidadeCreateDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\LoginDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\agendamento\AgendamentoDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\repository\EspecialidadeRepository.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\ConvenioEntity.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\ClienteController.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\ConvenioControllerDocumentacao.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\medico\MedicoDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\service\ConvenioService.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\cliente\ClienteCompletoDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\AgendamentoEntity.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\AdministrativoController.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\target\generated-sources\java\br\com\dbc\vemser\trabalhofinal\entity\QLogEntity.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\service\EmailService.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocumentacaoAgendamento.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\StatusSolicitacao.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\EnderecoDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\exceptions\CustomGlobalExceptionHandler.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\DocumentacaoEspecialidadeController.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\solicitacao\SolicitacaoCreateDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\usuario\UsuarioUpdateDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\config\SimpleErrorDecode.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\target\generated-sources\java\br\com\dbc\vemser\trabalhofinal\entity\QSolicitacaoEntity.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\PageDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\security\AuthenticationService.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\repository\MedicoRepository.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\agendamento\AgendamentoListaDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\solicitacao\SolicitacaoDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\config\FeingConfig.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\security\SecurityConfiguration.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\cliente\ClienteCreateDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\AprovarReprovarSolicitacao.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\agendamento\AgendamentoClienteRelatorioDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\usuario\UsuarioDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocunentacaoAuth.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\config\OpenApiConfig.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\service\SolicitacaoService.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\cargo\CargoDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocumentacaoAdministracao.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\ClienteEntity.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\EspecialidadeEntity.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\solicitacao\SolicitacaoPesquisaDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocumentacaoCliente.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\cargo\CargoCreateDTO.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\TipoEmail.java
-C:\Users\mathe\OneDrive\Área de Trabalho\DBC\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\agendamento\AgendamentoCreateDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\UsuarioEntity.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\Status.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\AgendamentoController.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\medico\MedicoCreateDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\exceptions\RegraDeNegocioException.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\EnderecoDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\service\ClienteService.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\medico\MedicoUpdateDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\MedicoController.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\AgendamentoEntity.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\repository\AgendamentoRepository.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\security\TokenAuthenticationFilter.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\TipoEmail.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\OpenApiController.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\EspecialidadeController.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\security\SecurityConfiguration.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\target\generated-sources\java\br\com\dbc\vemser\trabalhofinal\entity\QSolicitacaoEntity.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\service\ConvenioService.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\AuthController.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\AprovarReprovarSolicitacao.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\MedicoEntity.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\especialidade\EspecialidadeCreateDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\repository\ClienteRepository.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\repository\UsuarioRepository.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\ConvenioController.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\cliente\ClienteCompletoDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\cliente\ClienteDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\cargo\CargoCreateDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\convenio\ConvenioDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\PageDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocumentacaoLog.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\RedefinicaoSenhaDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocumentacaoCliente.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\log\LogCreateDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\config\OpenApiConfig.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocumentacaoAgendamento.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\ClienteEntity.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\exceptions\CustomGlobalExceptionHandler.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\TrabalhoFinalApplication.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\medico\MedicoDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\ClienteController.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocumentacaoEspecialidadeConvenio.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\TrocaSenhaDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\client\EnderecoClient.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\convenio\ConvenioCreateDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\solicitacao\SolicitacaoPesquisaDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\security\TokenService.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\agendamento\AgendamentoDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\LogController.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\cargo\CargoDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocumentacaoSolicitacao.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\medico\MedicoCompletoDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\SolicitacaoController.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\repository\EspecialidadeRepository.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\service\SolicitacaoService.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\service\EspecialidadeService.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocunentacaoAuth.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\LogEntity.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\repository\SolicitacaoReposiroty.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocumentacaoAdministracao.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\ConvenioEntity.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\agendamento\AgendamentoClienteRelatorioDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\service\AgendamentoService.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\cliente\ClienteUpdateDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\StatusSolicitacao.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\cliente\ClienteCreateDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\EspecialidadeEntity.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\config\SimpleErrorDecode.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocumentacaoMedico.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\LoginDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\especialidade\EspecialidadeDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\service\MedicoService.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\agendamento\AgendamentoListaDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\service\UsuarioService.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\repository\ConvenioRepository.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\solicitacao\SolicitacaoDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\TipoLog.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\controller\AdministrativoController.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\usuario\UsuarioCreateDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\SolicitacaoEntity.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\repository\MedicoRepository.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\service\EmailService.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\config\FeingConfig.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\target\generated-sources\java\br\com\dbc\vemser\trabalhofinal\entity\QLogEntity.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\service\AdministrativoService.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\usuario\UsuarioUpdateDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\solicitacao\SolicitacaoCreateDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\service\LogService.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\security\AuthenticationService.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\usuario\UsuarioDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\repository\LogRepository.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\security\CodigoTrocaSenha.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\log\LogDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\agendamento\AgendamentoMedicoRelatorioDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\entity\CargoEntity.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\agendamento\AgendamentoCreateDTO.java
+C:\Users\Thassio\Desktop\projeto\vemser-trabalho-final\src\main\java\br\com\dbc\vemser\trabalhofinal\dto\AgendamentoMedicoEditarCreateDTO.java

@@ -215,7 +215,51 @@ public class EmailServiceTest {
         String variavel5 = emailService.getAgendamentoTemplate(agendamento,tipoEmail);
         //asserts AGENDAMENTO_CANCELADO_MEDICO
         Assert.assertNotNull(variavel5);
+    }
 
+    @Test
+    public void testarSendEmailCliente() throws MessagingException, TemplateException, IOException {
+        //setup
+        UsuarioEntity usuario = getUsuarioEntityMock();
+        TipoEmail tipoEmail = TipoEmail.SOLICITACAO_CRIADA;
+        String codigo = "1";
+        MimeMessage mimeMessage = new MimeMessage((Session)null);
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+        Template template = mock(Template.class);
+
+        Mockito.when(fmConfiguration.getTemplate(any())).thenReturn(template);
+        Mockito.doReturn(mimeMessageHelper).when(emailService).buildEmail(any(),any());
+        //act
+        emailService.sendEmailCliente(usuario,tipoEmail,codigo);
+        //asserts
+        verify(emailService,times(1)).sendEmailCliente(usuario,tipoEmail,codigo);
+    }
+
+    @Test
+    public void testarGetClienteTemplateSolicitacao() throws IOException, TemplateException {
+        UsuarioEntity usuario = getUsuarioEntityMock();
+        TipoEmail tipoEmail = TipoEmail.AGENDAMENTO_CRIADO_CLIENTE;
+        Template template = mock(Template.class);
+
+        Mockito.when(fmConfiguration.getTemplate(any())).thenReturn(template);
+        //act
+        String variavel = emailService.getClienteTemplateSolicitacao(usuario,"123",tipoEmail);
+        //asserts
+        Assert.assertNotNull(variavel);
+    }
+
+    @Test
+    public void testarGetClienteTemplateSolicitacaoCasoSolicitacaoRecusada() throws IOException, TemplateException {
+        //setup
+        UsuarioEntity usuario = getUsuarioEntityMock();
+        TipoEmail tipoEmail = TipoEmail.SOLICITACAO_RECUSADA;
+        Template template = mock(Template.class);
+
+        Mockito.when(fmConfiguration.getTemplate(any())).thenReturn(template);
+        //act
+        String variavel = emailService.getClienteTemplateSolicitacao(usuario,"123",tipoEmail);
+        //asserts
+        Assert.assertNotNull(variavel);
     }
 
     @NotNull

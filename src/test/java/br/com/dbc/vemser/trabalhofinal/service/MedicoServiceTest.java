@@ -2,16 +2,16 @@ package br.com.dbc.vemser.trabalhofinal.service;
 
 
 import br.com.dbc.vemser.trabalhofinal.client.EnderecoClient;
+import br.com.dbc.vemser.trabalhofinal.dto.AgendamentoMedicoEditarCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.EnderecoDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoListaDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoMedicoRelatorioDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoUpdateDTO;
-import br.com.dbc.vemser.trabalhofinal.entity.CargoEntity;
-import br.com.dbc.vemser.trabalhofinal.entity.EspecialidadeEntity;
-import br.com.dbc.vemser.trabalhofinal.entity.MedicoEntity;
-import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.*;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.MedicoRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -32,9 +32,11 @@ import org.springframework.test.util.ReflectionTestUtils;
 import javax.mail.MessagingException;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static br.com.dbc.vemser.trabalhofinal.service.ClienteServiceTest.getClienteEntityMock;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -226,6 +228,37 @@ public class MedicoServiceTest {
         medicoService.checarSeTemNumero("thassio123");
     }
 
+    @Test
+    public void testarEditarAgendamentoMedico() throws RegraDeNegocioException {
+        //setup
+        AgendamentoMedicoEditarCreateDTO agendamentoMedicoEditarCreateDTO = getAgendamentoMedicoEditarCreateDTO();
+        AgendamentoEntity agendamento = getAgendamentoEntityMock();
+        MedicoEntity medico = getMedicoEntityMock();
+
+        when(agendamentoService.editar(anyInt(),any())).thenReturn(getAgendamentoDTOMock());
+        when(agendamentoService.getAgendamento(any())).thenReturn(agendamento);
+        when(medicoRepository.getMedicoEntityByIdUsuario(any())).thenReturn(medico);
+        //act
+        AgendamentoDTO agendamentoDTO = medicoService.editarAgendamentoMedico(1,agendamentoMedicoEditarCreateDTO);
+        //assert
+        assertEquals(agendamentoDTO.getIdMedico(),medico.getIdMedico());
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void testarIfEditarAgendamentoMedico() throws RegraDeNegocioException {
+        //setup
+        AgendamentoMedicoEditarCreateDTO agendamentoMedicoEditarCreateDTO = getAgendamentoMedicoEditarCreateDTO();
+        AgendamentoEntity agendamento = getAgendamentoEntityMock();
+        MedicoEntity medico = getMedicoEntityMock();
+        agendamento.setIdMedico(1);
+        medico.setIdMedico(2);
+
+        when(agendamentoService.getAgendamento(any())).thenReturn(agendamento);
+        when(medicoRepository.getMedicoEntityByIdUsuario(any())).thenReturn(medico);
+        //act
+        AgendamentoDTO agendamentoDTO = medicoService.editarAgendamentoMedico(1,agendamentoMedicoEditarCreateDTO);
+    }
+
 
     @NotNull
     static MedicoEntity getMedicoEntityMock() {
@@ -265,6 +298,18 @@ public class MedicoServiceTest {
         return medicoMockadaDoBancoDTO;
     }
 
+    public static AgendamentoDTO getAgendamentoDTOMock() {
+        AgendamentoDTO agendamentoDTO = new AgendamentoDTO();
+        agendamentoDTO.setTratamento("Um tratamento");
+        agendamentoDTO.setExame("Um exame");
+        agendamentoDTO.setDataHorario(LocalDateTime.of(2023, 05, 12, 20, 15));
+        agendamentoDTO.setIdMedico(1);
+        agendamentoDTO.setIdCliente(1);
+        agendamentoDTO.setIdAgendamento(1);
+        agendamentoDTO.setValorAgendamento(450.0);
+        return agendamentoDTO;
+    }
+
     private static UsuarioEntity getUsuarioEntityMock() {
         UsuarioEntity usuarioEntity = new UsuarioEntity();
         usuarioEntity.setSenha("123");
@@ -278,6 +323,16 @@ public class MedicoServiceTest {
         usuarioEntity.setEmail("Carlos@gmail.com");
         usuarioEntity.setNumero(123);
         return usuarioEntity;
+    }
+
+    public static AgendamentoCreateDTO getAgendamentoCreateDTOMock() {
+        AgendamentoCreateDTO agendamentoCreateDTO = new AgendamentoCreateDTO();
+        agendamentoCreateDTO.setTratamento("Um tratamento");
+        agendamentoCreateDTO.setExame("Um exame");
+        agendamentoCreateDTO.setDataHorario(LocalDateTime.of(2023, 05, 12, 20, 15));
+        agendamentoCreateDTO.setIdMedico(1);
+        agendamentoCreateDTO.setIdCliente(1);
+        return agendamentoCreateDTO;
     }
 
     private static CargoEntity getCargoEntityMock() {
@@ -295,5 +350,25 @@ public class MedicoServiceTest {
         return especialidadeEntity;
     }
 
+    private static AgendamentoMedicoEditarCreateDTO getAgendamentoMedicoEditarCreateDTO() {
+        AgendamentoMedicoEditarCreateDTO agendamentoMedicoEditarCreateDTO = new AgendamentoMedicoEditarCreateDTO();
+        agendamentoMedicoEditarCreateDTO.setTratamento("Tratamento a ser seguido pelo cliente");
+        agendamentoMedicoEditarCreateDTO.setExame("Exame(s) pedidos pelo médico");
+        return agendamentoMedicoEditarCreateDTO;
+    }
+
+    private AgendamentoEntity getAgendamentoEntityMock() {
+        AgendamentoEntity agendamentoEntity = new AgendamentoEntity();
+        agendamentoEntity.setValorAgendamento(450.0);
+        agendamentoEntity.setIdAgendamento(1);
+        agendamentoEntity.setIdCliente(1);
+        agendamentoEntity.setIdMedico(1);
+        agendamentoEntity.setMedicoEntity(getMedicoEntityMock());
+        agendamentoEntity.setClienteEntity(getClienteEntityMock());
+        agendamentoEntity.setExame("Um exame");
+        agendamentoEntity.setTratamento("Um tratamento");
+        agendamentoEntity.setDataHorario(LocalDateTime.of(2023, 05, 12, 20, 15));
+        return agendamentoEntity;
+    }
 
 }
