@@ -143,6 +143,12 @@ public class MedicoService {
     public AgendamentoDTO editarAgendamentoMedico(Integer idAgendamento, AgendamentoMedicoEditarCreateDTO agendamentoMedicoEditarCreateDTO) throws RegraDeNegocioException {
         AgendamentoEntity agendamentoEntity = agendamentoService.getAgendamento(idAgendamento);
 
+        MedicoEntity medicoEntity = medicoRepository.getMedicoEntityByIdUsuario(usuarioService.getIdLoggedUser());
+
+        if (!agendamentoEntity.getMedicoEntity().getIdMedico().equals(medicoEntity.getIdMedico())){
+            throw new RegraDeNegocioException("Você não pode alterar um agendamento que não é seu.");
+        }
+
         agendamentoEntity.setTratamento(agendamentoMedicoEditarCreateDTO.getTratamento());
         agendamentoEntity.setExame(agendamentoMedicoEditarCreateDTO.getExame());
 

@@ -35,7 +35,7 @@ public class EmailService {
     // USUÁRIO
 
     public void sendEmailUsuario(UsuarioEntity usuario, TipoEmail tipoEmail, Integer codigo) throws MessagingException, TemplateException, IOException {
-        MimeMessageHelper mimeMessageHelper = buildEmailUsuario(usuario.getEmail(), tipoEmail);
+        MimeMessageHelper mimeMessageHelper = buildEmail(usuario.getEmail(), tipoEmail);
         if(tipoEmail == TipoEmail.USUARIO_REDEFINIR_SENHA){
             mimeMessageHelper.setText(getUsuarioTemplateRedefinicao(usuario, codigo), true);
         }else{
@@ -45,7 +45,7 @@ public class EmailService {
         emailSender.send(mimeMessageHelper.getMimeMessage());
     }
 
-    public MimeMessageHelper buildEmailUsuario(String email, TipoEmail tipoEmail) throws MessagingException {
+    public MimeMessageHelper buildEmail(String email, TipoEmail tipoEmail) throws MessagingException {
         MimeMessage mimeMessage = emailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
 
@@ -86,20 +86,10 @@ public class EmailService {
     // AGENDAMENTO
 
     public void sendEmailAgendamento(UsuarioEntity usuario, AgendamentoEntity agendamento, TipoEmail tipoEmail) throws MessagingException, TemplateException, IOException {
-        MimeMessageHelper mimeMessageHelper = buildEmailAgendamento(usuario.getEmail(), tipoEmail);
+        MimeMessageHelper mimeMessageHelper = buildEmail(usuario.getEmail(), tipoEmail);
         mimeMessageHelper.setText(getAgendamentoTemplate(agendamento, tipoEmail), true);
 
         emailSender.send(mimeMessageHelper.getMimeMessage());
-    }
-
-    public MimeMessageHelper buildEmailAgendamento(String email, TipoEmail tipoEmail) throws MessagingException {
-        MimeMessage mimeMessage = emailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-
-        mimeMessageHelper.setFrom(from);
-        mimeMessageHelper.setTo(email);
-        mimeMessageHelper.setSubject(tipoEmail.getAssunto());
-        return mimeMessageHelper;
     }
 
     public String getAgendamentoTemplate(AgendamentoEntity agendamento, TipoEmail tipo) throws IOException, TemplateException {
@@ -132,5 +122,33 @@ public class EmailService {
 
         return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
     }
+
+    // CLIENTE
+    public void sendEmailCliente(UsuarioEntity usuario, TipoEmail tipoEmail, String codigo) throws MessagingException, TemplateException, IOException {
+        MimeMessageHelper mimeMessageHelper = buildEmail(usuario.getEmail(), tipoEmail);
+        mimeMessageHelper.setText(getClienteTemplateSolicitacao(usuario, codigo, tipoEmail), true);
+
+        emailSender.send(mimeMessageHelper.getMimeMessage());
+    }
+
+    public String getClienteTemplateSolicitacao(UsuarioEntity usuario, String codigo, TipoEmail tipoEmail) throws IOException, TemplateException {
+        Template template;
+        Map<String, Object> dados = new HashMap<>();
+        dados.put("email", from);
+        dados.put("nome", usuario.getNome());
+        dados.put("codigo", codigo);
+
+        switch (tipoEmail){
+            case SOLICITACAO_CRIADA ->
+                    template = fmConfiguration.getTemplate("agendamento-solicitacao-criada.ftl");
+            case SOLICITACAO_RECUSADA ->
+                    template = fmConfiguration.getTemplate("agendamento-solicitacao-recusada.ftl");
+            default ->
+                    template = fmConfiguration.getTemplate("agendamento-solicitacao-criada.ftl");
+        }
+
+        return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
+    }
+
 
 }

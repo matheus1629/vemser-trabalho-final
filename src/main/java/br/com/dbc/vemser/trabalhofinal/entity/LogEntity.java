@@ -1,13 +1,12 @@
 package br.com.dbc.vemser.trabalhofinal.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Id;
+import org.springframework.data.annotation.Id;
 import java.time.LocalDateTime;
 
 @Document(collection = "Log")
@@ -18,8 +17,8 @@ import java.time.LocalDateTime;
 public class LogEntity {
 
     @Id
-    private Integer idLog;
-    private Integer idSolicitacao;
+    private String idLog;
+    private String idSolicitacao;
     private Integer idAgendamento;
     private Integer idUsuario;
     private LocalDateTime dataHora;

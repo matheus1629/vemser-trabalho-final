@@ -55,7 +55,7 @@ public class ClienteService {
     public ClienteCompletoDTO getById(Integer idCliente) throws RegraDeNegocioException {
         Optional<ClienteCompletoDTO> clienteRetornado = clienteRepository.getByIdPersonalizado(idCliente);
         if (clienteRetornado.isEmpty()) {
-            throw new RegraDeNegocioException("Usuário não encontrado.");
+            throw new RegraDeNegocioException("Cliente não encontrado.");
         }
         clienteRetornado.get().setEnderecoDTO(enderecoClient.getEndereco(clienteRetornado.get().getCep()));
         return clienteRetornado.get();

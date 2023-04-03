@@ -1,18 +1,20 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
+import br.com.dbc.vemser.trabalhofinal.dto.log.LogCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.solicitacao.SolicitacaoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.solicitacao.SolicitacaoDTO;
-import br.com.dbc.vemser.trabalhofinal.entity.QSolicitacaoEntity;
-import br.com.dbc.vemser.trabalhofinal.entity.SolicitacaoEntity;
-import br.com.dbc.vemser.trabalhofinal.entity.StatusSolicitacao;
+import br.com.dbc.vemser.trabalhofinal.entity.*;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.SolicitacaoReposiroty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.BooleanBuilder;
+import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,9 +24,15 @@ import java.util.stream.Collectors;
 public class SolicitacaoService {
     private final SolicitacaoReposiroty solicitacaoReposiroty;
     private final ClienteService clienteService;
+    private final EmailService emailService;
+    private final UsuarioService usuarioService;
     private final ObjectMapper objectMapper;
+    private final MedicoService medicoService;
+    private final LogService logService;
 
     public SolicitacaoDTO create(SolicitacaoCreateDTO solicitacaoCreateDTO) throws RegraDeNegocioException {
+        medicoService.getMedico(solicitacaoCreateDTO.getIdMedico()); //verifica se o médico existe
+
         solicitacaoCreateDTO.setIdCliente(clienteService.recuperarCliente().getIdCliente());
         solicitacaoCreateDTO.setStatusSolicitacao(StatusSolicitacao.PENDENTE);
 
@@ -33,15 +41,28 @@ public class SolicitacaoService {
 
         solicitacaoReposiroty.save(solicitacaoEntity);
 
+        try{
+            emailService.sendEmailCliente(usuarioService.getUsuario(clienteService.recuperarCliente().getIdUsuario()), TipoEmail.SOLICITACAO_CRIADA, solicitacaoEntity.getIdSoliciatacao());
+        } catch (MessagingException | TemplateException | IOException e) {
+            throw new RegraDeNegocioException("Erro ao enviar informativo da criação de solicitação.");
+        }
+
         var solicitacaoDTO = new SolicitacaoDTO();
         BeanUtils.copyProperties(solicitacaoEntity, solicitacaoDTO);
 
         return solicitacaoDTO;
-
     }
 
     public void reprovarSolicitacao(SolicitacaoEntity solicitacaoEntity){
         solicitacaoReposiroty.save(solicitacaoEntity);
+        LogCreateDTO logCreateDTO = new LogCreateDTO();
+        logCreateDTO.setIdAgendamento(null);
+        logCreateDTO.setIdSolicitacao(solicitacaoEntity.getIdSoliciatacao());
+        logCreateDTO.setIdUsuario(usuarioService.getIdLoggedUser());
+        logCreateDTO.setDataHora(LocalDateTime.now());
+        logCreateDTO.setTipoLog(TipoLog.REPROVACAO_SOLICITACAO);
+
+        logService.salvarLog(logCreateDTO);
     }
 
     public void aprovarSolicitacao(SolicitacaoEntity solicitacaoEntity){

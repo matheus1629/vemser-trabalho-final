@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/convenio")
-public class ConvenioControllerDocumentacao implements DocumentacaoEspecialidadeConvenio<ConvenioDTO, ConvenioCreateDTO, Integer, Integer> {
+public class ConvenioController implements DocumentacaoEspecialidadeConvenio<ConvenioDTO, ConvenioCreateDTO, Integer, Integer> {
 
     private final ConvenioService convenioService;
 

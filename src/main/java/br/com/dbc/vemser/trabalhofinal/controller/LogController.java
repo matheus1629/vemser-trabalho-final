@@ -3,7 +3,6 @@ package br.com.dbc.vemser.trabalhofinal.controller;
 import br.com.dbc.vemser.trabalhofinal.controller.documentacao.DocumentacaoLog;
 import br.com.dbc.vemser.trabalhofinal.dto.log.LogDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.TipoLog;
-import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.LogService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,7 @@ public class LogController implements DocumentacaoLog {
     private final LogService logService;
 
     @Override
-    public ResponseEntity<List<LogDTO>> buscarPeloIdSolicitacao(Integer idSolicitacao){
+    public ResponseEntity<List<LogDTO>> buscarPeloIdSolicitacao(String idSolicitacao){
         return new ResponseEntity<>(logService.listLogsByIdSolicitacao(idSolicitacao), HttpStatus.OK);
     }
 
@@ -43,12 +42,12 @@ public class LogController implements DocumentacaoLog {
     }
 
     @Override
-    public ResponseEntity<List<LogDTO>> buscarPelaData(LocalDate data){
-        return new ResponseEntity<>(logService.listLogsByData(data), HttpStatus.OK);
+    public ResponseEntity<List<LogDTO>> buscarPelaData(LocalDate dataInicio, LocalDate dataFim){
+        return new ResponseEntity<>(logService.listLogsByData(dataInicio, dataFim), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<LogDTO>> buscarPelaData(TipoLog tipoLog){
+    public ResponseEntity<List<LogDTO>> buscarPeloTipo(TipoLog tipoLog){
         return new ResponseEntity<>(logService.listLogsByTipoLog(tipoLog), HttpStatus.OK);
     }
 }

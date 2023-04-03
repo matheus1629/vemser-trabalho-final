@@ -3,11 +3,6 @@ package br.com.dbc.vemser.trabalhofinal.service;
 import br.com.dbc.vemser.trabalhofinal.entity.AgendamentoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.TipoEmail;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
-import br.com.dbc.vemser.trabalhofinal.service.EmailService;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -61,7 +56,7 @@ public class EmailServiceTest {
 
         MimeMessage mimeMessage = new MimeMessage((Session)null);
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-        Mockito.doReturn(mimeMessageHelper).when(emailService).buildEmailUsuario(any(),any());
+        Mockito.doReturn(mimeMessageHelper).when(emailService).buildEmail(any(),any());
         Mockito.doReturn("abc").when(emailService).getUsuarioTemplate(any(),any());
         //act
         emailService.sendEmailUsuario(usuario,tipoEmail,codigo);
@@ -78,7 +73,7 @@ public class EmailServiceTest {
 
         MimeMessage mimeMessage = new MimeMessage((Session)null);
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-        Mockito.doReturn(mimeMessageHelper).when(emailService).buildEmailUsuario(any(),any());
+        Mockito.doReturn(mimeMessageHelper).when(emailService).buildEmail(any(),any());
         Mockito.doReturn("abc").when(emailService).getUsuarioTemplateRedefinicao(any(),any());
         //act
         emailService.sendEmailUsuario(usuario,tipoEmail,codigo);
@@ -94,7 +89,7 @@ public class EmailServiceTest {
 
         Mockito.when(emailSender.createMimeMessage()).thenReturn(new MimeMessage((Session)null));
         //act
-        MimeMessageHelper mimeMessageHelper = emailService.buildEmailUsuario(email,tipoEmail);
+        MimeMessageHelper mimeMessageHelper = emailService.buildEmail(email,tipoEmail);
         //assert
         Assert.assertNotNull(mimeMessageHelper);
     }
@@ -153,7 +148,7 @@ public class EmailServiceTest {
         Mockito.when(fmConfiguration.getTemplate(any())).thenReturn(template);
         MimeMessage mimeMessage = new MimeMessage((Session)null);
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-        Mockito.doReturn(mimeMessageHelper).when(emailService).buildEmailAgendamento(any(),any());
+        Mockito.doReturn(mimeMessageHelper).when(emailService).buildEmail(any(),any());
         //act
         emailService.sendEmailAgendamento(usuario,agendamento,tipoEmail);
         //asserts
@@ -168,7 +163,7 @@ public class EmailServiceTest {
 
         Mockito.when(emailSender.createMimeMessage()).thenReturn(new MimeMessage((Session)null));
         //act
-        MimeMessageHelper variavel = emailService.buildEmailAgendamento(email,tipoEmail);
+        MimeMessageHelper variavel = emailService.buildEmail(email,tipoEmail);
         //assert
         Assert.assertNotNull(variavel);
     }

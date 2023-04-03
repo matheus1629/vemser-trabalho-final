@@ -5,6 +5,7 @@ import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoClienteRelator
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoMedicoRelatorioDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.log.LogCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.*;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.AgendamentoRepository;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -30,6 +32,8 @@ public class AgendamentoService {
     private final ObjectMapper objectMapper;
     private final EmailService emailService;
     private final SolicitacaoService solicitacaoService;
+    private final UsuarioService usuarioService;
+    private final LogService logService;
 
     public AgendamentoDTO adicionar(String idSolicitacao, AprovarReprovarSolicitacao aprovarReprovarSolicitacao) throws RegraDeNegocioException {
         SolicitacaoEntity solicitacaoEntity = solicitacaoService.getSolicitacao(idSolicitacao);
@@ -43,7 +47,11 @@ public class AgendamentoService {
         if (aprovarReprovarSolicitacao.equals(AprovarReprovarSolicitacao.REPROVADA)){
             solicitacaoEntity.setStatusSolicitacao(StatusSolicitacao.RECUSADA);
             solicitacaoService.reprovarSolicitacao(solicitacaoEntity);
-            //<todo envio de email para solicitacao reprovada
+            try{
+                emailService.sendEmailCliente(usuarioService.getUsuario(clienteService.getCliente(solicitacaoEntity.getIdCliente()).getIdUsuario()), TipoEmail.SOLICITACAO_RECUSADA, solicitacaoEntity.getIdSoliciatacao());
+            } catch (MessagingException | TemplateException | IOException e) {
+                throw new RegraDeNegocioException("Erro ao enviar informativo de solicitação recusada.");
+            }
             return null;
         }
 
@@ -61,13 +69,21 @@ public class AgendamentoService {
         agendamentoRepository.save(agendamentoEntity);
         solicitacaoService.aprovarSolicitacao(solicitacaoEntity);
 
+        LogCreateDTO logCreateDTO = new LogCreateDTO();
+        logCreateDTO.setIdSolicitacao(solicitacaoEntity.getIdSoliciatacao());
+        logCreateDTO.setIdAgendamento(agendamentoEntity.getIdAgendamento());
+        logCreateDTO.setIdUsuario(usuarioService.getIdLoggedUser());
+        logCreateDTO.setDataHora(LocalDateTime.now());
+        logCreateDTO.setTipoLog(TipoLog.APROVACAO_SOLICITACAO);
+
+        logService.salvarLog(logCreateDTO);
+
         try{
             emailService.sendEmailAgendamento(clienteEntity.getUsuarioEntity(), agendamentoEntity, TipoEmail.AGENDAMENTO_CRIADO_CLIENTE);
             emailService.sendEmailAgendamento(medicoEntity.getUsuarioEntity(), agendamentoEntity, TipoEmail.AGENDAMENTO_CRIADO_MEDICO);
         } catch (MessagingException | TemplateException | IOException e) {
             throw new RegraDeNegocioException("Erro ao enviar o e-mail com as informações do agendamento.");
         }
-    // <todo está criando no banco de dados o agendamento mesmo quando da uma exception de destinatário inválido
 
         return objectMapper.convertValue(agendamentoEntity, AgendamentoDTO.class);
     }
@@ -93,6 +109,15 @@ public class AgendamentoService {
             throw new RegraDeNegocioException("Erro ao enviar o e-mail de edição no agendamento.");
         }
 
+        LogCreateDTO logCreateDTO = new LogCreateDTO();
+        logCreateDTO.setIdSolicitacao(null);
+        logCreateDTO.setIdAgendamento(id);
+        logCreateDTO.setIdUsuario(usuarioService.getIdLoggedUser());
+        logCreateDTO.setDataHora(LocalDateTime.now());
+        logCreateDTO.setTipoLog(TipoLog.EDICAO_AGENDAMENTO);
+
+        logService.salvarLog(logCreateDTO);
+
         return objectMapper.convertValue(agendamentoEntity, AgendamentoDTO.class);
     }
 
@@ -105,6 +130,15 @@ public class AgendamentoService {
             throw new RegraDeNegocioException("Erro ao enviar o e-mail de cancelamento do agendamento.");
         }
         agendamentoRepository.delete(agendamentoEntity);
+
+        LogCreateDTO logCreateDTO = new LogCreateDTO();
+        logCreateDTO.setIdSolicitacao(null);
+        logCreateDTO.setIdAgendamento(id);
+        logCreateDTO.setIdUsuario(usuarioService.getIdLoggedUser());
+        logCreateDTO.setDataHora(LocalDateTime.now());
+        logCreateDTO.setTipoLog(TipoLog.EXCLUSAO_AGENDAMENTO);
+
+        logService.salvarLog(logCreateDTO);
     }
 
     public void removerPorMedicoDesativado(MedicoEntity medicoEntity) throws RegraDeNegocioException {

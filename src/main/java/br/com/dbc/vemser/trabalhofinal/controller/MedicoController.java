@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Tag(name="Médico")
+@Tag(name = "Médico")
 @Slf4j
 @Validated
 @RequestMapping("/medico")
 @RestController
 @RequiredArgsConstructor
-public class MedicoController implements DocumentacaoMedico<MedicoCompletoDTO> {
+public class MedicoController implements DocumentacaoMedico<MedicoCompletoDTO, Integer, AgendamentoMedicoEditarCreateDTO> {
 
     private final MedicoService medicoService;
 
@@ -46,8 +46,8 @@ public class MedicoController implements DocumentacaoMedico<MedicoCompletoDTO> {
         return new ResponseEntity<>(medicoAtualizado, HttpStatus.OK);
     }
 
-    @PutMapping("/editar-agendamento/")
-    public ResponseEntity<AgendamentoDTO> editarAgendamento(@RequestParam ("idAgendamento") Integer idAgendamento,
+    @Override
+    public ResponseEntity<AgendamentoDTO> editarAgendamento(@RequestParam("idAgendamento") Integer idAgendamento,
                                                             @RequestBody @Valid AgendamentoMedicoEditarCreateDTO agendamentoMedicoEditarCreateDTO) throws RegraDeNegocioException {
         return new ResponseEntity<>(medicoService.editarAgendamentoMedico(idAgendamento, agendamentoMedicoEditarCreateDTO), HttpStatus.OK);
     }

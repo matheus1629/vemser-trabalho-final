@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LogDTO extends LogCreateDTO{
 
-    private Integer idLog;
+    private String idLog;
 
 }
