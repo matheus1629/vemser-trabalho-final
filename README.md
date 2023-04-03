@@ -9,7 +9,7 @@
 <p>
     <strong> ⛺ Estrutura principal:</strong>
     <ul>
-        <li><u>Usuário Administrativo</u> - <i>tem acesso a todas funcionalidades do sistema.</i></li>
+        <li><u>Usuário Administrativo</u> - <i>tem acesso as de controle nos registros do sistema.</i></li>
         <li><u>Cliente</u> - <i>possui informações pessoais básicas e de login, esse pode ter algum Convênio. </i></li>
         <li><u>Convênio</u> - <i>para o cadastro no Cliente, podendo ter algum abatimento no valor da consulta.</i></li>
         <li><u>Médico</u> - <i>possui informações pessoais básicas e de login, deve ter necessariamente alguma Especialidade.</i></li>
@@ -18,16 +18,17 @@
     </ul>
     Diferenças de permissões:
     <ul>
-        <li>Qualquer pessoa consegue: criar um login, se autenticar, trocar sua senha (estando logado), redefinir sua senha (sem estar logado), se cadastrar como médico ou cliente.</li>
-        <li>Um Administrador faz operações de CRUD (create, read, update e delete) em qualquer classe, especialmente: Convênio, Especialidade e Agendamento. Ou seja, somente ele faz agendamentos.</li>
-        <li>Um Cliente e um Médico podem somente: atualizar suas informações de cadastro, verificar suas informações e verificar seus agendamentos.</li>
+        <li>Qualquer pessoa consegue: se cadastrar como médico ou cliente, se autenticar, trocar sua senha (estando logado), redefinir sua senha (sem estar logado).</li>
+        <li>Um Administrador faz operações de CRUD (create, read, update e delete) em qualquer classe, especialmente: Convênio, Especialidade e Agendamento. Contudo, para que ele crie um agendamento é necessário indicar a solicitação de atendimento (feita pelo cliente). Ele também consegue consultar as solicitações de diversas formas.</li>
+        <li>Um Cliente e um Médico podem: atualizar suas informações de cadastro, verificar suas informações e seus agendamentos.</li>
+        <li>Um Cliente consegue solicitar um agendamento. Esse agendamento estartá submetido à aceitação de um administrador.</li>
+        <li>Um Médico consegue editar um agendamento, mas somente para incluir nele o tratamento e os exames após a consulta ter ocorrido.</li>
     </ul>
     Destaques desta versão:
     <ul>
-        <li>Sistema de autenticação e segurança, bem como diferenciação de acessos e sistema para login (com criptografia de senhas e recursos para recuperação de acesso).</li>
-        <li>Valor da consulta é calculado e incluído no agendamento, com base na especialidade do médico e desconto de convênio do cliente.</li>
-        <li>Envio de e-mails nos casos em que: se cria um usuário, se inlui, altera ou exclui um Agendamento (enviado tanto ao médico quanto ao Cliente), se solicita um código para redefinir senha e ao ter alterado a senha.</li>
-        <li>Retorno de informações adicionais do endereço coletadas através da pesquisa de CEP por uma comunicação com a API pública do site <i>viacep.com.br</i>.</li>
+        <li>Sistema de solicitação de atendimento para os clientes. Agora, para que um agendamento seja criado é necessário que um cliente solicite um agendamento. Um administrador deverá analisar e escolher aceitar ou recusar.</li>
+        <li>Registro de logs em alterações de solicitações e agendamentos feitas por algum administrador. Esses logs podem ser consultados pelo administrador.</li>
+        <li>Código fonte com testes unitários aplicados.</li>
     </ul>
 </p>
 <hr>
@@ -39,7 +40,9 @@
     <li>Spring Security</li>
     <li>Spring Data</li>
     <li>Banco de dados Oracle</li>
+    <li>MongoDB</li>
     <li>Swagger</li>
+    <li>Mockito</li>
     <li>JavaMail com templates FreeMarker</li>
     <li>Feign Client</li>
     <li>Jenkins</li>
@@ -62,7 +65,7 @@
 
 #### Vem Ser - Trabalho final do Módulo 3.3
 ## Trello da divisão de tarefas:
-<p>https://trello.com/b/Vy0EW2Vk/spring-security</p>
+<p>https://trello.com/b/qHePfMlv/trabalho-final-modulo-4</p>
 
 <hr>
 <h2>Autores</h2> 
