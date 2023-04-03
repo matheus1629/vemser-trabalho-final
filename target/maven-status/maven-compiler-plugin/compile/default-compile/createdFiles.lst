@@ -15,17 +15,22 @@ br\com\dbc\vemser\trabalhofinal\service\EmailService.class
 br\com\dbc\vemser\trabalhofinal\service\MedicoService.class
 br\com\dbc\vemser\trabalhofinal\controller\AuthController.class
 br\com\dbc\vemser\trabalhofinal\dto\solicitacao\SolicitacaoPesquisaDTO.class
+br\com\dbc\vemser\trabalhofinal\controller\ConvenioController.class
 br\com\dbc\vemser\trabalhofinal\entity\AgendamentoEntity.class
 br\com\dbc\vemser\trabalhofinal\security\SecurityConfiguration.class
 br\com\dbc\vemser\trabalhofinal\dto\cargo\CargoDTO.class
 br\com\dbc\vemser\trabalhofinal\dto\agendamento\AgendamentoDTO.class
 br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocumentacaoAgendamento.class
+br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocumentacaoLog.class
+br\com\dbc\vemser\trabalhofinal\service\LogService.class
 br\com\dbc\vemser\trabalhofinal\dto\usuario\UsuarioDTO.class
 br\com\dbc\vemser\trabalhofinal\entity\TipoEmail.class
 br\com\dbc\vemser\trabalhofinal\controller\AgendamentoController.class
 br\com\dbc\vemser\trabalhofinal\dto\LoginDTO.class
 br\com\dbc\vemser\trabalhofinal\entity\QSolicitacaoEntity.class
+br\com\dbc\vemser\trabalhofinal\dto\log\LogDTO.class
 br\com\dbc\vemser\trabalhofinal\entity\LogEntity.class
+br\com\dbc\vemser\trabalhofinal\repository\LogRepository.class
 br\com\dbc\vemser\trabalhofinal\dto\cargo\CargoCreateDTO.class
 br\com\dbc\vemser\trabalhofinal\dto\cliente\ClienteCreateDTO.class
 br\com\dbc\vemser\trabalhofinal\TrabalhoFinalApplication.class
@@ -39,12 +44,11 @@ br\com\dbc\vemser\trabalhofinal\dto\convenio\ConvenioCreateDTO.class
 br\com\dbc\vemser\trabalhofinal\controller\MedicoController.class
 br\com\dbc\vemser\trabalhofinal\dto\RedefinicaoSenhaDTO.class
 br\com\dbc\vemser\trabalhofinal\entity\Status.class
+br\com\dbc\vemser\trabalhofinal\controller\EspecialidadeController.class
 br\com\dbc\vemser\trabalhofinal\dto\cliente\ClienteCompletoDTO.class
-br\com\dbc\vemser\trabalhofinal\controller\DocumentacaoEspecialidadeController.class
 br\com\dbc\vemser\trabalhofinal\controller\OpenApiController.class
 br\com\dbc\vemser\trabalhofinal\entity\MedicoEntity.class
 br\com\dbc\vemser\trabalhofinal\service\ConvenioService.class
-br\com\dbc\vemser\trabalhofinal\controller\ConvenioControllerDocumentacao.class
 br\com\dbc\vemser\trabalhofinal\service\EspecialidadeService.class
 br\com\dbc\vemser\trabalhofinal\dto\cliente\ClienteDTO.class
 br\com\dbc\vemser\trabalhofinal\service\AgendamentoService.class
@@ -55,16 +59,15 @@ br\com\dbc\vemser\trabalhofinal\entity\UsuarioEntity.class
 br\com\dbc\vemser\trabalhofinal\service\UsuarioService.class
 br\com\dbc\vemser\trabalhofinal\security\TokenService.class
 br\com\dbc\vemser\trabalhofinal\security\SecurityConfiguration$1.class
+br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocumentacaoSolicitacao.class
 br\com\dbc\vemser\trabalhofinal\service\SolicitacaoService.class
 br\com\dbc\vemser\trabalhofinal\dto\medico\MedicoCompletoDTO.class
-<<<<<<< HEAD
-=======
 br\com\dbc\vemser\trabalhofinal\entity\AprovarReprovarSolicitacao.class
->>>>>>> c307f9113a2937987ae3ea15eef679bf20e4aa48
 br\com\dbc\vemser\trabalhofinal\service\ClienteService.class
 br\com\dbc\vemser\trabalhofinal\security\TokenAuthenticationFilter.class
 br\com\dbc\vemser\trabalhofinal\controller\AdministrativoController.class
 br\com\dbc\vemser\trabalhofinal\dto\solicitacao\SolicitacaoCreateDTO.class
+br\com\dbc\vemser\trabalhofinal\controller\LogController.class
 br\com\dbc\vemser\trabalhofinal\entity\SolicitacaoEntity.class
 br\com\dbc\vemser\trabalhofinal\exceptions\CustomGlobalExceptionHandler.class
 br\com\dbc\vemser\trabalhofinal\config\FeingConfig.class
@@ -80,6 +83,7 @@ br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocunentacaoAuth.class
 br\com\dbc\vemser\trabalhofinal\dto\especialidade\EspecialidadeDTO.class
 br\com\dbc\vemser\trabalhofinal\repository\ConvenioRepository.class
 br\com\dbc\vemser\trabalhofinal\controller\ClienteController.class
+br\com\dbc\vemser\trabalhofinal\dto\log\LogCreateDTO.class
 br\com\dbc\vemser\trabalhofinal\service\EmailService$1.class
 br\com\dbc\vemser\trabalhofinal\dto\agendamento\AgendamentoCreateDTO.class
 br\com\dbc\vemser\trabalhofinal\entity\CargoEntity.class
@@ -90,4 +94,6 @@ br\com\dbc\vemser\trabalhofinal\dto\medico\MedicoDTO.class
 br\com\dbc\vemser\trabalhofinal\dto\EnderecoDTO.class
 br\com\dbc\vemser\trabalhofinal\entity\EspecialidadeEntity.class
 br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocumentacaoEspecialidadeConvenio.class
+br\com\dbc\vemser\trabalhofinal\dto\AgendamentoMedicoEditarCreateDTO.class
 br\com\dbc\vemser\trabalhofinal\security\AuthenticationService.class
+br\com\dbc\vemser\trabalhofinal\entity\TipoLog.class

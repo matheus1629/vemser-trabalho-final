@@ -21,11 +21,15 @@ public class QLogEntity extends EntityPathBase<LogEntity> {
 
     public final DateTimePath<java.time.LocalDateTime> dataHora = createDateTime("dataHora", java.time.LocalDateTime.class);
 
-    public final NumberPath<Integer> idOperaedor = createNumber("idOperaedor", Integer.class);
+    public final NumberPath<Integer> idAgendamento = createNumber("idAgendamento", Integer.class);
 
-    public final NumberPath<Integer> idSolicitacao = createNumber("idSolicitacao", Integer.class);
+    public final StringPath idLog = createString("idLog");
 
-    public final EnumPath<StatusSolicitacao> statusSolicitacao = createEnum("statusSolicitacao", StatusSolicitacao.class);
+    public final StringPath idSolicitacao = createString("idSolicitacao");
+
+    public final NumberPath<Integer> idUsuario = createNumber("idUsuario", Integer.class);
+
+    public final EnumPath<TipoLog> tipoLog = createEnum("tipoLog", TipoLog.class);
 
     public QLogEntity(String variable) {
         super(LogEntity.class, forVariable(variable));

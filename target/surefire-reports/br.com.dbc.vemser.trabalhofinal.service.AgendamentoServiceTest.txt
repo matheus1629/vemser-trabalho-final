@@ -1,20 +1,20 @@
 -------------------------------------------------------------------------------
 Test set: br.com.dbc.vemser.trabalhofinal.service.AgendamentoServiceTest
 -------------------------------------------------------------------------------
-Tests run: 18, Failures: 0, Errors: 5, Skipped: 0, Time elapsed: 0.093 s <<< FAILURE! - in br.com.dbc.vemser.trabalhofinal.service.AgendamentoServiceTest
-deveAdicionarAgendamentoSucesso  Time elapsed: 0.018 s  <<< ERROR!
+Tests run: 18, Failures: 0, Errors: 5, Skipped: 0, Time elapsed: 0.108 s <<< FAILURE! - in br.com.dbc.vemser.trabalhofinal.service.AgendamentoServiceTest
+deveAdicionarAgendamentoSucesso  Time elapsed: 0.026 s  <<< ERROR!
 java.lang.NullPointerException: Cannot invoke "br.com.dbc.vemser.trabalhofinal.service.UsuarioService.getIdLoggedUser()" because "this.usuarioService" is null
 	at br.com.dbc.vemser.trabalhofinal.service.AgendamentoServiceTest.deveAdicionarAgendamentoSucesso(AgendamentoServiceTest.java:89)
 
-deveRecusarSolicitacaoAdicionar  Time elapsed: 0.003 s  <<< ERROR!
+deveRecusarSolicitacaoAdicionar  Time elapsed: 0.007 s  <<< ERROR!
 java.lang.NullPointerException: Cannot invoke "br.com.dbc.vemser.trabalhofinal.service.UsuarioService.getUsuario(java.lang.Integer)" because "this.usuarioService" is null
 	at br.com.dbc.vemser.trabalhofinal.service.AgendamentoServiceTest.deveRecusarSolicitacaoAdicionar(AgendamentoServiceTest.java:112)
 
-deveEditarAgendamento  Time elapsed: 0.003 s  <<< ERROR!
+deveEditarAgendamento  Time elapsed: 0.004 s  <<< ERROR!
 java.lang.NullPointerException: Cannot invoke "br.com.dbc.vemser.trabalhofinal.service.UsuarioService.getIdLoggedUser()" because "this.usuarioService" is null
 	at br.com.dbc.vemser.trabalhofinal.service.AgendamentoServiceTest.deveEditarAgendamento(AgendamentoServiceTest.java:171)
 
-deveEntrarNoCatchAdicionarAgendamento  Time elapsed: 0.005 s  <<< ERROR!
+deveEntrarNoCatchAdicionarAgendamento  Time elapsed: 0.008 s  <<< ERROR!
 java.lang.Exception: Unexpected exception, expected<br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException> but was<java.lang.NullPointerException>
 	at br.com.dbc.vemser.trabalhofinal.service.AgendamentoServiceTest.deveEntrarNoCatchAdicionarAgendamento(AgendamentoServiceTest.java:154)
 
