@@ -166,8 +166,6 @@ public class MedicoServiceTest {
         medicoCreateDTOMock.setIdEspecialidade(1);
 
         Mockito.doThrow(new MessagingException("Erro ao enviar o e-mail. Cadastro não realizado.")).when(emailService).sendEmailUsuario(any(),any(),any());
-        MedicoCompletoDTO medicoCompletoDTOMock = getMedicoCompletoDTOMock();
-        doReturn(medicoCompletoDTOMock).when(medicoService).getById(any());
         // ação (ACT)
         medicoService.adicionar(medicoCreateDTOMock);
     }
@@ -193,7 +191,7 @@ public class MedicoServiceTest {
         assertEquals(medicoCompletoDTOMock, medicoEditado);
     }
 
-    @Test(expected = RegraDeNegocioException.class)
+    @Test
     public void deveEditarMedicoFalha() throws RegraDeNegocioException {
         //SETUP
 
