@@ -1,4 +1,4 @@
-package br.com.dbc.vemser.trabalhofinal.dto;
+package br.com.dbc.vemser.trabalhofinal.dto.email;
 
 import br.com.dbc.vemser.trabalhofinal.entity.StatusSolicitacao;
 import br.com.dbc.vemser.trabalhofinal.entity.TipoEmail;

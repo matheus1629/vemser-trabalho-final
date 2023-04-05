@@ -32,19 +32,6 @@ public class EmailService {
 
     private final JavaMailSender emailSender;
 
-    // USUÁRIO
-
-    public void sendEmailUsuario(UsuarioEntity usuario, TipoEmail tipoEmail, Integer codigo) throws MessagingException, TemplateException, IOException {
-        MimeMessageHelper mimeMessageHelper = buildEmail(usuario.getEmail(), tipoEmail);
-        if(tipoEmail == TipoEmail.USUARIO_REDEFINIR_SENHA){
-            mimeMessageHelper.setText(getUsuarioTemplateRedefinicao(usuario, codigo), true);
-        }else{
-            mimeMessageHelper.setText(getUsuarioTemplate(usuario, tipoEmail), true);
-        }
-
-        emailSender.send(mimeMessageHelper.getMimeMessage());
-    }
-
     public MimeMessageHelper buildEmail(String email, TipoEmail tipoEmail) throws MessagingException {
         MimeMessage mimeMessage = emailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
@@ -83,15 +70,6 @@ public class EmailService {
         return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
     }
 
-    // AGENDAMENTO
-
-    public void sendEmailAgendamento(UsuarioEntity usuario, AgendamentoEntity agendamento, TipoEmail tipoEmail) throws MessagingException, TemplateException, IOException {
-        MimeMessageHelper mimeMessageHelper = buildEmail(usuario.getEmail(), tipoEmail);
-        mimeMessageHelper.setText(getAgendamentoTemplate(agendamento, tipoEmail), true);
-
-        emailSender.send(mimeMessageHelper.getMimeMessage());
-    }
-
     public String getAgendamentoTemplate(AgendamentoEntity agendamento, TipoEmail tipo) throws IOException, TemplateException {
         Template template;
         Map<String, Object> dados = new HashMap<>();
@@ -123,14 +101,6 @@ public class EmailService {
         return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
     }
 
-    // CLIENTE
-    public void sendEmailCliente(UsuarioEntity usuario, TipoEmail tipoEmail, String codigo) throws MessagingException, TemplateException, IOException {
-        MimeMessageHelper mimeMessageHelper = buildEmail(usuario.getEmail(), tipoEmail);
-        mimeMessageHelper.setText(getClienteTemplateSolicitacao(usuario, codigo, tipoEmail), true);
-
-        emailSender.send(mimeMessageHelper.getMimeMessage());
-    }
-
     public String getClienteTemplateSolicitacao(UsuarioEntity usuario, String codigo, TipoEmail tipoEmail) throws IOException, TemplateException {
         Template template;
         Map<String, Object> dados = new HashMap<>();
@@ -148,6 +118,35 @@ public class EmailService {
         }
 
         return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
+    }
+
+    // USUÁRIO
+    public void sendEmailUsuario(UsuarioEntity usuario, TipoEmail tipoEmail, Integer codigo) throws MessagingException, TemplateException, IOException {
+
+        MimeMessageHelper mimeMessageHelper = buildEmail(usuario.getEmail(), tipoEmail);
+        if(tipoEmail == TipoEmail.USUARIO_REDEFINIR_SENHA){
+            mimeMessageHelper.setText(getUsuarioTemplateRedefinicao(usuario, codigo), true);
+        }else{
+            mimeMessageHelper.setText(getUsuarioTemplate(usuario, tipoEmail), true);
+        }
+
+        emailSender.send(mimeMessageHelper.getMimeMessage());
+    }
+
+    // AGENDAMENTO
+    public void sendEmailAgendamento(UsuarioEntity usuario, AgendamentoEntity agendamento, TipoEmail tipoEmail) throws MessagingException, TemplateException, IOException {
+        MimeMessageHelper mimeMessageHelper = buildEmail(usuario.getEmail(), tipoEmail);
+        mimeMessageHelper.setText(getAgendamentoTemplate(agendamento, tipoEmail), true);
+
+        emailSender.send(mimeMessageHelper.getMimeMessage());
+    }
+
+    // CLIENTE
+    public void sendEmailCliente(UsuarioEntity usuario, TipoEmail tipoEmail, String codigo) throws MessagingException, TemplateException, IOException {
+        MimeMessageHelper mimeMessageHelper = buildEmail(usuario.getEmail(), tipoEmail);
+        mimeMessageHelper.setText(getClienteTemplateSolicitacao(usuario, codigo, tipoEmail), true);
+
+        emailSender.send(mimeMessageHelper.getMimeMessage());
     }
 
 
