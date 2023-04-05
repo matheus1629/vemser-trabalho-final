@@ -28,7 +28,7 @@ public class ProducerService {
     private String topic;
 
 
-    private void send(Object mensagemDTO, ParticaoKafka particaoKafka) throws JsonProcessingException {
+    public void send(Object mensagemDTO, ParticaoKafka particaoKafka) throws JsonProcessingException {
         String mensagem = objectMapper.writeValueAsString(mensagemDTO);
         MessageBuilder<String> stringMessageBuilder = MessageBuilder.withPayload(mensagem)
                 .setHeader(KafkaHeaders.TOPIC, topic)

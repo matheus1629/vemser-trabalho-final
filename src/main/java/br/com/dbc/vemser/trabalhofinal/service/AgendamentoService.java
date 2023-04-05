@@ -6,6 +6,7 @@ import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoMedicoRelatorioDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.log.LogCreateDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.solicitacao.SolicitacaoDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.*;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.AgendamentoRepository;
@@ -34,9 +35,11 @@ public class AgendamentoService {
     private final SolicitacaoService solicitacaoService;
     private final UsuarioService usuarioService;
     private final LogService logService;
+    private final ProducerService producerService;
 
     public AgendamentoDTO adicionar(String idSolicitacao, AprovarReprovarSolicitacao aprovarReprovarSolicitacao) throws RegraDeNegocioException {
         SolicitacaoEntity solicitacaoEntity = solicitacaoService.getSolicitacao(idSolicitacao);
+
 
         // Soliticação não é pendente
         if (!solicitacaoEntity.getStatusSolicitacao().equals(StatusSolicitacao.PENDENTE)) {
@@ -47,6 +50,7 @@ public class AgendamentoService {
         if (aprovarReprovarSolicitacao.equals(AprovarReprovarSolicitacao.REPROVADA)){
             solicitacaoEntity.setStatusSolicitacao(StatusSolicitacao.RECUSADA);
             solicitacaoService.reprovarSolicitacao(solicitacaoEntity);
+            producerService.send();
             try{
                 emailService.sendEmailCliente(usuarioService.getUsuario(clienteService.getCliente(solicitacaoEntity.getIdCliente()).getIdUsuario()), TipoEmail.SOLICITACAO_RECUSADA, solicitacaoEntity.getIdSoliciatacao());
             } catch (MessagingException | TemplateException | IOException e) {
