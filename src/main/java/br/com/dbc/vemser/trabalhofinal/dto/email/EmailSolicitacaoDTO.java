@@ -9,9 +9,8 @@ import java.time.LocalDateTime;
 @Data
 public class EmailSolicitacaoDTO {
     private String idSoliciatacao;
-    private Integer idMedico;
-    private Integer idCliente;
-    private String motivo;
+    private String nomeMedico;
+    private String nomeCliente;
     private LocalDateTime dataHorario;
     private StatusSolicitacao statusSolicitacao;
     private TipoEmail tipoEmail;
