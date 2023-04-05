@@ -13,9 +13,9 @@
                 <tr>
                     <td align="center" valign="top" bgcolor="#ffffff"
                         style="background-color: #ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; padding: 0px 15px 10px 15px;">
-                    <h2> Olá ${nome}, </h2>
+                    <h2> Olá ${solicitacao.getNomeCliente()}, </h2>
                     <p>
-                        Sua solicitação de código: <strong>${codigo}</strong> foi recusada.<br>
+                        Sua solicitação de código: <strong>${solicitacao.getIdSoliciatacao()}</strong> foi recusada.<br>
                         <br>
                         Isso pode ter acontecido por indisponibilidade do médico para o dia e(ou) horário escolhido.<br>
                         Qualquer dúvida é só contatar o suporte pelo e-mail ${email}<br>

@@ -13,9 +13,9 @@
                 <tr>
                     <td align="center" valign="top" bgcolor="#ffffff"
                         style="background-color: #ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; padding: 0px 15px 10px 15px;">
-                    <h2> Olá ${nome}, </h2>
+                    <h2> Olá ${solicitacao.getNomeCliente()}, </h2>
                     <p>
-                        Identificamos sua solicitação de agendamento, segue o código: <strong>${codigo}</strong>.<br>
+                        Identificamos sua solicitação de agendamento, segue o código: <strong>${solicitacao.getIdSoliciatacao()}</strong>.<br>
                         <br>
                         Agora é só aguardar um de nossos colaboradores analisar. <br>
                         Lhe daremos um retorno em breve, com um e-mail lhe informando se ela foi aprovada ou recusada. ;)<br>

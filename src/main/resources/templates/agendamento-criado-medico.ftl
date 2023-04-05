@@ -13,12 +13,12 @@
                 <tr>
                     <td align="center" valign="top" bgcolor="#ffffff"
                         style="background-color: #ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; padding: 0px 15px 10px 15px;">
-                    <h2> Olá ${agendamento.getMedicoEntity().getUsuarioEntity().getNome()}, </h2>
+                    <h2> Olá ${agendamento.getNomeMedico()}, </h2>
                     <p>
                         Uma nova consulta foi agendada para você. Segue as informações: <br>
                         <strong>ID do agendamento: ${agendamento.getIdAgendamento()}</strong><br>
                         <strong>Data e horário: ${agendamento.getDataHorario()} <strong>
-                        Paciente a ser atendido: ${agendamento.getClienteEntity().getUsuarioEntity().getNome()} <br>
+                        Paciente a ser atendido: ${agendamento.getNomeCliente()} <br>
                         Qualquer dúvida é só contatar o suporte pelo e-mail ${email}<br>
                         Att,<br>
                         Safety Corp.<br>

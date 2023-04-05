@@ -13,7 +13,7 @@
                 <tr>
                     <td align="center" valign="top" bgcolor="#ffffff"
                         style="background-color: #ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; padding: 0px 15px 10px 15px;">
-                    <h2> Olá ${usuario.getNome()}, </h2>
+                    <h2> Olá ${usuario.getNomeUsuario()}, </h2>
                     <p>
                         Informamos que sua senha foi redefinida com sucesso! <br>
                         Qualquer dúvida é só contatar o suporte pelo e-mail ${email}<br>

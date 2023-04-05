@@ -5,16 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @AllArgsConstructor
-public class AgendamentoEmailDTO {
-    private Integer idAgendamento;
-    private LocalDateTime dataHorario;
-    private String nomeMedico;
-    private String nomeCliente;
-    private String email;
+@NoArgsConstructor
+public class UsuarioEmailDTO {
+
+    private String nomeUsuario;
+    private String emailUsuario;
+    private String codigoRecuperacao;
     private TipoEmail tipoEmail;
 
 }

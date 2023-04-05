@@ -2,17 +2,19 @@ package br.com.dbc.vemser.trabalhofinal.dto.email;
 
 import br.com.dbc.vemser.trabalhofinal.entity.StatusSolicitacao;
 import br.com.dbc.vemser.trabalhofinal.entity.TipoEmail;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
-public class EmailSolicitacaoDTO {
+@AllArgsConstructor
+@NoArgsConstructor
+public class SolicitacaoEmailDTO {
     private String idSoliciatacao;
-    private String nomeMedico;
     private String nomeCliente;
-    private LocalDateTime dataHorario;
-    private StatusSolicitacao statusSolicitacao;
+    private String emailCliente;
     private TipoEmail tipoEmail;
 
 }
