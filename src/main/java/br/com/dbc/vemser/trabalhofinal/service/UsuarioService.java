@@ -10,15 +10,18 @@ import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.UsuarioRepository;
 import br.com.dbc.vemser.trabalhofinal.security.CodigoTrocaSenha;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -162,6 +165,15 @@ public class UsuarioService {
 
         codigoTrocaSenha.setTokenBD(codigoSenha);
 
+        Timer timer = new Timer();
+        TimerTask tarefa = new TimerTask() {
+            @Override
+            public void run() {
+                codigoTrocaSenha.getTokenBD().remove(email);
+                }
+            };
+        timer.schedule(tarefa, 900000); // 15 minutos
+
         try {
             emailService.sendEmailUsuario(usuario, TipoEmail.USUARIO_REDEFINIR_SENHA, codigoGerado);
         } catch (MessagingException | TemplateException | IOException e) {
@@ -169,6 +181,7 @@ public class UsuarioService {
         }
 
     }
+
 
     public void redefinirSenha(RedefinicaoSenhaDTO redefinicaoSenhaDTO) throws RegraDeNegocioException {
 
