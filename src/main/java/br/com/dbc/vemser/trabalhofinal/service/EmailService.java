@@ -48,9 +48,9 @@ public class EmailService {
     public void producerSolicitacaoEmail(SolicitacaoEntity solicitacaoEntity, TipoEmail tipoEmail) throws RegraDeNegocioException, JsonProcessingException {
         SolicitacaoEmailDTO emailSolicitacaoDTO = new SolicitacaoEmailDTO(
                 solicitacaoEntity.getIdSoliciatacao(),
-                usuarioService.getUsuario(medicoService.getMedico(solicitacaoEntity.getIdMedico()).getIdUsuario()).getNome(),
-                usuarioService.getUsuario(clienteService.getCliente(solicitacaoEntity.getIdCliente()).getIdUsuario()).getNome(),
-                usuarioService.getUsuario(solicitacaoEntity.getIdCliente()).getEmail(),
+                usuarioService.getUsuario(medicoService.getMedico(solicitacaoEntity.getIdMedico()).getUsuarioEntity().getIdUsuario()).getNome(),
+                usuarioService.getUsuario(clienteService.getCliente(solicitacaoEntity.getIdCliente()).getUsuarioEntity().getIdUsuario()).getNome(),
+                usuarioService.getUsuario(clienteService.getCliente(solicitacaoEntity.getIdCliente()).getUsuarioEntity().getIdUsuario()).getEmail(),
                 solicitacaoEntity.getDataHorario(),
                 solicitacaoEntity.getStatusSolicitacao(),
                 tipoEmail);

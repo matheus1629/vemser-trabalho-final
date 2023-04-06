@@ -43,11 +43,6 @@ public class SolicitacaoService {
         solicitacaoReposiroty.save(solicitacaoEntity);
 
         emailService.producerSolicitacaoEmail(solicitacaoEntity, TipoEmail.SOLICITACAO_CRIADA);
-//        try{
-//            emailService.sendEmailCliente(usuarioService.getUsuario(clienteService.recuperarCliente().getIdUsuario()), TipoEmail.SOLICITACAO_CRIADA, solicitacaoEntity.getIdSoliciatacao());
-//        } catch (MessagingException | TemplateException | IOException e) {
-//            throw new RegraDeNegocioException("Erro ao enviar informativo da criação de solicitação.");
-//        }
 
         var solicitacaoDTO = new SolicitacaoDTO();
         BeanUtils.copyProperties(solicitacaoEntity, solicitacaoDTO);
