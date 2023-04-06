@@ -33,6 +33,7 @@ br\com\dbc\vemser\trabalhofinal\entity\LogEntity.class
 br\com\dbc\vemser\trabalhofinal\repository\LogRepository.class
 br\com\dbc\vemser\trabalhofinal\dto\cargo\CargoCreateDTO.class
 br\com\dbc\vemser\trabalhofinal\dto\cliente\ClienteCreateDTO.class
+br\com\dbc\vemser\trabalhofinal\service\ProducerService.class
 br\com\dbc\vemser\trabalhofinal\TrabalhoFinalApplication.class
 br\com\dbc\vemser\trabalhofinal\entity\StatusSolicitacao.class
 br\com\dbc\vemser\trabalhofinal\dto\usuario\UsuarioCreateDTO.class
@@ -51,8 +52,10 @@ br\com\dbc\vemser\trabalhofinal\entity\MedicoEntity.class
 br\com\dbc\vemser\trabalhofinal\service\ConvenioService.class
 br\com\dbc\vemser\trabalhofinal\service\EspecialidadeService.class
 br\com\dbc\vemser\trabalhofinal\dto\cliente\ClienteDTO.class
+br\com\dbc\vemser\trabalhofinal\dto\email\SolicitacaoEmailDTO.class
 br\com\dbc\vemser\trabalhofinal\service\AgendamentoService.class
 br\com\dbc\vemser\trabalhofinal\dto\medico\MedicoCreateDTO.class
+br\com\dbc\vemser\trabalhofinal\config\KafkaProducerConfig.class
 br\com\dbc\vemser\trabalhofinal\dto\medico\MedicoUpdateDTO.class
 br\com\dbc\vemser\trabalhofinal\client\EnderecoClient.class
 br\com\dbc\vemser\trabalhofinal\entity\UsuarioEntity.class
@@ -71,8 +74,11 @@ br\com\dbc\vemser\trabalhofinal\controller\LogController.class
 br\com\dbc\vemser\trabalhofinal\entity\SolicitacaoEntity.class
 br\com\dbc\vemser\trabalhofinal\exceptions\CustomGlobalExceptionHandler.class
 br\com\dbc\vemser\trabalhofinal\config\FeingConfig.class
+br\com\dbc\vemser\trabalhofinal\service\ProducerService$1.class
 br\com\dbc\vemser\trabalhofinal\repository\MedicoRepository.class
 br\com\dbc\vemser\trabalhofinal\config\OpenApiConfig.class
+br\com\dbc\vemser\trabalhofinal\dto\email\AgendamentoEmailDTO.class
+br\com\dbc\vemser\trabalhofinal\service\UsuarioService$1.class
 br\com\dbc\vemser\trabalhofinal\dto\TrocaSenhaDTO.class
 br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocumentacaoCliente.class
 br\com\dbc\vemser\trabalhofinal\repository\SolicitacaoReposiroty.class
@@ -80,11 +86,12 @@ br\com\dbc\vemser\trabalhofinal\repository\EspecialidadeRepository.class
 br\com\dbc\vemser\trabalhofinal\dto\PageDTO.class
 br\com\dbc\vemser\trabalhofinal\entity\ConvenioEntity.class
 br\com\dbc\vemser\trabalhofinal\controller\documentacao\DocunentacaoAuth.class
+br\com\dbc\vemser\trabalhofinal\dto\email\ParticaoKafka.class
+br\com\dbc\vemser\trabalhofinal\dto\email\UsuarioEmailDTO.class
 br\com\dbc\vemser\trabalhofinal\dto\especialidade\EspecialidadeDTO.class
 br\com\dbc\vemser\trabalhofinal\repository\ConvenioRepository.class
 br\com\dbc\vemser\trabalhofinal\controller\ClienteController.class
 br\com\dbc\vemser\trabalhofinal\dto\log\LogCreateDTO.class
-br\com\dbc\vemser\trabalhofinal\service\EmailService$1.class
 br\com\dbc\vemser\trabalhofinal\dto\agendamento\AgendamentoCreateDTO.class
 br\com\dbc\vemser\trabalhofinal\entity\CargoEntity.class
 br\com\dbc\vemser\trabalhofinal\controller\SolicitacaoController.class
