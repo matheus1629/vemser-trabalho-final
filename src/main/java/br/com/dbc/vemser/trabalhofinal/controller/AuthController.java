@@ -13,6 +13,7 @@ import br.com.dbc.vemser.trabalhofinal.security.TokenService;
 import br.com.dbc.vemser.trabalhofinal.service.ClienteService;
 import br.com.dbc.vemser.trabalhofinal.service.MedicoService;
 import br.com.dbc.vemser.trabalhofinal.service.UsuarioService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -41,11 +42,11 @@ public class AuthController implements DocunentacaoAuth {
         return tokenService.autenticar(loginDTO);
     }
     @Override
-    public ClienteCompletoDTO adicionarCliente(@RequestBody @Valid ClienteCreateDTO cliente) throws RegraDeNegocioException {
+    public ClienteCompletoDTO adicionarCliente(@RequestBody @Valid ClienteCreateDTO cliente) throws RegraDeNegocioException, JsonProcessingException {
         return clienteService.adicionar(cliente);
     }
     @Override
-    public MedicoCompletoDTO adicionarMedico(@RequestBody @Valid MedicoCreateDTO medico) throws RegraDeNegocioException {
+    public MedicoCompletoDTO adicionarMedico(@RequestBody @Valid MedicoCreateDTO medico) throws RegraDeNegocioException, JsonProcessingException {
         return medicoService.adicionar(medico);
     }
 
@@ -56,13 +57,13 @@ public class AuthController implements DocunentacaoAuth {
     }
 
     @Override
-    public ResponseEntity<Void> solicitarRedefinicao(@RequestParam(name="email") @NotNull String email) throws RegraDeNegocioException {
+    public ResponseEntity<Void> solicitarRedefinicao(@RequestParam(name="email") @NotNull String email) throws RegraDeNegocioException, JsonProcessingException {
         usuarioService.solicitarRedefinirSenha(email);
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<Void> redefinir(@RequestBody @Valid RedefinicaoSenhaDTO redefinicaoSenhaDTO) throws RegraDeNegocioException {
+    public ResponseEntity<Void> redefinir(@RequestBody @Valid RedefinicaoSenhaDTO redefinicaoSenhaDTO) throws RegraDeNegocioException, JsonProcessingException {
         usuarioService.redefinirSenha(redefinicaoSenhaDTO);
         return ResponseEntity.ok().build();
     }

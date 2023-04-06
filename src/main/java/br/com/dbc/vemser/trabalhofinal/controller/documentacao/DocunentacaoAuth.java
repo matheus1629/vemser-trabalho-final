@@ -8,6 +8,7 @@ import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -40,7 +41,7 @@ public interface DocunentacaoAuth {
             }
     )
     @PostMapping("/cadastro-cliente")
-    ClienteCompletoDTO adicionarCliente(@RequestBody @Valid ClienteCreateDTO cliente) throws RegraDeNegocioException;
+    ClienteCompletoDTO adicionarCliente(@RequestBody @Valid ClienteCreateDTO cliente) throws RegraDeNegocioException, JsonProcessingException;
 
     @Operation(summary = "Adiciona Cliente", description = "Cria um novo cadastro de medico")
     @ApiResponses(
@@ -51,7 +52,7 @@ public interface DocunentacaoAuth {
             }
     )
     @PostMapping("/cadastro-medico")
-    MedicoCompletoDTO adicionarMedico(@RequestBody @Valid MedicoCreateDTO medico) throws RegraDeNegocioException;
+    MedicoCompletoDTO adicionarMedico(@RequestBody @Valid MedicoCreateDTO medico) throws RegraDeNegocioException, JsonProcessingException;
 
     @Operation(summary = "Trocar senha logado", description = "Permite a troca de senha logado")
     @ApiResponses(
@@ -73,7 +74,7 @@ public interface DocunentacaoAuth {
             }
     )
     @PostMapping("/esqueci-minha-senha")
-    ResponseEntity<Void> solicitarRedefinicao(@RequestParam(name="email") @NotNull String email) throws RegraDeNegocioException;
+    ResponseEntity<Void> solicitarRedefinicao(@RequestParam(name="email") @NotNull String email) throws RegraDeNegocioException, JsonProcessingException;
 
     @Operation(summary = "Redefinir Senha", description = "Redefini a senha do usuario a partir de um codigo enviado para seu email")
     @ApiResponses(
@@ -84,5 +85,5 @@ public interface DocunentacaoAuth {
             }
     )
     @PostMapping("/redefinir-senha")
-    ResponseEntity<Void> redefinir(@RequestBody @Valid RedefinicaoSenhaDTO redefinicaoSenhaDTO) throws RegraDeNegocioException;
+    ResponseEntity<Void> redefinir(@RequestBody @Valid RedefinicaoSenhaDTO redefinicaoSenhaDTO) throws RegraDeNegocioException, JsonProcessingException;
 }

@@ -9,6 +9,7 @@ import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioUpdateDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.AdministrativoService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -59,7 +60,7 @@ public class AdministrativoController implements DocumentacaoAdministracao {
     }
 
     @Override
-    public ResponseEntity<UsuarioDTO> create(UsuarioCreateDTO usuario) throws RegraDeNegocioException {
+    public ResponseEntity<UsuarioDTO> create(UsuarioCreateDTO usuario) throws RegraDeNegocioException, JsonProcessingException {
         return new ResponseEntity<>(administrativoService.adicionar(usuario), HttpStatus.OK);
     }
 

@@ -5,6 +5,7 @@ import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoListaDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoUpdateDTO;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -62,6 +63,6 @@ public interface DocumentacaoMedico<MedicoCompletoDTO, idAgendamento, agendament
     )
     @PutMapping("/editar-agendamento/")
     ResponseEntity<AgendamentoDTO> editarAgendamento(@RequestParam("idAgendamento") Integer idAgendamento,
-                                                     @RequestBody @Valid AgendamentoMedicoEditarCreateDTO agendamentoMedicoEditarCreateDTO) throws RegraDeNegocioException;
+                                                     @RequestBody @Valid AgendamentoMedicoEditarCreateDTO agendamentoMedicoEditarCreateDTO) throws RegraDeNegocioException, JsonProcessingException;
 
 }

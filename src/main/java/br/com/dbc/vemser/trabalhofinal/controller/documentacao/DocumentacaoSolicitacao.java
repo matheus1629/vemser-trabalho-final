@@ -4,6 +4,7 @@ import br.com.dbc.vemser.trabalhofinal.dto.solicitacao.SolicitacaoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.solicitacao.SolicitacaoDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.StatusSolicitacao;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -29,7 +30,7 @@ public interface DocumentacaoSolicitacao {
             }
     )
     @PostMapping("/requisitar")
-    ResponseEntity<SolicitacaoDTO> Requisitarsolicitacao(@RequestBody @Valid SolicitacaoCreateDTO solicitacaoCreateDTO) throws RegraDeNegocioException;
+    ResponseEntity<SolicitacaoDTO> Requisitarsolicitacao(@RequestBody @Valid SolicitacaoCreateDTO solicitacaoCreateDTO) throws RegraDeNegocioException, JsonProcessingException;
 
 
     @Operation(summary = "Lista solicitações", description = "Lista solicitações de acordo com os filtros preenchidos. Os filtros que não forem preenchidos serão desconsiderados")

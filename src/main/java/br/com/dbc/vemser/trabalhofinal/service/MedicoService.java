@@ -16,14 +16,12 @@ import br.com.dbc.vemser.trabalhofinal.entity.TipoEmail;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.MedicoRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import freemarker.template.TemplateException;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.MessagingException;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +40,7 @@ public class MedicoService {
                          UsuarioService usuarioService,
                          EspecialidadeService especialidadeService,
                          @Lazy AgendamentoService agendamentoService,
-                         EmailService emailService, EnderecoClient enderecoClient) {
+                         @Lazy EmailService emailService, EnderecoClient enderecoClient) {
         this.medicoRepository = medicoRepository;
         this.objectMapper = objectMapper;
         this.usuarioService = usuarioService;
@@ -81,7 +79,7 @@ public class MedicoService {
         return objectMapper.convertValue(agendamentoMedicoRelatorioDTO, AgendamentoListaDTO.class);
     }
 
-    public MedicoCompletoDTO adicionar(MedicoCreateDTO medico) throws RegraDeNegocioException {
+    public MedicoCompletoDTO adicionar(MedicoCreateDTO medico) throws RegraDeNegocioException, JsonProcessingException {
         checarSeTemNumero(medico.getNome());
 
         UsuarioEntity usuarioEntity = objectMapper.convertValue(medico, UsuarioEntity.class);
@@ -99,12 +97,8 @@ public class MedicoService {
         usuarioService.adicionar(usuarioEntity);
 
         medicoRepository.save(medicoEntity);
-        try {
-            emailService.sendEmailUsuario(medicoEntity.getUsuarioEntity(), TipoEmail.USUARIO_CADASTRO, null);
-        } catch (MessagingException | TemplateException | IOException e) {
-            usuarioService.hardDelete(medicoEntity.getUsuarioEntity().getIdUsuario());
-            throw new RegraDeNegocioException("Erro ao enviar o e-mail. Cadastro não realizado.");
-        }
+
+        emailService.producerUsuarioEmail(usuarioEntity, TipoEmail.USUARIO_CADASTRO, null);
 
         return getById(medicoEntity.getIdMedico());
     }
@@ -140,7 +134,7 @@ public class MedicoService {
 
 
 
-    public AgendamentoDTO editarAgendamentoMedico(Integer idAgendamento, AgendamentoMedicoEditarCreateDTO agendamentoMedicoEditarCreateDTO) throws RegraDeNegocioException {
+    public AgendamentoDTO editarAgendamentoMedico(Integer idAgendamento, AgendamentoMedicoEditarCreateDTO agendamentoMedicoEditarCreateDTO) throws RegraDeNegocioException, JsonProcessingException {
         AgendamentoEntity agendamentoEntity = agendamentoService.getAgendamento(idAgendamento);
 
         MedicoEntity medicoEntity = medicoRepository.getMedicoEntityByIdUsuario(usuarioService.getIdLoggedUser());

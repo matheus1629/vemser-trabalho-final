@@ -1,7 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.controller;
 
 import br.com.dbc.vemser.trabalhofinal.controller.documentacao.DocumentacaoAgendamento;
-
 import br.com.dbc.vemser.trabalhofinal.dto.PageDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoClienteRelatorioDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoCreateDTO;
@@ -10,6 +9,7 @@ import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoMedicoRelatori
 import br.com.dbc.vemser.trabalhofinal.entity.AprovarReprovarSolicitacao;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.service.AgendamentoService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -49,17 +49,17 @@ public class AgendamentoController implements DocumentacaoAgendamento {
     }
 
     @Override
-    public ResponseEntity<AgendamentoDTO> create(String idSolicitacao, AprovarReprovarSolicitacao aprovarReprovarSolicitacao) throws RegraDeNegocioException {
+    public ResponseEntity<AgendamentoDTO> create(String idSolicitacao, AprovarReprovarSolicitacao aprovarReprovarSolicitacao) throws RegraDeNegocioException, JsonProcessingException {
         return new ResponseEntity<>(agendamentoService.adicionar(idSolicitacao, aprovarReprovarSolicitacao), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<AgendamentoDTO> update(Integer id, AgendamentoCreateDTO agendamento) throws RegraDeNegocioException {
+    public ResponseEntity<AgendamentoDTO> update(Integer id, AgendamentoCreateDTO agendamento) throws RegraDeNegocioException, JsonProcessingException {
         return new ResponseEntity<>(agendamentoService.editar(id, agendamento), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Void> delete(Integer id) throws RegraDeNegocioException {
+    public ResponseEntity<Void> delete(Integer id) throws RegraDeNegocioException, JsonProcessingException {
         agendamentoService.remover(id);
         return ResponseEntity.ok().build();
     }

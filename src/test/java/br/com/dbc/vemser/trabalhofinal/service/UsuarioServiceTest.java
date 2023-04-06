@@ -1,6 +1,5 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
-import br.com.dbc.vemser.trabalhofinal.client.EnderecoClient;
 import br.com.dbc.vemser.trabalhofinal.dto.RedefinicaoSenhaDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.TrocaSenhaDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioCreateDTO;
@@ -11,17 +10,16 @@ import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.UsuarioRepository;
 import br.com.dbc.vemser.trabalhofinal.security.CodigoTrocaSenha;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import freemarker.template.TemplateException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoSettings;
@@ -32,9 +30,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import javax.mail.MessagingException;
 import javax.validation.constraints.NotNull;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,10 +53,6 @@ public class UsuarioServiceTest {
     private UsuarioRepository usuarioRepository;
     @Mock
     private PasswordEncoder passwordEncoder;
-    @Mock
-    private EmailService emailService;
-    @Mock
-    private EnderecoClient enderecoClient;
     @Mock
     private CodigoTrocaSenha codigoTrocaSenha;
 
@@ -351,9 +343,8 @@ public class UsuarioServiceTest {
         usuarioService.trocarSenha(trocaSenhaDTO);
     }
 
-    //<TODO>
     @Test(expected = RegraDeNegocioException.class)
-    public void deveSolicitarRedefinirSenhaFalha() throws RegraDeNegocioException {
+    public void deveSolicitarRedefinirSenhaFalha() throws RegraDeNegocioException, JsonProcessingException {
         //setup
         String email = "aab@gmail.com";
         UsuarioEntity usuario = getUsuarioEntityMock();
@@ -365,33 +356,9 @@ public class UsuarioServiceTest {
         verify(usuarioService,times(1)).solicitarRedefinirSenha(email);
     }
 
-    @Test(expected = RegraDeNegocioException.class)
-    public void deveSolicitarRedefinirSenhaFalhaEmail() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
-        //setup
-        UsuarioEntity usuario = getUsuarioEntityMock();
-        doReturn(Optional.of(usuario)).when(usuarioService).findByEmail(any());
-        Mockito.doThrow(new MessagingException("Erro ao enviar o e-mail. Cadastro não realizado.")).when(emailService).sendEmailUsuario(any(),any(),any());
-        //act
-        usuarioService.solicitarRedefinirSenha(usuario.getEmail());
-        //asserts
-        verify(emailService,times(1)).sendEmailUsuario(any(),any(),any());
-    }
-
-    @Test
-    public void deveSolicitarRedefinirSenhaSucesso() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
-        //setup
-        String email = "rogerio.santos@gmail.com";
-        UsuarioEntity usuario = getUsuarioEntityMock();
-        doReturn(Optional.of(usuario)).when(usuarioService).findByEmail(any());
-        //act
-        usuarioService.solicitarRedefinirSenha(usuario.getEmail());
-        //asserts
-        verify(emailService,times(1)).sendEmailUsuario(any(),any(),any());
-        verify(usuarioService,times(1)).solicitarRedefinirSenha(email);
-    }
 
     @Test(expected = RegraDeNegocioException.class)
-    public void deveRedefinirSenhaFalha() throws RegraDeNegocioException{
+    public void deveRedefinirSenhaFalha() throws RegraDeNegocioException, JsonProcessingException {
         //SETUP
         UsuarioEntity usuario = getUsuarioEntityMock();
         RedefinicaoSenhaDTO redefinicaoSenhaDTO = getRedefinicaoSenhaDTOMock();
@@ -404,7 +371,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void deveRedefinirSenhaSucesso() throws RegraDeNegocioException{
+    public void deveRedefinirSenhaSucesso() throws RegraDeNegocioException, JsonProcessingException {
         //SETUP
         UsuarioEntity usuario = getUsuarioEntityMock();
         RedefinicaoSenhaDTO redefinicaoSenhaDTO = getRedefinicaoSenhaDTOMock();

@@ -7,6 +7,7 @@ import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoMedicoRelatorioDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.AprovarReprovarSolicitacao;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -71,7 +72,7 @@ public interface DocumentacaoAgendamento {
             }
     )
     @PostMapping
-    ResponseEntity<AgendamentoDTO> create(String idSolicitacao, AprovarReprovarSolicitacao aprovarReprovarSolicitacao) throws RegraDeNegocioException;
+    ResponseEntity<AgendamentoDTO> create(String idSolicitacao, AprovarReprovarSolicitacao aprovarReprovarSolicitacao) throws RegraDeNegocioException, JsonProcessingException;
 
     @Operation(summary = "Atualizar Agendamentos", description = "Atualiza um Agendamentos passando o id")
     @ApiResponses(
@@ -82,7 +83,7 @@ public interface DocumentacaoAgendamento {
             }
     )
     @PutMapping("/{id}")
-    ResponseEntity<AgendamentoDTO> update(@PathVariable Integer id, @Valid @RequestBody AgendamentoCreateDTO agendamento) throws RegraDeNegocioException;
+    ResponseEntity<AgendamentoDTO> update(@PathVariable Integer id, @Valid @RequestBody AgendamentoCreateDTO agendamento) throws RegraDeNegocioException, JsonProcessingException;
 
     @Operation(summary = "Deletar Agendamentos", description = "Detela um Agendamentos passando o id")
     @ApiResponses(
@@ -93,6 +94,6 @@ public interface DocumentacaoAgendamento {
             }
     )
     @DeleteMapping("/{id}")
-    ResponseEntity<Void> delete(@PathVariable Integer id) throws RegraDeNegocioException;
+    ResponseEntity<Void> delete(@PathVariable Integer id) throws RegraDeNegocioException, JsonProcessingException;
 
 }
