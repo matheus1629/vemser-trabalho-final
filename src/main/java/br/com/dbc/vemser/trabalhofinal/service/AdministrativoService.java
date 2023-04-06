@@ -15,15 +15,12 @@ import br.com.dbc.vemser.trabalhofinal.repository.MedicoRepository;
 import br.com.dbc.vemser.trabalhofinal.repository.UsuarioRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 

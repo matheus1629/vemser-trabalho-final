@@ -1,7 +1,6 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.dto.email.ParticaoKafka;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

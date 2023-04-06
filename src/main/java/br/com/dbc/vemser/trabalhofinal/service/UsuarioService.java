@@ -12,15 +12,11 @@ import br.com.dbc.vemser.trabalhofinal.repository.UsuarioRepository;
 import br.com.dbc.vemser.trabalhofinal.security.CodigoTrocaSenha;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import freemarker.template.TemplateException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import java.io.IOException;
 import java.util.*;
 
 

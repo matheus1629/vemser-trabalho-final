@@ -1,19 +1,18 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.dto.email.AgendamentoEmailDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.email.SolicitacaoEmailDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.email.ParticaoKafka;
+import br.com.dbc.vemser.trabalhofinal.dto.email.SolicitacaoEmailDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.email.UsuarioEmailDTO;
-import br.com.dbc.vemser.trabalhofinal.entity.*;
+import br.com.dbc.vemser.trabalhofinal.entity.AgendamentoEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.SolicitacaoEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.TipoEmail;
+import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 
 @Log4j2
 @Component

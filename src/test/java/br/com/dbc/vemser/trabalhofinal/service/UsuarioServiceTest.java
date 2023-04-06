@@ -1,6 +1,5 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
-import br.com.dbc.vemser.trabalhofinal.client.EnderecoClient;
 import br.com.dbc.vemser.trabalhofinal.dto.RedefinicaoSenhaDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.TrocaSenhaDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.usuario.UsuarioCreateDTO;
@@ -16,13 +15,11 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import freemarker.template.TemplateException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoSettings;
@@ -33,9 +30,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import javax.mail.MessagingException;
 import javax.validation.constraints.NotNull;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

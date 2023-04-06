@@ -9,13 +9,10 @@ import br.com.dbc.vemser.trabalhofinal.repository.SolicitacaoReposiroty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.BooleanBuilder;
-import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;

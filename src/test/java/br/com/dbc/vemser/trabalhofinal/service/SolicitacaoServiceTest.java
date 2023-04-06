@@ -1,12 +1,10 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.dto.cliente.ClienteCompletoDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.log.LogCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.solicitacao.SolicitacaoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.solicitacao.SolicitacaoDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.SolicitacaoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.StatusSolicitacao;
-import br.com.dbc.vemser.trabalhofinal.entity.TipoLog;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.SolicitacaoReposiroty;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,7 +13,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import freemarker.template.TemplateException;
-import lombok.extern.java.Log;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
