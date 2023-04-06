@@ -9,15 +9,12 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class AgendamentoEmailDTO {
-
     private Integer idAgendamento;
     private LocalDateTime dataHorario;
     private String nomeMedico;
     private String nomeCliente;
-    private String emailCliente;
-    private String emailMedico;
+    private String email;
     private TipoEmail tipoEmail;
 
 }

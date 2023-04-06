@@ -1,153 +1,95 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
+import br.com.dbc.vemser.trabalhofinal.dto.email.AgendamentoEmailDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.email.SolicitacaoEmailDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.email.ParticaoKafka;
 import br.com.dbc.vemser.trabalhofinal.entity.AgendamentoEntity;
+import br.com.dbc.vemser.trabalhofinal.entity.SolicitacaoEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.TipoEmail;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
+import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Log4j2
 @Component
 @RequiredArgsConstructor
 public class EmailService {
 
-    private final Configuration fmConfiguration;
+    private final UsuarioService usuarioService;
+    private final MedicoService medicoService;
+    private final ClienteService clienteService;
+    private final ProducerService producerService;
 
-    @Value("${spring.mail.username}")
-    private String from;
 
-    private final JavaMailSender emailSender;
+    public void producerAgendamentoEmail(AgendamentoEntity agendamentoEntity, TipoEmail tipoEmail) throws RegraDeNegocioException, JsonProcessingException {
 
-    public MimeMessageHelper buildEmail(String email, TipoEmail tipoEmail) throws MessagingException {
-        MimeMessage mimeMessage = emailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+        AgendamentoEmailDTO agendamentoEmailDTO = new AgendamentoEmailDTO(
+                agendamentoEntity.getIdAgendamento(),
+                agendamentoEntity.getDataHorario(),
+                usuarioService.getUsuario(agendamentoEntity.getIdMedico()).getNome(),
+                usuarioService.getUsuario(agendamentoEntity.getIdCliente()).getNome(),
+                null,
+                tipoEmail);
 
-        mimeMessageHelper.setFrom(from);
-        mimeMessageHelper.setTo(email);
-        mimeMessageHelper.setSubject(tipoEmail.getAssunto());
-        return mimeMessageHelper;
-    }
-
-    public String getUsuarioTemplate(UsuarioEntity usuario, TipoEmail tipo) throws IOException, TemplateException {
-        Map<String, Object> dados = new HashMap<>();
-        dados.put("email", from);
-        dados.put("usuario", usuario);
-        Template template;
-
-        switch(tipo){
-            case USUARIO_CADASTRO ->
-                    template = fmConfiguration.getTemplate("usuario-cadastro.ftl");
-            case USUARIO_SENHA_REDEFINIDA ->
-                template = fmConfiguration.getTemplate("usuario-senha-redefinida.ftl");
-            default ->
-                    template = fmConfiguration.getTemplate("usuario-cadastro.ftl");
+        if (tipoEmail.equals(TipoEmail.AGENDAMENTO_CRIADO_CLIENTE) || tipoEmail.equals(TipoEmail.AGENDAMENTO_EDITADO_CLIENTE) || tipoEmail.equals(TipoEmail.AGENDAMENTO_CANCELADO_CLIENTE)) {
+            agendamentoEmailDTO.setEmail(agendamentoEntity.getClienteEntity().getUsuarioEntity().getEmail());
+        } else {
+            agendamentoEmailDTO.setEmail(agendamentoEntity.getMedicoEntity().getUsuarioEntity().getEmail());
         }
 
-        return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
+        producerService.send(agendamentoEmailDTO, ParticaoKafka.SEND_EMAIL_AGENDAMENTO);
     }
 
-    public String getUsuarioTemplateRedefinicao(UsuarioEntity usuario, Integer codigo) throws IOException, TemplateException {
-        Map<String, Object> dados = new HashMap<>();
-        dados.put("email", from);
-        dados.put("usuario", usuario);
-        dados.put("codigo", codigo);
-        Template template= fmConfiguration.getTemplate("usuario-redefinir-senha.ftl");
+    public void producerSolicitacao(SolicitacaoEntity solicitacaoEntity, TipoEmail tipoEmail) throws RegraDeNegocioException, JsonProcessingException {
+        SolicitacaoEmailDTO emailSolicitacaoDTO = new SolicitacaoEmailDTO(
+                solicitacaoEntity.getIdSoliciatacao(),
+                usuarioService.getUsuario(medicoService.getMedico(solicitacaoEntity.getIdMedico()).getIdUsuario()).getNome(),
+                usuarioService.getUsuario(clienteService.getCliente(solicitacaoEntity.getIdCliente()).getIdUsuario()).getNome(),
+                usuarioService.getUsuario(solicitacaoEntity.getIdCliente()).getEmail(),
+                solicitacaoEntity.getDataHorario(),
+                solicitacaoEntity.getStatusSolicitacao(),
+                tipoEmail);
 
-        return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
+        producerService.send(emailSolicitacaoDTO, ParticaoKafka.SEND_EMAIL_CLIENTE);
+
     }
 
-    public String getAgendamentoTemplate(AgendamentoEntity agendamento, TipoEmail tipo) throws IOException, TemplateException {
-        Template template;
-        Map<String, Object> dados = new HashMap<>();
-        dados.put("agendamento", agendamento);
-        dados.put("email", from);
-
-        switch (tipo){
-            case AGENDAMENTO_CRIADO_CLIENTE ->
-                    template = fmConfiguration.getTemplate("agendamento-criado-cliente.ftl");
-
-            case AGENDAMENTO_CRIADO_MEDICO ->
-                    template = fmConfiguration.getTemplate("agendamento-criado-medico.ftl");
-
-            case AGENDAMENTO_EDITADO_CLIENTE ->
-                    template = fmConfiguration.getTemplate("agendamento-editado-cliente.ftl");
-
-            case AGENDAMENTO_EDITADO_MEDICO ->
-                    template = fmConfiguration.getTemplate("agendamento-editado-medico.ftl");
-
-            case AGENDAMENTO_CANCELADO_CLIENTE ->
-                    template = fmConfiguration.getTemplate("agendamento-cancelado-cliente.ftl");
-
-            case AGENDAMENTO_CANCELADO_MEDICO ->
-                    template = fmConfiguration.getTemplate("agendamento-cancelado-medico.ftl");
-            default ->
-                    template = fmConfiguration.getTemplate("agendamento-criado-cliente.ftl");
-        }
-
-        return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
-    }
-
-    public String getClienteTemplateSolicitacao(UsuarioEntity usuario, String codigo, TipoEmail tipoEmail) throws IOException, TemplateException {
-        Template template;
-        Map<String, Object> dados = new HashMap<>();
-        dados.put("email", from);
-        dados.put("nome", usuario.getNome());
-        dados.put("codigo", codigo);
-
-        switch (tipoEmail){
-            case SOLICITACAO_CRIADA ->
-                    template = fmConfiguration.getTemplate("agendamento-solicitacao-criada.ftl");
-            case SOLICITACAO_RECUSADA ->
-                    template = fmConfiguration.getTemplate("agendamento-solicitacao-recusada.ftl");
-            default ->
-                    template = fmConfiguration.getTemplate("agendamento-solicitacao-criada.ftl");
-        }
-
-        return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
-    }
-
-    // USUÁRIO
-    public void sendEmailUsuario(UsuarioEntity usuario, TipoEmail tipoEmail, Integer codigo) throws MessagingException, TemplateException, IOException {
-
-        MimeMessageHelper mimeMessageHelper = buildEmail(usuario.getEmail(), tipoEmail);
-        if(tipoEmail == TipoEmail.USUARIO_REDEFINIR_SENHA){
-            mimeMessageHelper.setText(getUsuarioTemplateRedefinicao(usuario, codigo), true);
-        }else{
-            mimeMessageHelper.setText(getUsuarioTemplate(usuario, tipoEmail), true);
-        }
-
-        emailSender.send(mimeMessageHelper.getMimeMessage());
-    }
-
-    // AGENDAMENTO
-    public void sendEmailAgendamento(UsuarioEntity usuario, AgendamentoEntity agendamento, TipoEmail tipoEmail) throws MessagingException, TemplateException, IOException {
-        MimeMessageHelper mimeMessageHelper = buildEmail(usuario.getEmail(), tipoEmail);
-        mimeMessageHelper.setText(getAgendamentoTemplate(agendamento, tipoEmail), true);
-
-        emailSender.send(mimeMessageHelper.getMimeMessage());
-    }
-
-    // CLIENTE
-    public void sendEmailCliente(UsuarioEntity usuario, TipoEmail tipoEmail, String codigo) throws MessagingException, TemplateException, IOException {
-        MimeMessageHelper mimeMessageHelper = buildEmail(usuario.getEmail(), tipoEmail);
-        mimeMessageHelper.setText(getClienteTemplateSolicitacao(usuario, codigo, tipoEmail), true);
-
-        emailSender.send(mimeMessageHelper.getMimeMessage());
-    }
+//    // USUÁRIO
+//    public void sendEmailUsuario(UsuarioEntity usuario, TipoEmail tipoEmail, Integer codigo) throws MessagingException, TemplateException, IOException {
+//
+//        MimeMessageHelper mimeMessageHelper = buildEmail(usuario.getEmail(), tipoEmail);
+//        if (tipoEmail == TipoEmail.USUARIO_REDEFINIR_SENHA) {
+//            mimeMessageHelper.setText(getUsuarioTemplateRedefinicao(usuario, codigo), true);
+//        } else {
+//            mimeMessageHelper.setText(getUsuarioTemplate(usuario, tipoEmail), true);
+//        }
+//
+//        emailSender.send(mimeMessageHelper.getMimeMessage());
+//    }
+//
+//    // AGENDAMENTO
+//    public void sendEmailAgendamento(UsuarioEntity usuario, AgendamentoEntity agendamento, TipoEmail tipoEmail) throws MessagingException, TemplateException, IOException {
+//        MimeMessageHelper mimeMessageHelper = buildEmail(usuario.getEmail(), tipoEmail);
+//        mimeMessageHelper.setText(getAgendamentoTemplate(agendamento, tipoEmail), true);
+//
+//        emailSender.send(mimeMessageHelper.getMimeMessage());
+//    }
+//
+//    // CLIENTE
+//    public void sendEmailCliente(UsuarioEntity usuario, TipoEmail tipoEmail, String codigo) throws MessagingException, TemplateException, IOException {
+//        MimeMessageHelper mimeMessageHelper = buildEmail(usuario.getEmail(), tipoEmail);
+//        mimeMessageHelper.setText(getClienteTemplateSolicitacao(usuario, codigo, tipoEmail), true);
+//
+//        emailSender.send(mimeMessageHelper.getMimeMessage());
+//    }
 
 
 }

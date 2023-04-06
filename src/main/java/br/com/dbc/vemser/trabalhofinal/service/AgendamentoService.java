@@ -5,11 +5,13 @@ import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoClienteRelator
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoMedicoRelatorioDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.email.AgendamentoEmailDTO;
+import br.com.dbc.vemser.trabalhofinal.dto.email.ParticaoKafka;
 import br.com.dbc.vemser.trabalhofinal.dto.log.LogCreateDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.solicitacao.SolicitacaoDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.*;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.AgendamentoRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
@@ -37,9 +39,8 @@ public class AgendamentoService {
     private final LogService logService;
     private final ProducerService producerService;
 
-    public AgendamentoDTO adicionar(String idSolicitacao, AprovarReprovarSolicitacao aprovarReprovarSolicitacao) throws RegraDeNegocioException {
+    public AgendamentoDTO adicionar(String idSolicitacao, AprovarReprovarSolicitacao aprovarReprovarSolicitacao) throws RegraDeNegocioException, JsonProcessingException {
         SolicitacaoEntity solicitacaoEntity = solicitacaoService.getSolicitacao(idSolicitacao);
-
 
         // Soliticação não é pendente
         if (!solicitacaoEntity.getStatusSolicitacao().equals(StatusSolicitacao.PENDENTE)) {
@@ -47,15 +48,12 @@ public class AgendamentoService {
         }
 
         //solicita reprovada
-        if (aprovarReprovarSolicitacao.equals(AprovarReprovarSolicitacao.REPROVADA)){
+        if (aprovarReprovarSolicitacao.equals(AprovarReprovarSolicitacao.REPROVADA)) {
             solicitacaoEntity.setStatusSolicitacao(StatusSolicitacao.RECUSADA);
             solicitacaoService.reprovarSolicitacao(solicitacaoEntity);
-            producerService.send();
-            try{
-                emailService.sendEmailCliente(usuarioService.getUsuario(clienteService.getCliente(solicitacaoEntity.getIdCliente()).getIdUsuario()), TipoEmail.SOLICITACAO_RECUSADA, solicitacaoEntity.getIdSoliciatacao());
-            } catch (MessagingException | TemplateException | IOException e) {
-                throw new RegraDeNegocioException("Erro ao enviar informativo de solicitação recusada.");
-            }
+
+            emailService.producerSolicitacao(solicitacaoEntity, TipoEmail.SOLICITACAO_RECUSADA);
+
             return null;
         }
 
@@ -82,17 +80,22 @@ public class AgendamentoService {
 
         logService.salvarLog(logCreateDTO);
 
-        try{
-            emailService.sendEmailAgendamento(clienteEntity.getUsuarioEntity(), agendamentoEntity, TipoEmail.AGENDAMENTO_CRIADO_CLIENTE);
-            emailService.sendEmailAgendamento(medicoEntity.getUsuarioEntity(), agendamentoEntity, TipoEmail.AGENDAMENTO_CRIADO_MEDICO);
-        } catch (MessagingException | TemplateException | IOException e) {
-            throw new RegraDeNegocioException("Erro ao enviar o e-mail com as informações do agendamento.");
-        }
+//        agendamentoEmailClienteDTO.setTipoEmail(TipoEmail.AGENDAMENTO_CRIADO_CLIENTE);
+//        agendamentoEmailClienteDTO.setIdAgendamento(agendamentoEntity.getIdAgendamento());
+//        agendamentoEmailClienteDTO.setEmailMedico(usuarioService.getUsuario(solicitacaoEntity.getIdMedico()).getNome());
+
+//        producerService.send(agendamentoEmailClienteDTO, ParticaoKafka.SEND_EMAIL_AGENDAMENTO);
+
+//        agendamentoEmailClienteDTO.setTipoEmail(TipoEmail.AGENDAMENTO_CRIADO_MEDICO);
+//        producerService.send(agendamentoEmailClienteDTO, ParticaoKafka.SEND_EMAIL_AGENDAMENTO);
+
+        emailService.producerAgendamentoEmail(agendamentoEntity, TipoEmail.AGENDAMENTO_CRIADO_MEDICO);
+        emailService.producerAgendamentoEmail(agendamentoEntity, TipoEmail.AGENDAMENTO_CRIADO_CLIENTE);
 
         return objectMapper.convertValue(agendamentoEntity, AgendamentoDTO.class);
     }
 
-    public AgendamentoDTO editar(Integer id, AgendamentoCreateDTO agendamentoCreateDTO) throws RegraDeNegocioException {
+    public AgendamentoDTO editar(Integer id, AgendamentoCreateDTO agendamentoCreateDTO) throws RegraDeNegocioException, JsonProcessingException {
         AgendamentoEntity agendamentoEntity = getAgendamento(id);
         ClienteEntity clienteEntity = clienteService.getCliente(agendamentoCreateDTO.getIdCliente());
         MedicoEntity medicoEntity = medicoService.getMedico(agendamentoCreateDTO.getIdMedico());
@@ -103,15 +106,13 @@ public class AgendamentoService {
         agendamentoEntity.setTratamento(agendamentoCreateDTO.getTratamento());
         agendamentoEntity.setDataHorario(agendamentoCreateDTO.getDataHorario());
         agendamentoEntity.setValorAgendamento((medicoEntity.getEspecialidadeEntity().getValor()) -
-                medicoEntity.getEspecialidadeEntity().getValor() * (clienteEntity.getConvenioEntity().getTaxaAbatimento()/100));
+                medicoEntity.getEspecialidadeEntity().getValor() * (clienteEntity.getConvenioEntity().getTaxaAbatimento() / 100));
 
         agendamentoRepository.save(agendamentoEntity);
-        try{
-            emailService.sendEmailAgendamento(clienteEntity.getUsuarioEntity(), agendamentoEntity, TipoEmail.AGENDAMENTO_EDITADO_CLIENTE);
-            emailService.sendEmailAgendamento(medicoEntity.getUsuarioEntity(), agendamentoEntity, TipoEmail.AGENDAMENTO_EDITADO_MEDICO);
-        } catch (MessagingException | TemplateException | IOException e) {
-            throw new RegraDeNegocioException("Erro ao enviar o e-mail de edição no agendamento.");
-        }
+
+
+        emailService.producerAgendamentoEmail(agendamentoEntity, TipoEmail.AGENDAMENTO_EDITADO_MEDICO);
+        emailService.producerAgendamentoEmail(agendamentoEntity, TipoEmail.AGENDAMENTO_EDITADO_CLIENTE);
 
         LogCreateDTO logCreateDTO = new LogCreateDTO();
         logCreateDTO.setIdSolicitacao(null);
@@ -125,14 +126,12 @@ public class AgendamentoService {
         return objectMapper.convertValue(agendamentoEntity, AgendamentoDTO.class);
     }
 
-    public void remover(Integer id) throws RegraDeNegocioException {
+    public void remover(Integer id) throws RegraDeNegocioException, JsonProcessingException {
         AgendamentoEntity agendamentoEntity = getAgendamento(id);
-        try{
-            emailService.sendEmailAgendamento(agendamentoEntity.getClienteEntity().getUsuarioEntity(), agendamentoEntity, TipoEmail.AGENDAMENTO_CANCELADO_CLIENTE);
-            emailService.sendEmailAgendamento(agendamentoEntity.getMedicoEntity().getUsuarioEntity(), agendamentoEntity, TipoEmail.AGENDAMENTO_CANCELADO_MEDICO);
-        } catch (MessagingException | TemplateException | IOException e) {
-            throw new RegraDeNegocioException("Erro ao enviar o e-mail de cancelamento do agendamento.");
-        }
+
+        emailService.producerAgendamentoEmail(agendamentoEntity, TipoEmail.AGENDAMENTO_CANCELADO_MEDICO);
+        emailService.producerAgendamentoEmail(agendamentoEntity, TipoEmail.AGENDAMENTO_CANCELADO_CLIENTE);
+
         agendamentoRepository.delete(agendamentoEntity);
 
         LogCreateDTO logCreateDTO = new LogCreateDTO();
