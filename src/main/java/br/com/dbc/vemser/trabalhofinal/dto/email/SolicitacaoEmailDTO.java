@@ -13,17 +13,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class SolicitacaoEmailDTO {
     private String idSoliciatacao;
+
     private String nomeMedico;
     private String nomeCliente;
-    private String email;
+    private String emailCliente;
     private LocalDateTime dataHorario;
     private StatusSolicitacao statusSolicitacao;
     private TipoEmail tipoEmail;
 
-    public SolicitacaoEmailDTO(String idSoliciatacao, String nomeMedico, String nomeCliente, LocalDateTime dataHorario) {
-        this.idSoliciatacao = idSoliciatacao;
-        this.nomeMedico = nomeMedico;
-        this.nomeCliente = nomeCliente;
-        this.dataHorario = dataHorario;
-    }
+
 }
