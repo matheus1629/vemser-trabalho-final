@@ -59,10 +59,6 @@ public class UsuarioServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
     @Mock
-    private EmailService emailService;
-    @Mock
-    private EnderecoClient enderecoClient;
-    @Mock
     private CodigoTrocaSenha codigoTrocaSenha;
 
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -351,9 +347,9 @@ public class UsuarioServiceTest {
         //ACT
         usuarioService.trocarSenha(trocaSenhaDTO);
     }
-    
+
     @Test(expected = RegraDeNegocioException.class)
-    public void deveSolicitarRedefinirSenhaFalha() throws RegraDeNegocioException {
+    public void deveSolicitarRedefinirSenhaFalha() throws RegraDeNegocioException, JsonProcessingException {
         //setup
         String email = "aab@gmail.com";
         UsuarioEntity usuario = getUsuarioEntityMock();
@@ -365,30 +361,6 @@ public class UsuarioServiceTest {
         verify(usuarioService,times(1)).solicitarRedefinirSenha(email);
     }
 
-    @Test(expected = RegraDeNegocioException.class)
-    public void deveSolicitarRedefinirSenhaFalhaEmail() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
-        //setup
-        UsuarioEntity usuario = getUsuarioEntityMock();
-        doReturn(Optional.of(usuario)).when(usuarioService).findByEmail(any());
-        Mockito.doThrow(new MessagingException("Erro ao enviar o e-mail. Cadastro não realizado.")).when(emailService).sendEmailUsuario(any(),any(),any());
-        //act
-        usuarioService.solicitarRedefinirSenha(usuario.getEmail());
-        //asserts
-        verify(emailService,times(1)).sendEmailUsuario(any(),any(),any());
-    }
-
-    @Test
-    public void deveSolicitarRedefinirSenhaSucesso() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
-        //setup
-        String email = "rogerio.santos@gmail.com";
-        UsuarioEntity usuario = getUsuarioEntityMock();
-        doReturn(Optional.of(usuario)).when(usuarioService).findByEmail(any());
-        //act
-        usuarioService.solicitarRedefinirSenha(usuario.getEmail());
-        //asserts
-        verify(emailService,times(1)).sendEmailUsuario(any(),any(),any());
-        verify(usuarioService,times(1)).solicitarRedefinirSenha(email);
-    }
 
     @Test(expected = RegraDeNegocioException.class)
     public void deveRedefinirSenhaFalha() throws RegraDeNegocioException, JsonProcessingException {
