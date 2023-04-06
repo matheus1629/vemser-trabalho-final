@@ -13,6 +13,7 @@ import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.ClienteRepository;
 import br.com.dbc.vemser.trabalhofinal.repository.MedicoRepository;
 import br.com.dbc.vemser.trabalhofinal.repository.UsuarioRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
@@ -60,7 +61,7 @@ public class AdministrativoService {
         return usuarioDTOS;
     }
 
-    public UsuarioDTO adicionar(UsuarioCreateDTO usuario) throws RegraDeNegocioException{
+    public UsuarioDTO adicionar(UsuarioCreateDTO usuario) throws RegraDeNegocioException, JsonProcessingException {
 
         UsuarioEntity usuarioEntity = objectMapper.convertValue(usuario, UsuarioEntity.class);
         usuarioEntity.setIdCargo(1);
@@ -70,12 +71,7 @@ public class AdministrativoService {
 
         usuarioRepository.save(usuarioEntity);
 
-        try{
-            emailService.sendEmailUsuario(usuarioEntity, TipoEmail.USUARIO_CADASTRO, null);
-        } catch (MessagingException | TemplateException | IOException e) {
-            usuarioService.hardDelete(usuarioEntity.getIdUsuario());
-            throw new RegraDeNegocioException("Erro ao enviar o e-mail. Cadastro não realizado.");
-        }
+        emailService.producerUsuarioEmail(usuarioEntity, TipoEmail.USUARIO_CADASTRO, null);
 
         return usuarioService.getById(usuarioEntity.getIdUsuario());
     }

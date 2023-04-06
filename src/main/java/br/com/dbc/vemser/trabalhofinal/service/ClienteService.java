@@ -13,6 +13,7 @@ import br.com.dbc.vemser.trabalhofinal.entity.TipoEmail;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.ClienteRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,7 @@ public class ClienteService {
     private final EmailService emailService;
     private final EnderecoClient enderecoClient;
 
-    public ClienteService(ClienteRepository clienteRepository, ObjectMapper objectMapper, UsuarioService usuarioService, ConvenioService convenioService, @Lazy AgendamentoService agendamentoService, EmailService emailService, EnderecoClient enderecoClient) {
+    public ClienteService(ClienteRepository clienteRepository, ObjectMapper objectMapper, UsuarioService usuarioService, ConvenioService convenioService, @Lazy AgendamentoService agendamentoService, @Lazy EmailService emailService, EnderecoClient enderecoClient) {
         this.clienteRepository = clienteRepository;
         this.objectMapper = objectMapper;
         this.usuarioService = usuarioService;
@@ -73,7 +74,7 @@ public class ClienteService {
         return objectMapper.convertValue(agendamentoClienteRelatorioDTO, AgendamentoListaDTO.class);
     }
 
-    public ClienteCompletoDTO adicionar(ClienteCreateDTO cliente) throws RegraDeNegocioException {
+    public ClienteCompletoDTO adicionar(ClienteCreateDTO cliente) throws RegraDeNegocioException, JsonProcessingException {
         checarSeTemNumero(cliente.getNome());
 
         // Adicionando o Usuario com as informações recebidas no ClienteCreateDTO
@@ -92,12 +93,8 @@ public class ClienteService {
         clienteEntity.setConvenioEntity(convenioEntity);
 
         clienteRepository.save(clienteEntity);
-        try{
-            emailService.sendEmailUsuario(clienteEntity.getUsuarioEntity(), TipoEmail.USUARIO_CADASTRO, null);
-        } catch (MessagingException | TemplateException | IOException e) {
-            usuarioService.hardDelete(clienteEntity.getUsuarioEntity().getIdUsuario());
-            throw new RegraDeNegocioException("Erro ao enviar o e-mail. Cadastro não realizado.");
-        }
+
+        emailService.producerUsuarioEmail(usuarioEntity, TipoEmail.USUARIO_CADASTRO, null);
 
         return getById(clienteEntity.getIdCliente());
     }

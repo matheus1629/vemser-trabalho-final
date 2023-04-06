@@ -9,6 +9,7 @@ import br.com.dbc.vemser.trabalhofinal.entity.StatusSolicitacao;
 import br.com.dbc.vemser.trabalhofinal.entity.TipoLog;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.SolicitacaoReposiroty;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -64,7 +65,7 @@ public class SolicitacaoServiceTest {
     }
 
     @Test
-    public void deveCriarSolicitacaoSucesso() throws RegraDeNegocioException {
+    public void deveCriarSolicitacaoSucesso() throws RegraDeNegocioException, JsonProcessingException {
         //setup
         SolicitacaoCreateDTO solicitacaoCreateDTO = getSolicitacaoCreateDTO();
 

@@ -5,23 +5,18 @@ import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoClienteRelator
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.agendamento.AgendamentoMedicoRelatorioDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.email.AgendamentoEmailDTO;
-import br.com.dbc.vemser.trabalhofinal.dto.email.ParticaoKafka;
 import br.com.dbc.vemser.trabalhofinal.dto.log.LogCreateDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.*;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.AgendamentoRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -52,7 +47,7 @@ public class AgendamentoService {
             solicitacaoEntity.setStatusSolicitacao(StatusSolicitacao.RECUSADA);
             solicitacaoService.reprovarSolicitacao(solicitacaoEntity);
 
-            emailService.producerSolicitacao(solicitacaoEntity, TipoEmail.SOLICITACAO_RECUSADA);
+            emailService.producerSolicitacaoEmail(solicitacaoEntity, TipoEmail.SOLICITACAO_RECUSADA);
 
             return null;
         }
@@ -80,15 +75,6 @@ public class AgendamentoService {
 
         logService.salvarLog(logCreateDTO);
 
-//        agendamentoEmailClienteDTO.setTipoEmail(TipoEmail.AGENDAMENTO_CRIADO_CLIENTE);
-//        agendamentoEmailClienteDTO.setIdAgendamento(agendamentoEntity.getIdAgendamento());
-//        agendamentoEmailClienteDTO.setEmailMedico(usuarioService.getUsuario(solicitacaoEntity.getIdMedico()).getNome());
-
-//        producerService.send(agendamentoEmailClienteDTO, ParticaoKafka.SEND_EMAIL_AGENDAMENTO);
-
-//        agendamentoEmailClienteDTO.setTipoEmail(TipoEmail.AGENDAMENTO_CRIADO_MEDICO);
-//        producerService.send(agendamentoEmailClienteDTO, ParticaoKafka.SEND_EMAIL_AGENDAMENTO);
-
         emailService.producerAgendamentoEmail(agendamentoEntity, TipoEmail.AGENDAMENTO_CRIADO_MEDICO);
         emailService.producerAgendamentoEmail(agendamentoEntity, TipoEmail.AGENDAMENTO_CRIADO_CLIENTE);
 
@@ -110,7 +96,6 @@ public class AgendamentoService {
 
         agendamentoRepository.save(agendamentoEntity);
 
-
         emailService.producerAgendamentoEmail(agendamentoEntity, TipoEmail.AGENDAMENTO_EDITADO_MEDICO);
         emailService.producerAgendamentoEmail(agendamentoEntity, TipoEmail.AGENDAMENTO_EDITADO_CLIENTE);
 
@@ -128,9 +113,7 @@ public class AgendamentoService {
 
     public void remover(Integer id) throws RegraDeNegocioException, JsonProcessingException {
         AgendamentoEntity agendamentoEntity = getAgendamento(id);
-
-        emailService.producerAgendamentoEmail(agendamentoEntity, TipoEmail.AGENDAMENTO_CANCELADO_MEDICO);
-        emailService.producerAgendamentoEmail(agendamentoEntity, TipoEmail.AGENDAMENTO_CANCELADO_CLIENTE);
+        AgendamentoEntity agendamentoEmail = agendamentoEntity;
 
         agendamentoRepository.delete(agendamentoEntity);
 
@@ -140,8 +123,11 @@ public class AgendamentoService {
         logCreateDTO.setIdUsuario(usuarioService.getIdLoggedUser());
         logCreateDTO.setDataHora(LocalDateTime.now());
         logCreateDTO.setTipoLog(TipoLog.EXCLUSAO_AGENDAMENTO);
-
         logService.salvarLog(logCreateDTO);
+
+        emailService.producerAgendamentoEmail(agendamentoEmail, TipoEmail.AGENDAMENTO_CANCELADO_MEDICO);
+        emailService.producerAgendamentoEmail(agendamentoEmail, TipoEmail.AGENDAMENTO_CANCELADO_CLIENTE);
+
     }
 
     public void removerPorMedicoDesativado(MedicoEntity medicoEntity) throws RegraDeNegocioException {

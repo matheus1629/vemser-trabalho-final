@@ -6,6 +6,7 @@ import br.com.dbc.vemser.trabalhofinal.dto.solicitacao.SolicitacaoDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.*;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.SolicitacaoReposiroty;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.BooleanBuilder;
 import freemarker.template.TemplateException;
@@ -30,7 +31,7 @@ public class SolicitacaoService {
     private final MedicoService medicoService;
     private final LogService logService;
 
-    public SolicitacaoDTO create(SolicitacaoCreateDTO solicitacaoCreateDTO) throws RegraDeNegocioException {
+    public SolicitacaoDTO create(SolicitacaoCreateDTO solicitacaoCreateDTO) throws RegraDeNegocioException, JsonProcessingException {
         medicoService.getMedico(solicitacaoCreateDTO.getIdMedico()); //verifica se o médico existe
 
         solicitacaoCreateDTO.setIdCliente(clienteService.recuperarCliente().getIdCliente());
@@ -41,11 +42,12 @@ public class SolicitacaoService {
 
         solicitacaoReposiroty.save(solicitacaoEntity);
 
-        try{
-            emailService.sendEmailCliente(usuarioService.getUsuario(clienteService.recuperarCliente().getIdUsuario()), TipoEmail.SOLICITACAO_CRIADA, solicitacaoEntity.getIdSoliciatacao());
-        } catch (MessagingException | TemplateException | IOException e) {
-            throw new RegraDeNegocioException("Erro ao enviar informativo da criação de solicitação.");
-        }
+        emailService.producerSolicitacaoEmail(solicitacaoEntity, TipoEmail.SOLICITACAO_CRIADA);
+//        try{
+//            emailService.sendEmailCliente(usuarioService.getUsuario(clienteService.recuperarCliente().getIdUsuario()), TipoEmail.SOLICITACAO_CRIADA, solicitacaoEntity.getIdSoliciatacao());
+//        } catch (MessagingException | TemplateException | IOException e) {
+//            throw new RegraDeNegocioException("Erro ao enviar informativo da criação de solicitação.");
+//        }
 
         var solicitacaoDTO = new SolicitacaoDTO();
         BeanUtils.copyProperties(solicitacaoEntity, solicitacaoDTO);

@@ -10,9 +10,11 @@ import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.UsuarioRepository;
 import br.com.dbc.vemser.trabalhofinal.security.CodigoTrocaSenha;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,7 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.*;
 
-@RequiredArgsConstructor
+
 @Service
 public class UsuarioService {
 
@@ -31,6 +33,15 @@ public class UsuarioService {
     private final EmailService emailService;
     private final EnderecoClient enderecoClient;
     private final CodigoTrocaSenha codigoTrocaSenha;
+
+    public UsuarioService(UsuarioRepository usuarioRepository, ObjectMapper objectMapper, PasswordEncoder passwordEncoder, @Lazy EmailService emailService, EnderecoClient enderecoClient, CodigoTrocaSenha codigoTrocaSenha) {
+        this.usuarioRepository = usuarioRepository;
+        this.objectMapper = objectMapper;
+        this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
+        this.enderecoClient = enderecoClient;
+        this.codigoTrocaSenha = codigoTrocaSenha;
+    }
 
     public void adicionar(UsuarioEntity usuario) throws RegraDeNegocioException {
         usuario.setAtivo(1);
@@ -149,7 +160,7 @@ public class UsuarioService {
 
     }
 
-    public void solicitarRedefinirSenha(String email) throws RegraDeNegocioException {
+    public void solicitarRedefinirSenha(String email) throws RegraDeNegocioException, JsonProcessingException {
 
         UsuarioEntity usuario = findByEmail(email)
                 .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado."));
@@ -162,15 +173,11 @@ public class UsuarioService {
 
         codigoTrocaSenha.setTokenBD(codigoSenha);
 
-        try {
-            emailService.sendEmailUsuario(usuario, TipoEmail.USUARIO_REDEFINIR_SENHA, codigoGerado);
-        } catch (MessagingException | TemplateException | IOException e) {
-            throw new RegraDeNegocioException("Erro ao enviar o e-mail com código de redefinição.");
-        }
+        emailService.producerUsuarioEmail(usuario, TipoEmail.USUARIO_REDEFINIR_SENHA, codigoGerado);
 
     }
 
-    public void redefinirSenha(RedefinicaoSenhaDTO redefinicaoSenhaDTO) throws RegraDeNegocioException {
+    public void redefinirSenha(RedefinicaoSenhaDTO redefinicaoSenhaDTO) throws RegraDeNegocioException, JsonProcessingException {
 
         UsuarioEntity usuarioEntity = findByEmail(redefinicaoSenhaDTO.getEmail())
                 .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado."));
@@ -186,6 +193,8 @@ public class UsuarioService {
         } else {
             usuarioEntity.setSenha(passwordEncoder.encode(redefinicaoSenhaDTO.getSenhaNova()));
             usuarioRepository.save(usuarioEntity);
+
+            emailService.producerUsuarioEmail(usuarioEntity, TipoEmail.USUARIO_SENHA_REDEFINIDA, null);
 
             codigoTrocaSenha.getTokenBD().remove(redefinicaoSenhaDTO.getEmail());
         }

@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.trabalhofinal.service;
 
 import br.com.dbc.vemser.trabalhofinal.dto.email.ParticaoKafka;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +33,13 @@ public class ProducerService {
         String mensagem = objectMapper.writeValueAsString(mensagemDTO);
         MessageBuilder<String> stringMessageBuilder = MessageBuilder.withPayload(mensagem)
                 .setHeader(KafkaHeaders.TOPIC, topic)
-                .setHeader(KafkaHeaders.MESSAGE_KEY, UUID.randomUUID().toString())
-                .setHeader(KafkaHeaders.PARTITION_ID, particaoKafka.getParticao());
+                .setHeader(KafkaHeaders.MESSAGE_KEY, UUID.randomUUID().toString());
+//                .setHeader(KafkaHeaders.PARTITION_ID, particaoKafka.getParticao());
 
+        if (particaoKafka != null) {
+            stringMessageBuilder
+                    .setHeader(KafkaHeaders.PARTITION_ID, particaoKafka.getParticao());
+        }
 
         Message<String> message = stringMessageBuilder.build();
 

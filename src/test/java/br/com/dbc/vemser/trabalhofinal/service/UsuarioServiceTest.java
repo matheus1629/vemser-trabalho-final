@@ -11,6 +11,7 @@ import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.UsuarioRepository;
 import br.com.dbc.vemser.trabalhofinal.security.CodigoTrocaSenha;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -350,8 +351,7 @@ public class UsuarioServiceTest {
         //ACT
         usuarioService.trocarSenha(trocaSenhaDTO);
     }
-
-    //<TODO>
+    
     @Test(expected = RegraDeNegocioException.class)
     public void deveSolicitarRedefinirSenhaFalha() throws RegraDeNegocioException {
         //setup
@@ -391,7 +391,7 @@ public class UsuarioServiceTest {
     }
 
     @Test(expected = RegraDeNegocioException.class)
-    public void deveRedefinirSenhaFalha() throws RegraDeNegocioException{
+    public void deveRedefinirSenhaFalha() throws RegraDeNegocioException, JsonProcessingException {
         //SETUP
         UsuarioEntity usuario = getUsuarioEntityMock();
         RedefinicaoSenhaDTO redefinicaoSenhaDTO = getRedefinicaoSenhaDTOMock();
@@ -404,7 +404,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void deveRedefinirSenhaSucesso() throws RegraDeNegocioException{
+    public void deveRedefinirSenhaSucesso() throws RegraDeNegocioException, JsonProcessingException {
         //SETUP
         UsuarioEntity usuario = getUsuarioEntityMock();
         RedefinicaoSenhaDTO redefinicaoSenhaDTO = getRedefinicaoSenhaDTOMock();

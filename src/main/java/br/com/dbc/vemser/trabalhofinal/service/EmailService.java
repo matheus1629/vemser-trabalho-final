@@ -3,10 +3,8 @@ package br.com.dbc.vemser.trabalhofinal.service;
 import br.com.dbc.vemser.trabalhofinal.dto.email.AgendamentoEmailDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.email.SolicitacaoEmailDTO;
 import br.com.dbc.vemser.trabalhofinal.dto.email.ParticaoKafka;
-import br.com.dbc.vemser.trabalhofinal.entity.AgendamentoEntity;
-import br.com.dbc.vemser.trabalhofinal.entity.SolicitacaoEntity;
-import br.com.dbc.vemser.trabalhofinal.entity.TipoEmail;
-import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
+import br.com.dbc.vemser.trabalhofinal.dto.email.UsuarioEmailDTO;
+import br.com.dbc.vemser.trabalhofinal.entity.*;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import freemarker.template.TemplateException;
@@ -15,7 +13,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
-import javax.mail.MessagingException;
 import java.io.IOException;
 
 @Log4j2
@@ -34,8 +31,8 @@ public class EmailService {
         AgendamentoEmailDTO agendamentoEmailDTO = new AgendamentoEmailDTO(
                 agendamentoEntity.getIdAgendamento(),
                 agendamentoEntity.getDataHorario(),
-                usuarioService.getUsuario(agendamentoEntity.getIdMedico()).getNome(),
-                usuarioService.getUsuario(agendamentoEntity.getIdCliente()).getNome(),
+                usuarioService.getUsuario(medicoService.getMedico(agendamentoEntity.getIdMedico()).getIdUsuario()).getNome(),
+                usuarioService.getUsuario(clienteService.getCliente(agendamentoEntity.getIdCliente()).getIdUsuario()).getNome(),
                 null,
                 tipoEmail);
 
@@ -48,7 +45,7 @@ public class EmailService {
         producerService.send(agendamentoEmailDTO, ParticaoKafka.SEND_EMAIL_AGENDAMENTO);
     }
 
-    public void producerSolicitacao(SolicitacaoEntity solicitacaoEntity, TipoEmail tipoEmail) throws RegraDeNegocioException, JsonProcessingException {
+    public void producerSolicitacaoEmail(SolicitacaoEntity solicitacaoEntity, TipoEmail tipoEmail) throws RegraDeNegocioException, JsonProcessingException {
         SolicitacaoEmailDTO emailSolicitacaoDTO = new SolicitacaoEmailDTO(
                 solicitacaoEntity.getIdSoliciatacao(),
                 usuarioService.getUsuario(medicoService.getMedico(solicitacaoEntity.getIdMedico()).getIdUsuario()).getNome(),
@@ -59,37 +56,21 @@ public class EmailService {
                 tipoEmail);
 
         producerService.send(emailSolicitacaoDTO, ParticaoKafka.SEND_EMAIL_CLIENTE);
-
     }
 
-//    // USUÁRIO
-//    public void sendEmailUsuario(UsuarioEntity usuario, TipoEmail tipoEmail, Integer codigo) throws MessagingException, TemplateException, IOException {
-//
-//        MimeMessageHelper mimeMessageHelper = buildEmail(usuario.getEmail(), tipoEmail);
-//        if (tipoEmail == TipoEmail.USUARIO_REDEFINIR_SENHA) {
-//            mimeMessageHelper.setText(getUsuarioTemplateRedefinicao(usuario, codigo), true);
-//        } else {
-//            mimeMessageHelper.setText(getUsuarioTemplate(usuario, tipoEmail), true);
-//        }
-//
-//        emailSender.send(mimeMessageHelper.getMimeMessage());
-//    }
-//
-//    // AGENDAMENTO
-//    public void sendEmailAgendamento(UsuarioEntity usuario, AgendamentoEntity agendamento, TipoEmail tipoEmail) throws MessagingException, TemplateException, IOException {
-//        MimeMessageHelper mimeMessageHelper = buildEmail(usuario.getEmail(), tipoEmail);
-//        mimeMessageHelper.setText(getAgendamentoTemplate(agendamento, tipoEmail), true);
-//
-//        emailSender.send(mimeMessageHelper.getMimeMessage());
-//    }
-//
-//    // CLIENTE
-//    public void sendEmailCliente(UsuarioEntity usuario, TipoEmail tipoEmail, String codigo) throws MessagingException, TemplateException, IOException {
-//        MimeMessageHelper mimeMessageHelper = buildEmail(usuario.getEmail(), tipoEmail);
-//        mimeMessageHelper.setText(getClienteTemplateSolicitacao(usuario, codigo, tipoEmail), true);
-//
-//        emailSender.send(mimeMessageHelper.getMimeMessage());
-//    }
+    public void producerUsuarioEmail(UsuarioEntity usuarioEntity, TipoEmail tipoEmail, Integer codigoRecuperacao) throws JsonProcessingException {
+        UsuarioEmailDTO usuarioEmailDTO = new UsuarioEmailDTO(
+                usuarioEntity.getNome(),
+                usuarioEntity.getEmail(),
+                null,
+                tipoEmail);
+
+        if (tipoEmail.equals(TipoEmail.USUARIO_REDEFINIR_SENHA)) {
+            usuarioEmailDTO.setCodigoRecuperacao(codigoRecuperacao);
+        }
+
+        producerService.send(usuarioEmailDTO, ParticaoKafka.SEND_EMAIL_USUARIO);
+    }
 
 
 }

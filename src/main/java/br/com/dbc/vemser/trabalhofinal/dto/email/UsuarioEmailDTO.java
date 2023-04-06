@@ -7,12 +7,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class UsuarioEmailDTO {
-
     private String nomeUsuario;
     private String emailUsuario;
-    private String codigoRecuperacao;
+    private Integer codigoRecuperacao;
     private TipoEmail tipoEmail;
 
 }
