@@ -173,6 +173,15 @@ public class UsuarioService {
 
         codigoTrocaSenha.setTokenBD(codigoSenha);
 
+        Timer timer = new Timer();
+        TimerTask tarefa = new TimerTask() {
+            @Override
+            public void run() {
+                codigoTrocaSenha.getTokenBD().remove(email);
+            }
+        };
+        timer.schedule(tarefa, 900000); // 15 minutos
+
         emailService.producerUsuarioEmail(usuario, TipoEmail.USUARIO_REDEFINIR_SENHA, codigoGerado);
 
     }
