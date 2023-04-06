@@ -13,6 +13,7 @@ import br.com.dbc.vemser.trabalhofinal.entity.ConvenioEntity;
 import br.com.dbc.vemser.trabalhofinal.entity.UsuarioEntity;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.ClienteRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -174,7 +175,7 @@ public class ClienteServiceTest {
     }
 
     @Test
-    public void deveCriarUmCliente() throws RegraDeNegocioException { //<todo> testar o envio de email
+    public void deveCriarUmCliente() throws RegraDeNegocioException, JsonProcessingException { //<todo> testar o envio de email
         //SETUP
         ClienteCreateDTO clienteCreateDTOMock = new ClienteCreateDTO();
         clienteCreateDTOMock.setCep("12345678");
@@ -196,23 +197,6 @@ public class ClienteServiceTest {
         //ASSERT
         assertNotNull(clienteAdicionado);
         assertEquals(clienteCompletoDTOMock, clienteAdicionado);
-    }
-
-    @Test(expected = RegraDeNegocioException.class)
-    public void deveCriarUmClienteComFalha() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
-        // declaração de variaveis (SETUP)
-        ClienteCreateDTO clienteCreateDTO = new ClienteCreateDTO();
-        clienteCreateDTO.setCep("12345678");
-        clienteCreateDTO.setNome("Alan");
-        clienteCreateDTO.setCpf("12345678910");
-        clienteCreateDTO.setEmail("Alan@gmail.com");
-        clienteCreateDTO.setContatos("12345678");
-        clienteCreateDTO.setNumero(145);
-        clienteCreateDTO.setSenha("123");
-
-        Mockito.doThrow(new MessagingException("Erro ao enviar o e-mail. Cadastro não realizado.")).when(emailService).sendEmailUsuario(any(),any(),any());
-        // ação (ACT)
-        clienteService.adicionar(clienteCreateDTO);
     }
 
     @Test

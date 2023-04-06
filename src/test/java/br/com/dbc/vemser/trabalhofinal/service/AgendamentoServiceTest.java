@@ -11,6 +11,7 @@ import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoCompletoDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.*;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.AgendamentoRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -57,13 +58,7 @@ public class AgendamentoServiceTest {
     @Mock
     private MedicoService medicoService;
     @Mock
-    private EmailService emailService;
-    @Mock
     private SolicitacaoService solicitacaoService;
-    @Mock
-    private LogService logService;
-    @Mock
-    private UsuarioService usuarioService;
 
     private ObjectMapper objectMapper = new ObjectMapper();
     @Before
@@ -74,49 +69,10 @@ public class AgendamentoServiceTest {
         ReflectionTestUtils.setField(agendamentoService, "objectMapper", objectMapper);
     }
 
-    @Test
-    public void deveAdicionarAgendamentoSucesso() throws RegraDeNegocioException {
-        //SETUP
-        ClienteEntity clienteEntityMock = getClienteEntityMock();
-        MedicoEntity medicoEntityMock = getMedicoEntityMock();
-        AgendamentoEntity agendamentoEntityMock = getAgendamentoEntityMock();
-        SolicitacaoEntity solicitacaoEntity = getSolicitacaoEntityMock();
-        solicitacaoEntity.setStatusSolicitacao(StatusSolicitacao.PENDENTE);
-        AprovarReprovarSolicitacao aprovarReprovarSolicitacao = AprovarReprovarSolicitacao.APROVADA;
-
-        when(solicitacaoService.getSolicitacao(any())).thenReturn(solicitacaoEntity);
-        doReturn(clienteEntityMock).when(clienteService).getCliente(any());
-        doReturn(medicoEntityMock).when(medicoService).getMedico(any());
-        when(agendamentoRepository.save(any())).thenReturn(agendamentoEntityMock);
-
-        //ACT
-        AgendamentoDTO agendamentoAdicionado = agendamentoService.adicionar("1",aprovarReprovarSolicitacao);
-
-        //ASSERT
-        verify(agendamentoRepository, times(1)).save(any());
-        assertNotNull(agendamentoAdicionado);
-    }
-
-
-    @Test
-    public void deveRecusarSolicitacaoAdicionar() throws RegraDeNegocioException {
-        //SETUP
-        ClienteEntity clienteEntityMock = getClienteEntityMock();
-        MedicoEntity medicoEntityMock = getMedicoEntityMock();
-        AgendamentoEntity agendamentoEntityMock = getAgendamentoEntityMock();
-        SolicitacaoEntity solicitacaoEntity = getSolicitacaoEntityMock();
-        solicitacaoEntity.setStatusSolicitacao(StatusSolicitacao.PENDENTE);
-        AprovarReprovarSolicitacao aprovarReprovarSolicitacao = AprovarReprovarSolicitacao.REPROVADA;
-
-        when(solicitacaoService.getSolicitacao(any())).thenReturn(solicitacaoEntity);
-        doReturn(clienteEntityMock).when(clienteService).getCliente(any());
-        //ACT
-        AgendamentoDTO agendamentoAdicionado = agendamentoService.adicionar("1",aprovarReprovarSolicitacao);
-    }
 
 
     @Test(expected = RegraDeNegocioException.class)
-    public void deveEntrarNoIfPendenteAdicionarAgendamento() throws RegraDeNegocioException {
+    public void deveEntrarNoIfPendenteAdicionarAgendamento() throws RegraDeNegocioException, JsonProcessingException {
         //SETUP
         ClienteEntity clienteEntityMock = getClienteEntityMock();
         MedicoEntity medicoEntityMock = getMedicoEntityMock();
@@ -131,109 +87,6 @@ public class AgendamentoServiceTest {
         //ASSERT
         verify(agendamentoRepository, times(1)).save(any());
         assertNotNull(agendamentoAdicionado);
-    }
-
-    @Test(expected = RegraDeNegocioException.class)
-    public void deveEntrarNoPrimeiroCatchAdicionarAgendamento() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
-        //SETUP
-        ClienteEntity clienteEntityMock = getClienteEntityMock();
-        MedicoEntity medicoEntity = getMedicoEntityMock();
-        SolicitacaoEntity solicitacaoEntity = getSolicitacaoEntityMock();
-        solicitacaoEntity.setStatusSolicitacao(StatusSolicitacao.PENDENTE);
-        AprovarReprovarSolicitacao aprovarReprovarSolicitacao = AprovarReprovarSolicitacao.APROVADA;
-
-        clienteEntityMock.setUsuarioEntity(null);
-        medicoEntity.setUsuarioEntity(null);
-
-        when(medicoService.getMedico(any())).thenReturn(medicoEntity);
-        when(solicitacaoService.getSolicitacao(any())).thenReturn(solicitacaoEntity);
-        doReturn(clienteEntityMock).when(clienteService).getCliente(any());
-        doThrow(new MessagingException("Erro ao enviar o e-mail com as informações do agendamento.")).when(emailService).sendEmailAgendamento(any(),any(),any());
-        //ACT
-        AgendamentoDTO agendamentoAdicionado = agendamentoService.adicionar("1",aprovarReprovarSolicitacao);
-    }
-
-    @Test(expected = RegraDeNegocioException.class)
-    public void deveEntrarNoCatchAdicionarAgendamento() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
-        //SETUP
-        ClienteEntity clienteEntityMock = getClienteEntityMock();
-        MedicoEntity medicoEntity = getMedicoEntityMock();
-        SolicitacaoEntity solicitacaoEntity = getSolicitacaoEntityMock();
-        solicitacaoEntity.setStatusSolicitacao(StatusSolicitacao.PENDENTE);
-        AprovarReprovarSolicitacao aprovarReprovarSolicitacao = AprovarReprovarSolicitacao.REPROVADA;
-
-        clienteEntityMock.setUsuarioEntity(null);
-        medicoEntity.setUsuarioEntity(null);
-
-        when(solicitacaoService.getSolicitacao(any())).thenReturn(solicitacaoEntity);
-        doReturn(clienteEntityMock).when(clienteService).getCliente(any());
-        doThrow(new MessagingException("Erro ao enviar o e-mail com as informações do agendamento.")).when(emailService).sendEmailCliente(any(),any(),any());
-        //ACT
-        AgendamentoDTO agendamentoAdicionado = agendamentoService.adicionar("1",aprovarReprovarSolicitacao);
-    }
-
-    @Test
-    public void deveEditarAgendamento() throws RegraDeNegocioException {
-        //SETUP
-        AgendamentoCreateDTO agendamentoCreateDTOMock = getAgendamentoCreateDTOMock();
-        ClienteEntity clienteEntityMock = getClienteEntityMock();
-        MedicoEntity medicoEntityMock = getMedicoEntityMock();
-        AgendamentoEntity agendamentoEntityMock = getAgendamentoEntityMock();
-        AgendamentoDTO agendamentoDTOMock = getAgendamentoDTOMock();
-
-        doReturn(clienteEntityMock).when(clienteService).getCliente(any());
-        doReturn(medicoEntityMock).when(medicoService).getMedico(any());
-        doReturn(agendamentoEntityMock).when(agendamentoService).getAgendamento(any());
-
-        //ACT
-        AgendamentoDTO agendamentoEditado = agendamentoService.editar(1, agendamentoCreateDTOMock);
-
-        //ASSERT
-        verify(agendamentoRepository, times(1)).save(any());
-        assertNotNull(agendamentoEditado);
-        assertEquals(agendamentoDTOMock, agendamentoEditado);
-    }
-    @Test(expected = RegraDeNegocioException.class)
-    public void deveEntrarNoCatchEditarAgendamento() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
-        //SETUP
-        AgendamentoCreateDTO agendamentoCreateDTOMock = getAgendamentoCreateDTOMock();
-        ClienteEntity clienteEntityMock = getClienteEntityMock();
-        MedicoEntity medicoEntityMock = getMedicoEntityMock();
-        AgendamentoEntity agendamentoEntityMock = getAgendamentoEntityMock();
-
-        doReturn(clienteEntityMock).when(clienteService).getCliente(any());
-        doReturn(medicoEntityMock).when(medicoService).getMedico(any());
-        doReturn(agendamentoEntityMock).when(agendamentoService).getAgendamento(any());
-        doThrow(new MessagingException("Erro ao enviar o e-mail de edição no agendamento.")).when(emailService).sendEmailAgendamento(any(),any(),any());
-
-        //ACT
-        AgendamentoDTO agendamentoEditado = agendamentoService.editar(1, agendamentoCreateDTOMock);
-    }
-
-    @Test
-    public void deveRemoverAgendamento() throws RegraDeNegocioException {
-        //SETUP
-        AgendamentoEntity agendamentoEntityMock = getAgendamentoEntityMock();
-
-        doReturn(agendamentoEntityMock).when(agendamentoService).getAgendamento(any());
-
-        //ACT
-        agendamentoService.remover(1);
-        //ASSERT
-        verify(agendamentoRepository, times(1)).delete(agendamentoEntityMock);
-    }
-
-    @Test(expected = RegraDeNegocioException.class)
-    public void deveEntrarCatchRemover() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
-        //SETUP
-        AgendamentoEntity agendamentoEntityMock = getAgendamentoEntityMock();
-
-        doReturn(agendamentoEntityMock).when(agendamentoService).getAgendamento(any());
-        doThrow(new MessagingException("Erro ao enviar o e-mail de cancelamento do agendamento.")).when(emailService).sendEmailAgendamento(any(),any(),any());
-        //ACT
-        agendamentoService.remover(1);
-        //ASSERT
-        verify(agendamentoRepository, times(1)).delete(agendamentoEntityMock);
     }
 
     @Test

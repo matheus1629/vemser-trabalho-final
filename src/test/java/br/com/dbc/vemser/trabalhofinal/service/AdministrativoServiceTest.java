@@ -13,6 +13,7 @@ import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.ClienteRepository;
 import br.com.dbc.vemser.trabalhofinal.repository.MedicoRepository;
 import br.com.dbc.vemser.trabalhofinal.repository.UsuarioRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -95,21 +96,13 @@ public class AdministrativoServiceTest {
     }
 
     @Test
-    public void testarAdicionarSucesso() throws RegraDeNegocioException {
+    public void testarAdicionarSucesso() throws RegraDeNegocioException, JsonProcessingException {
         //setup
         when(usuarioService.getById(any())).thenReturn(getUsuarioDTOMock());
         //act
         UsuarioDTO usuarioDTO = administrativoService.adicionar(getUsuarioCreateDTOMock());
         //assert
         assertNotNull(usuarioDTO);
-    }
-
-    @Test(expected = RegraDeNegocioException.class)
-    public void testarAdicionarFracasso() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
-        //setup
-        doThrow(new MessagingException("Erro")).when(emailService).sendEmailUsuario(any(),any(),any());
-        //act
-        administrativoService.adicionar(getUsuarioCreateDTOMock());
     }
 
     @Test

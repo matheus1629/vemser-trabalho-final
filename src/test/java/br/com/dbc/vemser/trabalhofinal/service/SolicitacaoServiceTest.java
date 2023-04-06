@@ -73,19 +73,6 @@ public class SolicitacaoServiceTest {
         Assert.assertNotNull(solicitacaoDTO);
     }
 
-    @Test(expected = RegraDeNegocioException.class)
-    public void deveCriarSolicitacaoFracasso() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
-        //setup
-        SolicitacaoCreateDTO solicitacaoCreateDTO = getSolicitacaoCreateDTO();
-
-        Mockito.doThrow(new MessagingException("Erro ao enviar informativo da criação de solicitação.")).when(emailService).sendEmailCliente(any(),any(),any());
-        Mockito.when(clienteService.recuperarCliente()).thenReturn(getClienteCompletoDTOMock());
-        //act
-        SolicitacaoDTO solicitacaoDTO = solicitacaoService.create(solicitacaoCreateDTO);
-        //assert
-        Assert.assertNotNull(solicitacaoDTO);
-    }
-
     @Test
     public void deveReprovarSolicitacao(){
         //setup

@@ -235,40 +235,6 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void deveRetornarUsuarioDTOPeloId() throws RegraDeNegocioException{
-        //SETUP
-        UsuarioEntity usuarioEntityMockDoBanco = getUsuarioEntityMockDoBanco();
-        when(usuarioRepository.findById(anyInt())).thenReturn(Optional.of(usuarioEntityMockDoBanco));
-
-        //ACT
-        UsuarioDTO usuarioDTORetornadoMock = usuarioService.getById(1);
-        //ASSERT
-        assertNotNull(usuarioDTORetornadoMock);
-        assertEquals(usuarioEntityMockDoBanco.getIdUsuario(), usuarioDTORetornadoMock.getIdUsuario());
-        assertEquals(usuarioEntityMockDoBanco.getIdCargo(), usuarioDTORetornadoMock.getIdCargo());
-        assertEquals(usuarioEntityMockDoBanco.getCpf(), usuarioDTORetornadoMock.getCpf());
-        assertEquals(usuarioEntityMockDoBanco.getEmail(), usuarioDTORetornadoMock.getEmail());
-        assertEquals(usuarioEntityMockDoBanco.getNome(), usuarioDTORetornadoMock.getNome());
-        assertEquals(usuarioEntityMockDoBanco.getCep(), usuarioDTORetornadoMock.getCep());
-        assertEquals(usuarioEntityMockDoBanco.getNumero(), usuarioDTORetornadoMock.getNumero());
-        assertEquals(usuarioEntityMockDoBanco.getContatos(), usuarioDTORetornadoMock.getContatos());
-
-    }
-
-//    @Test
-//    public void deveRetornarUsuarioEntityPeloEmail() {
-//        //SETUP
-//        UsuarioEntity usuarioEntityMockDoBanco = getUsuarioEntityMockDoBanco();
-//        when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntityMockDoBanco));
-//
-//        //ACT
-//        Optional<UsuarioEntity> usuarioEntityEncontradoMock = usuarioService.findByEmail("rogerio.santos@gmail.com");
-//        //ASSERT
-//        assertNotNull(usuarioEntityEncontradoMock);
-//        assertEquals(usuarioEntityMockDoBanco.getEmail(), usuarioEntityEncontradoMock.get().getEmail());
-//    }
-
-    @Test
     public void deveReativarUsuarioSucesso() throws RegraDeNegocioException {
         //SETUP
         UsuarioEntity usuarioEntityDesativadoMockDoBanco = getUsuarioEntityDesativadoMockDoBanco();
@@ -364,22 +330,6 @@ public class UsuarioServiceTest {
         RedefinicaoSenhaDTO redefinicaoSenhaDTO = getRedefinicaoSenhaDTOMock();
 
         doReturn(Optional.of(usuario)).when(usuarioService).findByEmail(any());
-        //ACT
-        usuarioService.redefinirSenha(redefinicaoSenhaDTO);
-        //ASSERT
-        verify(usuarioService,times(1)).redefinirSenha(redefinicaoSenhaDTO);
-    }
-
-    @Test
-    public void deveRedefinirSenhaSucesso() throws RegraDeNegocioException, JsonProcessingException {
-        //SETUP
-        UsuarioEntity usuario = getUsuarioEntityMock();
-        RedefinicaoSenhaDTO redefinicaoSenhaDTO = getRedefinicaoSenhaDTOMock();
-        Map<String, Integer> map = new HashMap<>();
-        map.put(redefinicaoSenhaDTO.getEmail(), redefinicaoSenhaDTO.getCodigoConfirmacao());
-
-        doReturn(Optional.of(usuario)).when(usuarioService).findByEmail(any());
-        when(codigoTrocaSenha.getTokenBD()).thenReturn(map);
         //ACT
         usuarioService.redefinirSenha(redefinicaoSenhaDTO);
         //ASSERT

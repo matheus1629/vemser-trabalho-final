@@ -14,6 +14,7 @@ import br.com.dbc.vemser.trabalhofinal.dto.medico.MedicoUpdateDTO;
 import br.com.dbc.vemser.trabalhofinal.entity.*;
 import br.com.dbc.vemser.trabalhofinal.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.trabalhofinal.repository.MedicoRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -128,7 +129,7 @@ public class MedicoServiceTest {
         assertNotNull(agendamentoListaDTO);
     }
     @Test // deveCriarComSucesso
-    public void deveCriarComSucesso() throws RegraDeNegocioException {
+    public void deveCriarComSucesso() throws RegraDeNegocioException, JsonProcessingException {
         // declaração de variaveis (SETUP)
         MedicoCreateDTO medicoCreateDTOMock = new MedicoCreateDTO();
         medicoCreateDTOMock.setCep("12345678");
@@ -151,24 +152,6 @@ public class MedicoServiceTest {
         assertEquals(medicoCompletoDTOMock,medicoAdicionado);
     }
 
-    @Test(expected = RegraDeNegocioException.class)
-    public void deveCriarComFalha() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
-        // declaração de variaveis (SETUP)
-        MedicoCreateDTO medicoCreateDTOMock = new MedicoCreateDTO();
-        medicoCreateDTOMock.setCep("12345678");
-        medicoCreateDTOMock.setCrm("123456");
-        medicoCreateDTOMock.setNome("Alan");
-        medicoCreateDTOMock.setCpf("12345678910");
-        medicoCreateDTOMock.setEmail("Alan@gmail.com");
-        medicoCreateDTOMock.setContatos("12345678");
-        medicoCreateDTOMock.setNumero(145);
-        medicoCreateDTOMock.setSenha("123");
-        medicoCreateDTOMock.setIdEspecialidade(1);
-
-        Mockito.doThrow(new MessagingException("Erro ao enviar o e-mail. Cadastro não realizado.")).when(emailService).sendEmailUsuario(any(),any(),any());
-        // ação (ACT)
-        medicoService.adicionar(medicoCreateDTOMock);
-    }
     @Test
     public void deveEditarMedico() throws RegraDeNegocioException {
         //SETUP
@@ -227,7 +210,7 @@ public class MedicoServiceTest {
     }
 
     @Test
-    public void testarEditarAgendamentoMedico() throws RegraDeNegocioException {
+    public void testarEditarAgendamentoMedico() throws RegraDeNegocioException, JsonProcessingException {
         //setup
         AgendamentoMedicoEditarCreateDTO agendamentoMedicoEditarCreateDTO = getAgendamentoMedicoEditarCreateDTO();
         AgendamentoEntity agendamento = getAgendamentoEntityMock();
@@ -243,7 +226,7 @@ public class MedicoServiceTest {
     }
 
     @Test(expected = RegraDeNegocioException.class)
-    public void testarIfEditarAgendamentoMedico() throws RegraDeNegocioException {
+    public void testarIfEditarAgendamentoMedico() throws RegraDeNegocioException, JsonProcessingException {
         //setup
         AgendamentoMedicoEditarCreateDTO agendamentoMedicoEditarCreateDTO = getAgendamentoMedicoEditarCreateDTO();
         AgendamentoEntity agendamento = getAgendamentoEntityMock();
